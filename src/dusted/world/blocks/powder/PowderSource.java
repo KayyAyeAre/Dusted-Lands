@@ -1,5 +1,6 @@
 package dusted.world.blocks.powder;
 
+import arc.graphics.g2d.*;
 import arc.scene.ui.layout.*;
 import arc.util.*;
 import arc.util.io.*;
@@ -16,6 +17,7 @@ public class PowderSource extends PowderBlock {
         super(name);
         update = true;
         solid = true;
+        configurable = true;
 
         config(Powder.class, (PowderSourceBuild build, Powder powder) -> build.source = powder);
         configClear((PowderSourceBuild build) -> build.source = null);
@@ -23,6 +25,19 @@ public class PowderSource extends PowderBlock {
 
     public class PowderSourceBuild extends PowderBuild {
         public @Nullable Powder source = null;
+
+        @Override
+        public void draw() {
+            super.draw();
+
+            if(source == null){
+                Draw.rect("cross", x, y);
+            }else{
+                Draw.color(source.color);
+                Draw.rect("center", x, y);
+                Draw.color();
+            }
+        }
 
         @Override
         public void updateTile() {

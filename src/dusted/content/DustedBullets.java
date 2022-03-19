@@ -15,7 +15,7 @@ public class DustedBullets {
             hitEffect = DustedFx.hitTitaniumSpray;
             despawnEffect = Fx.none;
             status = DustedStatusEffects.sprayed;
-            statusDuration = 60f * 12;
+            statusDuration = 60f * 3;
             hittable = false;
         }};
     }

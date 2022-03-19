@@ -3,6 +3,7 @@ package dusted.world.blocks.powder;
 import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
+import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
 import dusted.type.*;
@@ -50,9 +51,16 @@ public class Chute extends PowderBlock implements Autotiler {
         return otherblock instanceof PowderBlock && lookingAtEither(tile, rotation, otherx, othery, otherrot, otherblock);
     }
 
+    @Override
+    public TextureRegion[] icons() {
+        return new TextureRegion[]{Core.atlas.find("dusted-lands-chute-bottom"), topRegions[0], Core.atlas.find(name + "-power")};
+    }
+
     public class ChuteBuild extends PowderBuild implements ChainedBuilding {
+        public float smoothPowder;
         public int blendbits, xscl = 1, yscl = 1, blending;
         public int charge;
+        public int properCharge;
 
         @Override
         public void draw() {
@@ -78,11 +86,10 @@ public class Chute extends PowderBlock implements Autotiler {
         protected void drawAt(float x, float y, int bits, float rotation, SliceMode slice) {
             Draw.color(bottomColor);
             Draw.rect(sliced(bottomRegions[bits], slice), x, y, rotation);
-            Draw.mixcol(powders.current().color, powders.currentAmount() / powderCapacity);
+            Draw.color(powders.current().color, smoothPowder);
             Draw.rect(sliced(bottomRegions[bits], slice), x, y, rotation);
 
             Draw.color();
-            Draw.mixcol();
             Draw.rect(sliced(topRegions[bits], slice), x, y, rotation);
 
             Draw.color(Pal.darkerMetal);
@@ -107,12 +114,18 @@ public class Chute extends PowderBlock implements Autotiler {
             blending = bits[4];
         }
 
-
         @Override
         public void updateTile() {
-            if (tile.nearbyBuild(rotation) != null && tile.nearbyBuild(rotation) instanceof ChuteBuild chute) {
-                chute.charge = Math.max(chute.charge, charge - 1);
-            }
+            smoothPowder = Mathf.lerpDelta(smoothPowder, powders.currentAmount() / powderCapacity, 0.05f);
+
+            properCharge = 0;
+            proximity.each(build -> {
+                if (build instanceof ChuteBuild entity && blends(tile, rotation, build.tileX(), build.tileY(), build.rotation, build.block)) {
+                    properCharge = Math.max(properCharge, entity.charge - 1);
+                }
+            });
+
+            charge = properCharge;
 
             if (charge > 0 && powders.total() > 0.001f && timer(timerFlow, 1)) {
                 movePowderForward(powders.current());

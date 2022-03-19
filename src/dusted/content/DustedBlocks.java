@@ -4,7 +4,9 @@ import dusted.type.*;
 import dusted.world.blocks.defense.turrets.*;
 import dusted.world.blocks.powder.*;
 import dusted.world.blocks.production.*;
+import dusted.world.draw.*;
 import mindustry.content.*;
+import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
@@ -35,6 +37,7 @@ public class DustedBlocks {
             hasPower = true;
             size = 2;
 
+            drawer = new DrawPowderRotator();
             outputPowder = new PowderStack(Powders.titaniumPowder, 1f);
             craftTime = 10f;
             consumes.power(2f);
@@ -47,6 +50,15 @@ public class DustedBlocks {
                     Powders.titaniumPowder, DustedBullets.titaniumSpray
             );
             size = 2;
+            recoilAmount = 0f;
+            reloadTime = 4f;
+            coolantMultiplier = 1.5f;
+            range = 70f;
+            shootCone = 50f;
+            ammoUseEffect = Fx.none;
+            health = 260 * size * size;
+            loopSound = Sounds.spray;
+            shootSound = Sounds.none;
         }};
 
         powderSource = new PowderSource("powder-source") {{

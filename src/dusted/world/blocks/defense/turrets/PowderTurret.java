@@ -1,5 +1,7 @@
 package dusted.world.blocks.defense.turrets;
 
+import arc.*;
+import arc.graphics.g2d.*;
 import arc.struct.*;
 import dusted.type.*;
 import dusted.world.consumers.*;
@@ -18,9 +20,11 @@ public class PowderTurret extends Turret {
     public float powderCapacity = 20;
     public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
     public ObjectMap<Powder, BulletType> ammoTypes = new ObjectMap<>();
+    public TextureRegion powderRegion, topRegion;
 
     public PowderTurret(String name) {
         super(name);
+        outlinedIcon = 1;
     }
 
     @Override
@@ -32,6 +36,13 @@ public class PowderTurret extends Turret {
 
     public void ammo(Object... objects) {
         ammoTypes = ObjectMap.of(objects);
+    }
+
+    @Override
+    public void load() {
+        super.load();
+        powderRegion = Core.atlas.find(name + "-powder");
+        topRegion = Core.atlas.find(name + "-top");
     }
 
     @Override
@@ -56,8 +67,31 @@ public class PowderTurret extends Turret {
         super.init();
     }
 
+    @Override
+    public TextureRegion[] icons() {
+        if (topRegion.found()) return new TextureRegion[]{baseRegion, region, topRegion};
+        return super.icons();
+    }
+
     public class PowderTurretBuild extends TurretBuild implements PowderBlockc {
         public PowderModule powders = new PowderModule();
+
+        @Override
+        public boolean shouldActiveSound() {
+            return wasShooting && enabled;
+        }
+
+        @Override
+        public void draw() {
+            super.draw();
+
+            if (powderRegion.found()) {
+                Draw.color(powders.current().color, powders.total() / powderCapacity);
+                Draw.rect(powderRegion, x + tr2.x, y + tr2.y, rotation - 90);
+                Draw.color();
+            }
+            if (topRegion.found()) Draw.rect(topRegion, x + tr2.x, y + tr2.y, rotation - 90);
+        }
 
         @Override
         public void updateTile() {

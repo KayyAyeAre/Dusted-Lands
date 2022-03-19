@@ -4,12 +4,12 @@ import arc.math.*;
 import arc.struct.*;
 import dusted.type.*;
 import dusted.world.blocks.powder.*;
-import dusted.world.blocks.powder.PowderBlock.*;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.gen.*;
 import mindustry.world.*;
 
+//interface for blocks with a powder module to transfer powder
 public interface PowderBlockc {
     PowderModule powderModule();
     Building build();
