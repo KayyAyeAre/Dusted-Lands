@@ -13,6 +13,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.ui.*;
+import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 
 public class PowderBridge extends ItemBridge {
@@ -37,7 +38,7 @@ public class PowderBridge extends ItemBridge {
 
         bars.add("charge", build -> {
             Chargedc charged = (Chargedc) build;
-            return new Bar(() -> Core.bundle.format("bar.charge"), () -> Pal.accent, () -> ((float) charged.charge()) / ((float) charged.maxCharge()));
+            return new Bar(() -> Core.bundle.format("bar.charge"), () -> Pal.accent, () -> ((float) charged.charge(build)) / ((float) charged.maxCharge()));
         });
     }
 
@@ -51,7 +52,6 @@ public class PowderBridge extends ItemBridge {
             time2 += (cycleSpeed - 1f) * delta();
 
             checkIncoming();
-            //TODO charge
             Building other = Vars.world.build(link);
 
             if (other == null || !linkValid(tile, other.tile())) {
@@ -60,14 +60,14 @@ public class PowderBridge extends ItemBridge {
                 properCharge = 0;
                 proximity.each(build -> {
                     if (build instanceof Chargedc entity && canCharge(build, this)) {
-                        properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge() - 1));
+                        properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge(this) - 1));
                     }
                 });
 
                 charge = properCharge;
 
                 if (charge > 0) {
-                    ((Chargedc)other).charge(charge - 1);
+                    ((Chargedc) other).setCharge(charge - 1);
                     ((ItemBridgeBuild) other).incoming.add(tile.pos());
                     if (consValid()) {
                         float alpha = 0.04f;
@@ -88,6 +88,26 @@ public class PowderBridge extends ItemBridge {
                     }
                 }
             }
+        }
+
+        @Override
+        public boolean acceptPowder(Building source, Powder powder) {
+            if (team != source.team) return false;
+
+            Tile other = Vars.world.tile(link);
+
+            if (powders.total() >= powderCapacity) return false;
+
+            if (linked(source)) return true;
+
+            if (linkValid(tile, other)) {
+                int rel = relativeTo(other);
+                int rel2 = relativeTo(Edges.getFacingEdge(source, this));
+
+                return rel != rel2;
+            }
+
+            return false;
         }
 
         @Override
@@ -128,7 +148,7 @@ public class PowderBridge extends ItemBridge {
         }
 
         @Override
-        public int charge() {
+        public int charge(Building accessor) {
             return charge;
         }
 
@@ -138,7 +158,7 @@ public class PowderBridge extends ItemBridge {
         }
 
         @Override
-        public void charge(int charge) {
+        public void setCharge(int charge) {
             this.charge = charge;
         }
     }

@@ -62,17 +62,19 @@ public interface PowderBlockc {
     }
 
     default float movePowder(Building building, Powder powder) {
-        building = ((PowderBlockc) building).getPowderDestination(build(), powder);
-        if (building.team == build().team && building instanceof PowderBlockc next && powderModule().get(powder) > 0f) {
-            float ofract = next.powderModule().get(powder) / next.powderCapacity();
-            float fract = powderModule().get(powder) / powderCapacity();
-            float flow = Math.min(Mathf.clamp((fract - ofract)) * powderCapacity(), powderModule().get(powder));
-            flow = Math.min(flow, powderCapacity() - next.powderModule().get(powder));
+        if (building instanceof PowderBlockc pow) {
+            building = pow.getPowderDestination(build(), powder);
+            if (building.team == build().team && building instanceof PowderBlockc next && powderModule().get(powder) > 0f) {
+                float ofract = next.powderModule().get(powder) / next.powderCapacity();
+                float fract = powderModule().get(powder) / powderCapacity();
+                float flow = Math.min(Mathf.clamp((fract - ofract)) * powderCapacity(), powderModule().get(powder));
+                flow = Math.min(flow, powderCapacity() - next.powderModule().get(powder));
 
-            if (flow > 0f && ofract <= fract && next.acceptPowder(build(), powder)) {
-                next.handlePowder(powder, flow);
-                powderModule().remove(powder, flow);
-                return flow;
+                if (flow > 0f && ofract <= fract && next.acceptPowder(build(), powder)) {
+                    next.handlePowder(powder, flow);
+                    powderModule().remove(powder, flow);
+                    return flow;
+                }
             }
         }
 

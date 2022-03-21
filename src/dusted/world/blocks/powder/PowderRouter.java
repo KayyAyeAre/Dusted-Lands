@@ -32,7 +32,7 @@ public class PowderRouter extends PowderBlock {
             properCharge = 0;
             proximity.each(build -> {
                 if (build instanceof Chargedc entity && canCharge(build, this)) {
-                    properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge() - 1));
+                    properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge(this) - 1));
                 }
             });
 
@@ -49,7 +49,7 @@ public class PowderRouter extends PowderBlock {
         }
 
         @Override
-        public int charge() {
+        public int charge(Building accessor) {
             return charge;
         }
 
@@ -59,7 +59,7 @@ public class PowderRouter extends PowderBlock {
         }
 
         @Override
-        public void charge(int charge) {
+        public void setCharge(int charge) {
             this.charge = charge;
         }
     }

@@ -34,8 +34,7 @@ public class PowderTurret extends Turret {
         super.setBars();
         bars.add("ammo", entity -> {
             PowderTurretBuild build = (PowderTurretBuild) entity;
-            //TODO make the bar actually do something
-            return new Bar("stat.ammo", Pal.ammo, () -> (float) build.totalAmmo / maxAmmo);
+            return new Bar("stat.ammo", Pal.ammo, () -> build.powders.currentAmount() / build.powderCapacity());
         });
     }
 
@@ -107,7 +106,7 @@ public class PowderTurret extends Turret {
 
         @Override
         public void updateTile() {
-            unit.ammo(unit.type().ammoCapacity * liquids.currentAmount() / liquidCapacity);
+            unit.ammo(unit.type().ammoCapacity * powders.currentAmount() / powderCapacity);
 
             super.updateTile();
         }

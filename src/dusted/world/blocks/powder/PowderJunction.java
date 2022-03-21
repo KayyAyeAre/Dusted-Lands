@@ -33,7 +33,7 @@ public class PowderJunction extends PowderBlock {
             properCharge = 0;
             proximity.each(build -> {
                 if (build instanceof Chargedc entity && canCharge(build, this)) {
-                    properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge() - 1));
+                    properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge(this) - 1));
                 }
             });
 
@@ -61,7 +61,15 @@ public class PowderJunction extends PowderBlock {
         }
 
         @Override
-        public int charge() {
+        public int charge(Building accessor) {
+            int dir = accessor.relativeTo(tile.x, tile.y);
+            dir = (dir + 4) % 4;
+            Building next = nearby(dir);
+
+            if (next instanceof Chargedc build) {
+                return build.charge(this) - 1;
+            }
+
             return charge;
         }
 
@@ -71,7 +79,7 @@ public class PowderJunction extends PowderBlock {
         }
 
         @Override
-        public void charge(int charge) {
+        public void setCharge(int charge) {
             this.charge = charge;
         }
     }

@@ -39,7 +39,7 @@ public class Chute extends PowderBlock implements Autotiler {
         super.setBars();
         bars.add("charge", build -> {
             Chargedc charged = (Chargedc) build;
-            return new Bar(() -> Core.bundle.format("bar.charge"), () -> Pal.accent, () -> ((float) charged.charge()) / ((float) charged.maxCharge()));
+            return new Bar(() -> Core.bundle.format("bar.charge"), () -> Pal.accent, () -> ((float) charged.charge(build)) / ((float) charged.maxCharge()));
         });
     }
 
@@ -151,7 +151,7 @@ public class Chute extends PowderBlock implements Autotiler {
             properCharge = 0;
             proximity.each(build -> {
                 if (build instanceof Chargedc entity && canCharge(build, this)) {
-                    properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge() - 1));
+                    properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge(this) - 1));
                 }
             });
 
@@ -173,7 +173,7 @@ public class Chute extends PowderBlock implements Autotiler {
         }
 
         @Override
-        public int charge() {
+        public int charge(Building accessor) {
             return charge;
         }
 
@@ -183,7 +183,7 @@ public class Chute extends PowderBlock implements Autotiler {
         }
 
         @Override
-        public void charge(int charge) {
+        public void setCharge(int charge) {
             this.charge = charge;
         }
     }
