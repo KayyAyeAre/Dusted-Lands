@@ -10,5 +10,6 @@ public class DustedLands extends Mod {
         Powders.load();
         DustedBullets.load();
         DustedBlocks.load();
+        DustedPlanets.load();
     }
 }

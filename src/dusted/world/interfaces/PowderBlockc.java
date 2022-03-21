@@ -15,6 +15,10 @@ public interface PowderBlockc {
     Building build();
     Bits filters();
 
+    default Building getPowderDestination(Building from, Powder powder) {
+        return build();
+    }
+
     default float powderCapacity() {
         return ((PowderBlock) build().block).powderCapacity;
     }
@@ -38,11 +42,13 @@ public interface PowderBlockc {
         for (int i = 0; i < build().proximity.size; i++) {
             build().incrementDump(build().proximity.size);
             Building building = build().proximity.get((i + dump) % build().proximity.size);
-            if (building != null && building.team == build().team && building instanceof PowderBlockc other) {
-                float ofract = other.powderModule().get(powder) / other.powderCapacity();
-                float fract = powderModule().get(powder) / powderCapacity();
-                if (ofract < fract)
-                    transferPowder(other, (fract - ofract) * powderCapacity() / scaling, powder);
+            if (building instanceof PowderBlockc pow) {
+                building = pow.getPowderDestination(build(), powder);
+                if (building instanceof PowderBlockc other && building.team == build().team) {
+                    float ofract = other.powderModule().get(powder) / other.powderCapacity();
+                    float fract = powderModule().get(powder) / powderCapacity();
+                    if (ofract < fract) transferPowder(other, (fract - ofract) * powderCapacity() / scaling, powder);
+                }
             }
         }
     }
@@ -55,7 +61,8 @@ public interface PowderBlockc {
         }
     }
 
-    default void movePowder(Building building, Powder powder) {
+    default float movePowder(Building building, Powder powder) {
+        building = ((PowderBlockc) building).getPowderDestination(build(), powder);
         if (building.team == build().team && building instanceof PowderBlockc next && powderModule().get(powder) > 0f) {
             float ofract = next.powderModule().get(powder) / next.powderCapacity();
             float fract = powderModule().get(powder) / powderCapacity();
@@ -65,15 +72,19 @@ public interface PowderBlockc {
             if (flow > 0f && ofract <= fract && next.acceptPowder(build(), powder)) {
                 next.handlePowder(powder, flow);
                 powderModule().remove(powder, flow);
+                return flow;
             }
         }
+
+        return 0;
     }
 
-    default void movePowderForward(Powder powder) {
+    default float movePowderForward(Powder powder) {
         Tile next = build().tile.nearby(build().rotation);
 
         if (next.build != null) {
-            movePowder(next.build, powder);
+            return movePowder(next.build, powder);
         }
+        return 0;
     }
 }

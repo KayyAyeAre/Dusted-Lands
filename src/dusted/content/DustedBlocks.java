@@ -16,20 +16,34 @@ public class DustedBlocks {
             //defense
             spume,
             //powder distribution
-            pneumaticChute, pneumaticChuteDrive,
+            chute, chuteDrive, powderRouter, powderJunction, bridgeChute,
             //crafters
             titaniumMill,
             //sandbox
             powderSource, powderVoid;
 
     public static void load() {
-        pneumaticChute = new Chute("pneumatic-chute") {{
-            requirements(Category.distribution, ItemStack.with(Items.titanium, 3));
+        chute = new Chute("chute") {{
+            requirements(Category.distribution, ItemStack.with(Items.titanium, 2));
         }};
 
-        pneumaticChuteDrive = new ChuteDrive("pneumatic-chute-drive") {{
-            requirements(Category.distribution, ItemStack.with(Items.titanium, 3));
+        chuteDrive = new ChuteDrive("chute-drive") {{
+            requirements(Category.distribution, ItemStack.with(Items.titanium, 2, Items.lead, 2));
             consumes.power(0.5f);
+        }};
+
+        powderRouter = new PowderRouter("powder-router") {{
+            requirements(Category.distribution, ItemStack.with(Items.graphite, 3, Items.titanium, 2));
+        }};
+
+        powderJunction = new PowderJunction("powder-junction") {{
+            requirements(Category.distribution, ItemStack.with(Items.titanium, 2, Items.graphite, 2));
+        }};
+
+        bridgeChute = new PowderBridge("bridge-chute") {{
+            requirements(Category.distribution, ItemStack.with(Items.titanium, 8, Items.graphite, 4));
+            range = 4;
+            hasPower = false;
         }};
 
         titaniumMill = new PowderCrafter("titanium-mill") {{

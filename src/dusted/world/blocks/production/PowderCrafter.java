@@ -2,6 +2,7 @@ package dusted.world.blocks.production;
 
 import arc.math.*;
 import arc.struct.*;
+import arc.util.io.*;
 import dusted.type.*;
 import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
@@ -68,6 +69,18 @@ public class PowderCrafter extends GenericCrafter {
             }
 
             dumpPowder(outputPowder.powder);
+        }
+
+        @Override
+        public void write(Writes write) {
+            super.write(write);
+            powders.write(write);
+        }
+
+        @Override
+        public void read(Reads read) {
+            super.read(read);
+            powders.read(read);
         }
 
         @Override

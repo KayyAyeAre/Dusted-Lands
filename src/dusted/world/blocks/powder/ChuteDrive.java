@@ -1,6 +1,7 @@
 package dusted.world.blocks.powder;
 
 import arc.math.*;
+import mindustry.world.meta.*;
 
 public class ChuteDrive extends Chute {
     public int outputCharge = 16;
@@ -8,6 +9,12 @@ public class ChuteDrive extends Chute {
     public ChuteDrive(String name) {
         super(name);
         hasPower = true;
+    }
+
+    @Override
+    public void setStats() {
+        super.setStats();
+        stats.add(Stat.charge, outputCharge);
     }
 
     public class ChuteDriveBuild extends ChuteBuild {

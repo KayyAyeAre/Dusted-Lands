@@ -13,7 +13,7 @@ import mindustry.gen.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 
-public class PowderBlock extends Block {
+public class PowderBlock extends Block implements CustomReplacec {
     public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
     public float powderCapacity = 20f;
 
@@ -21,6 +21,11 @@ public class PowderBlock extends Block {
         super(name);
         update = true;
         solid = true;
+    }
+
+    @Override
+    public boolean canReplace(Block other) {
+        return replaceable(this, other);
     }
 
     @Override
@@ -40,6 +45,11 @@ public class PowderBlock extends Block {
             Powder powder = entity.powders.current();
             return new Bar(() -> entity.powders.get(powder) <= 0.001f ? Core.bundle.get("bar.powder") : powder.localizedName, () -> powder.color, () -> entity.powders.get(powder) / powderCapacity);
         });
+    }
+
+    @Override
+    public String replaceType() {
+        return "powder";
     }
 
     public class PowderBuild extends Building implements PowderBlockc {

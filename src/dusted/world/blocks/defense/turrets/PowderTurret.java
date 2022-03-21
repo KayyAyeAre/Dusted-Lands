@@ -11,7 +11,9 @@ import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
 import mindustry.world.meta.values.*;
@@ -25,6 +27,16 @@ public class PowderTurret extends Turret {
     public PowderTurret(String name) {
         super(name);
         outlinedIcon = 1;
+    }
+
+    @Override
+    public void setBars() {
+        super.setBars();
+        bars.add("ammo", entity -> {
+            PowderTurretBuild build = (PowderTurretBuild) entity;
+            //TODO make the bar actually do something
+            return new Bar("stat.ammo", Pal.ammo, () -> (float) build.totalAmmo / maxAmmo);
+        });
     }
 
     @Override

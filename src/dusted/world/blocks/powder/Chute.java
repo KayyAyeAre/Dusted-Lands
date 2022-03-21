@@ -1,15 +1,21 @@
 package dusted.world.blocks.powder;
 
 import arc.*;
+import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
+import arc.struct.*;
 import arc.util.*;
+import dusted.content.*;
 import dusted.type.*;
+import dusted.world.interfaces.*;
 import mindustry.*;
+import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
+import mindustry.input.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
@@ -24,14 +30,16 @@ public class Chute extends PowderBlock implements Autotiler {
     public Chute(String name) {
         super(name);
         rotate = true;
+        solid = false;
+        conveyorPlacement = true;
     }
 
     @Override
     public void setBars() {
         super.setBars();
         bars.add("charge", build -> {
-            ChuteBuild entity = (ChuteBuild) build;
-            return new Bar(() -> Core.bundle.format("bar.charge"), () -> Pal.accent, () -> ((float) entity.charge) / ((float) ((Chute) entity.block).maxCharge));
+            Chargedc charged = (Chargedc) build;
+            return new Bar(() -> Core.bundle.format("bar.charge"), () -> Pal.accent, () -> ((float) charged.charge()) / ((float) charged.maxCharge()));
         });
     }
 
@@ -56,11 +64,33 @@ public class Chute extends PowderBlock implements Autotiler {
         return new TextureRegion[]{Core.atlas.find("dusted-lands-chute-bottom"), topRegions[0], Core.atlas.find(name + "-power")};
     }
 
-    public class ChuteBuild extends PowderBuild implements ChainedBuilding {
+    @Override
+    public Block getReplacement(BuildPlan req, Seq<BuildPlan> requests) {
+        Boolf<Point2> jcont = p -> requests.contains(o -> o.x == req.x + p.x && o.y == req.y + p.y && o.rotation == req.rotation && (req.block instanceof Chute || req.block instanceof PowderJunction));
+
+        if (jcont.get(Geometry.d4(req.rotation)) &&
+                jcont.get(Geometry.d4(req.rotation - 2)) &&
+                req.tile() != null &&
+                req.tile().block() instanceof Chute &&
+                Mathf.mod(req.build().rotation - req.rotation, 2) == 1) {
+            return DustedBlocks.powderJunction;
+        } /*else {
+            TODO replace every chute that would have a charge of 0 with a chute drive
+            return DustedBlocks.chuteDrive;
+        }*/
+
+        return this;
+    }
+
+    @Override
+    public void handlePlacementLine(Seq<BuildPlan> plans) {
+        Placement.calculateBridges(plans, (ItemBridge) DustedBlocks.bridgeChute);
+    }
+
+    public class ChuteBuild extends PowderBuild implements ChainedBuilding, Chargedc {
         public float smoothPowder;
         public int blendbits, xscl = 1, yscl = 1, blending;
-        public int charge;
-        public int properCharge;
+        public int charge, properCharge;
 
         @Override
         public void draw() {
@@ -120,8 +150,8 @@ public class Chute extends PowderBlock implements Autotiler {
 
             properCharge = 0;
             proximity.each(build -> {
-                if (build instanceof ChuteBuild entity && blends(tile, rotation, build.tileX(), build.tileY(), build.rotation, build.block)) {
-                    properCharge = Math.max(properCharge, entity.charge - 1);
+                if (build instanceof Chargedc entity && canCharge(build, this)) {
+                    properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge() - 1));
                 }
             });
 
@@ -140,6 +170,21 @@ public class Chute extends PowderBlock implements Autotiler {
                 return next.build;
             }
             return null;
+        }
+
+        @Override
+        public int charge() {
+            return charge;
+        }
+
+        @Override
+        public int maxCharge() {
+            return maxCharge;
+        }
+
+        @Override
+        public void charge(int charge) {
+            this.charge = charge;
         }
     }
 }
