@@ -1,7 +1,7 @@
 package dusted.world.blocks.powder;
 
 import arc.math.*;
-import mindustry.world.meta.*;
+import dusted.world.meta.values.*;
 
 public class ChuteDrive extends Chute {
     public int outputCharge = 16;
@@ -14,7 +14,7 @@ public class ChuteDrive extends Chute {
     @Override
     public void setStats() {
         super.setStats();
-        stats.add(Stat.charge, outputCharge);
+        new CustomStatValue("output-charge", outputCharge).add(stats);
     }
 
     public class ChuteDriveBuild extends ChuteBuild {
@@ -29,7 +29,7 @@ public class ChuteDrive extends Chute {
             }
 
             if (charge > 0 && powders.total() > 0.001f && timer(timerFlow, 1)) {
-                movePowderForward(powders.current());
+                movePowderForward(true, powders.current());
             }
         }
     }

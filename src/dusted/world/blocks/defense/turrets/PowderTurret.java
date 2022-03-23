@@ -6,6 +6,7 @@ import arc.struct.*;
 import dusted.type.*;
 import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
+import dusted.world.meta.values.*;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.ctype.*;
@@ -42,6 +43,7 @@ public class PowderTurret extends Turret {
     public void setStats() {
         super.setStats();
 
+        new CustomStatValue("powder-capacity", powderCapacity).add(stats);
         stats.add(Stat.ammo, new AmmoListValue<>(ammoTypes));
     }
 

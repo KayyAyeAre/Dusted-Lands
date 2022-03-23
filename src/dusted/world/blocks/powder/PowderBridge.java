@@ -6,6 +6,7 @@ import arc.struct.*;
 import arc.util.io.*;
 import dusted.type.*;
 import dusted.world.interfaces.*;
+import dusted.world.meta.values.*;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.ctype.*;
@@ -16,7 +17,7 @@ import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 
-public class PowderBridge extends ItemBridge {
+public class PowderBridge extends ItemBridge implements CustomReplacec {
     public int maxCharge = 16;
     public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
     public float powderCapacity = 20f;
@@ -24,6 +25,18 @@ public class PowderBridge extends ItemBridge {
     public PowderBridge(String name) {
         super(name);
         hasItems = false;
+    }
+
+    @Override
+    public boolean canReplace(Block other) {
+        return customReplace(this, other);
+    }
+
+    @Override
+    public void setStats() {
+        super.setStats();
+        new CustomStatValue("powder-capacity", powderCapacity).add(stats);
+        new CustomStatValue("max-charge", maxCharge).add(stats);
     }
 
     @Override
@@ -40,6 +53,11 @@ public class PowderBridge extends ItemBridge {
             Chargedc charged = (Chargedc) build;
             return new Bar(() -> Core.bundle.format("bar.charge"), () -> Pal.accent, () -> ((float) charged.charge(build)) / ((float) charged.maxCharge()));
         });
+    }
+
+    @Override
+    public String replaceType() {
+        return "powder";
     }
 
     public class PowderBridgeBuild extends ItemBridgeBuild implements PowderBlockc, Chargedc {

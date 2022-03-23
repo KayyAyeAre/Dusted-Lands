@@ -4,6 +4,7 @@ import arc.*;
 import dusted.type.*;
 import dusted.world.blocks.powder.Chute.*;
 import dusted.world.interfaces.*;
+import dusted.world.meta.values.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
@@ -13,6 +14,12 @@ public class PowderRouter extends PowderBlock {
 
     public PowderRouter(String name) {
         super(name);
+    }
+
+    @Override
+    public void setStats() {
+        super.setStats();
+        new CustomStatValue("max-charge", maxCharge).add(stats);
     }
 
     @Override

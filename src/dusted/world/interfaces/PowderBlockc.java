@@ -81,11 +81,14 @@ public interface PowderBlockc {
         return 0;
     }
 
-    default float movePowderForward(Powder powder) {
+    default float movePowderForward(boolean leaks, Powder powder) {
         Tile next = build().tile.nearby(build().rotation);
 
         if (next.build != null) {
             return movePowder(next.build, powder);
+        } else if (leaks && !next.block().solid) {
+            float leakAmount = powderModule().get(powder) / 1.5F;
+            powderModule().remove(powder, leakAmount);
         }
         return 0;
     }

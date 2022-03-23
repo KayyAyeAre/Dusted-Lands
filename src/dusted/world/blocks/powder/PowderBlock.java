@@ -6,6 +6,7 @@ import arc.util.io.*;
 import dusted.type.*;
 import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
+import dusted.world.meta.values.*;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.ctype.*;
@@ -25,7 +26,7 @@ public class PowderBlock extends Block implements CustomReplacec {
 
     @Override
     public boolean canReplace(Block other) {
-        return replaceable(this, other);
+        return customReplace(this, other);
     }
 
     @Override
@@ -34,6 +35,12 @@ public class PowderBlock extends Block implements CustomReplacec {
         consumes.each(cons -> {
             if (cons instanceof ConsumePowderBase pcons) pcons.addPowderFilters(powderFilters);
         });
+    }
+
+    @Override
+    public void setStats() {
+        super.setStats();
+        new CustomStatValue("powder-capacity", powderCapacity).add(stats);
     }
 
     @Override
