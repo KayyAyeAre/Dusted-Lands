@@ -69,8 +69,8 @@ public class PowderBlock extends Block implements CustomReplacec {
         }
 
         @Override
-        public void read(Reads read) {
-            super.read(read);
+        public void read(Reads read, byte revision) {
+            super.read(read, revision);
             powders.read(read);
         }
 

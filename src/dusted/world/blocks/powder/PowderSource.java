@@ -18,6 +18,7 @@ public class PowderSource extends PowderBlock {
         update = true;
         solid = true;
         configurable = true;
+        saveConfig = true;
 
         config(Powder.class, (PowderSourceBuild build, Powder powder) -> build.source = powder);
         configClear((PowderSourceBuild build) -> build.source = null);
@@ -79,7 +80,7 @@ public class PowderSource extends PowderBlock {
         @Override
         public void read(Reads read, byte revision) {
             super.read(read, revision);
-            int id = revision == 1 ? read.s() : read.b();
+            int id = read.s();
             source = id == -1 ? null : Vars.content.getByID(ContentType.effect_UNUSED, id);
         }
     }

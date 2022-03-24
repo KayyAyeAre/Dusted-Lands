@@ -6,10 +6,10 @@ import arc.graphics.g2d.*;
 import dusted.world.meta.values.*;
 import mindustry.ctype.*;
 import mindustry.ui.*;
+import mindustry.world.meta.*;
 
 public class Powder extends UnlockableContent {
     public Color color;
-    public float weight = 0.4f;
 
     public Powder(String name, Color color) {
         super(name);
@@ -22,12 +22,6 @@ public class Powder extends UnlockableContent {
 
     public Powder(String name) {
         this(name, new Color(Color.black));
-    }
-
-    @Override
-    public void setStats() {
-        super.setStats();
-        new CustomStatValue("weight", weight).add(stats);
     }
 
     @Override

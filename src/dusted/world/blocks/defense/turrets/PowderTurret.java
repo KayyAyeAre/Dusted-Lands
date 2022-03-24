@@ -3,6 +3,7 @@ package dusted.world.blocks.defense.turrets;
 import arc.*;
 import arc.graphics.g2d.*;
 import arc.struct.*;
+import arc.util.io.*;
 import dusted.type.*;
 import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
@@ -141,6 +142,18 @@ public class PowderTurret extends Turret {
             return ammoTypes.get(powder) != null
                     && (powders.current() == powder || (ammoTypes.containsKey(powder)
                     && (!ammoTypes.containsKey(powders.current()) || powders.currentAmount() <= 1f / ammoTypes.get(powders.current()).ammoMultiplier + 0.001f)));
+        }
+
+        @Override
+        public void writeBase(Writes write) {
+            super.writeBase(write);
+            powders.write(write);
+        }
+
+        @Override
+        public void read(Reads read, byte revision) {
+            super.read(read, revision);
+            powders.read(read);
         }
 
         @Override

@@ -1,18 +1,24 @@
 package dusted.world.interfaces;
 
 import arc.math.*;
+import arc.math.geom.*;
 import arc.struct.*;
+import dusted.content.*;
+import dusted.content.DustedFx.*;
 import dusted.type.*;
 import dusted.world.blocks.powder.*;
 import dusted.world.modules.*;
 import mindustry.*;
+import mindustry.entities.*;
 import mindustry.gen.*;
 import mindustry.world.*;
 
 //interface for blocks with a powder module to transfer powder
 public interface PowderBlockc {
     PowderModule powderModule();
+
     Building build();
+
     Bits filters();
 
     default Building getPowderDestination(Building from, Powder powder) {
@@ -87,9 +93,11 @@ public interface PowderBlockc {
         if (next.build != null) {
             return movePowder(next.build, powder);
         } else if (leaks && !next.block().solid) {
-            float leakAmount = powderModule().get(powder) / 1.5F;
+            float leakAmount = powderModule().get(powder) / 1.5f;
+            if (Mathf.chanceDelta(0.2f)) DustedFx.powderLeak.at((build().tile.worldx() + next.worldx()) / 2, (build().tile.worldy() + next.worldy()) / 2, build().rotdeg(), PowderEffectData.tmp.set(powder, leakAmount));
             powderModule().remove(powder, leakAmount);
         }
+
         return 0;
     }
 }
