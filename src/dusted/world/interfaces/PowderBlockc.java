@@ -21,6 +21,10 @@ public interface PowderBlockc {
 
     Bits filters();
 
+    default Rect prect(float amount) {
+        return null;
+    }
+
     default Building getPowderDestination(Building from, Powder powder) {
         return build();
     }
@@ -95,6 +99,7 @@ public interface PowderBlockc {
         } else if (leaks && !next.block().solid) {
             float leakAmount = powderModule().get(powder) / 1.5f;
             if (Mathf.chanceDelta(0.2f)) DustedFx.powderLeak.at((build().tile.worldx() + next.worldx()) / 2, (build().tile.worldy() + next.worldy()) / 2, build().rotdeg(), PowderEffectData.tmp.set(powder, leakAmount));
+            Units.nearby(prect(leakAmount), u -> u.apply(powder.effect, leakAmount * 60));
             powderModule().remove(powder, leakAmount);
         }
 

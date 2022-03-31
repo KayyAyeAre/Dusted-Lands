@@ -4,12 +4,15 @@ import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import dusted.world.meta.values.*;
+import mindustry.content.*;
 import mindustry.ctype.*;
+import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
 
 public class Powder extends UnlockableContent {
     public Color color;
+    public StatusEffect effect = StatusEffects.none;
 
     public Powder(String name, Color color) {
         super(name);

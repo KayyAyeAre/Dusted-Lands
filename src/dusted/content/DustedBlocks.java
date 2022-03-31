@@ -9,20 +9,61 @@ import mindustry.content.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
+import mindustry.world.blocks.environment.*;
 import mindustry.world.meta.*;
 
 public class DustedBlocks {
+
     public static Block
-            //defense
-            spume,
-            //powder distribution
-            chute, chuteDrive, powderRouter, powderJunction, bridgeChute,
-            //crafters
-            titaniumMill,
-            //sandbox
-            powderSource, powderVoid;
+    //environment
+    cavnenSediment, cavnenDusting, volcanGravel, cavnenWall, volcanWall,
+    charredTree, volcanFlower, volcanBoulder, cavnenBoulder,
+    //defense
+    spume,
+    //powder distribution
+    chute, chuteDrive, powderRouter, powderJunction, bridgeChute,
+    //crafters
+    titaniumMill,
+    //sandbox
+    powderSource, powderVoid;
 
     public static void load() {
+        cavnenSediment = new Floor("cavnen-sediment") {{
+            attributes.set(Attribute.oil, 1.2f);
+            attributes.set(Attribute.water, -0.6f);
+        }};
+
+        cavnenDusting = new Floor("cavnen-dusting") {{
+            attributes.set(Attribute.oil, 0.9f);
+            attributes.set(Attribute.water, -0.65f);
+        }};
+
+        cavnenWall = new StaticWall("cavnen-wall") {{
+            cavnenSediment.asFloor().wall = this;
+            cavnenDusting.asFloor().wall = this;
+        }};
+
+        volcanGravel = new Floor("volcan-gravel");
+
+        volcanWall = new StaticWall("volcan-wall") {{volcanGravel.asFloor().wall = this;
+        }};
+
+        charredTree = new TreeBlock("charred-tree");
+
+        volcanFlower = new Boulder("volcan-flower") {{
+            variants = 2;
+        }};
+
+        cavnenBoulder = new Boulder("cavnen-boulder") {{
+            variants = 2;
+            cavnenSediment.asFloor().decoration = cavnenDusting.asFloor().decoration = this;
+        }};
+
+        volcanBoulder = new Boulder("volcan-boulder") {{
+            variants = 2;
+            volcanGravel.asFloor().decoration = this;
+        }};
+
         chute = new Chute("chute") {{
             requirements(Category.distribution, ItemStack.with(Items.titanium, 2));
         }};
@@ -61,7 +102,7 @@ public class DustedBlocks {
         spume = new PowderTurret("spume") {{
             requirements(Category.turret, ItemStack.with());
             ammo(
-                    Powders.titaniumPowder, DustedBullets.titaniumSpray
+                Powders.titaniumPowder, DustedBullets.titaniumSpray
             );
             size = 2;
             recoilAmount = 0f;

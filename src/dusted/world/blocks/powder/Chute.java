@@ -81,10 +81,10 @@ public class Chute extends PowderBlock implements Autotiler {
                 req.tile().block() instanceof Chute &&
                 Mathf.mod(req.build().rotation - req.rotation, 2) == 1) {
             return DustedBlocks.powderJunction;
-        } /*else {
-            TODO replace every chute that would have a charge of 0 with a chute drive
+        } else if (false) {
+            //TODO
             return DustedBlocks.chuteDrive;
-        }*/
+        }
 
         return this;
     }
@@ -95,6 +95,7 @@ public class Chute extends PowderBlock implements Autotiler {
     }
 
     public class ChuteBuild extends PowderBuild implements ChainedBuilding, Chargedc {
+        private Rect prect = new Rect();
         public float smoothPowder;
         public int blendbits, xscl = 1, yscl = 1, blending;
         public int charge, properCharge;
@@ -153,6 +154,7 @@ public class Chute extends PowderBlock implements Autotiler {
 
         @Override
         public void updateTile() {
+
             smoothPowder = Mathf.lerpDelta(smoothPowder, powders.currentAmount() / powderCapacity, 0.05f);
 
             properCharge = 0;
@@ -167,6 +169,14 @@ public class Chute extends PowderBlock implements Autotiler {
             if (charge > 0 && powders.total() > 0.001f && timer(timerFlow, 1)) {
                 movePowderForward(true, powders.current());
             }
+        }
+
+        @Override
+        public Rect prect(float amount) {
+            Point2 p = Geometry.d4[rotation];
+            float w = 8 + Math.abs(p.x) * 8;
+            float h = 8 + Math.abs(p.y) * 8;
+            return prect.set(x + (p.x * amount) * 8, y + (p.y * amount) * 8, w, h);
         }
 
         @Nullable
