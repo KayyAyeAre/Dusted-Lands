@@ -1,7 +1,8 @@
 package dusted.world.blocks.powder;
 
 import arc.math.*;
-import dusted.world.meta.values.*;
+import dusted.world.meta.CustomStatValue;
+import mindustry.world.meta.*;
 
 public class ChuteDrive extends Chute {
     public int outputCharge = 16;
@@ -14,7 +15,7 @@ public class ChuteDrive extends Chute {
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("output-charge", outputCharge).add(stats);
+        new CustomStatValue("output-charge", StatValues.number(outputCharge, StatUnit.none)).add(stats);
     }
 
     public class ChuteDriveBuild extends ChuteBuild {

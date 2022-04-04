@@ -2,10 +2,9 @@ package dusted.world.consumers;
 
 import arc.scene.ui.layout.*;
 import arc.struct.*;
-import arc.util.*;
 import dusted.type.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.values.*;
+import dusted.world.meta.DustedStatValues;
 import mindustry.gen.*;
 import mindustry.ui.*;
 import mindustry.world.meta.*;
@@ -25,7 +24,7 @@ public class ConsumePowder extends ConsumePowderBase {
 
     @Override
     public void build(Building tile, Table table) {
-        table.add(new ReqImage(powder.icon(Cicon.medium), () -> valid(tile))).size(8 * 4);
+        table.add(new ReqImage(powder.uiIcon, () -> valid(tile))).size(8 * 4);
     }
 
     @Override
@@ -47,6 +46,6 @@ public class ConsumePowder extends ConsumePowderBase {
 
     @Override
     public void display(Stats stats) {
-        stats.add(booster ? Stat.booster : Stat.input, new PowderValue(powder, amount * 60f, true));
+        stats.add(booster ? Stat.booster : Stat.input, DustedStatValues.powder(powder, amount * 60f, true));
     }
 }

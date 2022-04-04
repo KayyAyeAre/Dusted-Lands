@@ -11,7 +11,7 @@ import arc.util.*;
 import dusted.content.*;
 import dusted.type.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.values.*;
+import dusted.world.meta.CustomStatValue;
 import mindustry.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
@@ -21,6 +21,7 @@ import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.distribution.*;
+import mindustry.world.meta.*;
 
 public class Chute extends PowderBlock implements Autotiler {
     public int maxCharge = 16;
@@ -38,7 +39,7 @@ public class Chute extends PowderBlock implements Autotiler {
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("max-charge", maxCharge).add(stats);
+        new CustomStatValue("max-charge", StatValues.number(maxCharge, StatUnit.none)).add(stats);
     }
 
     @Override

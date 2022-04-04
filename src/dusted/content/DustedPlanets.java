@@ -10,7 +10,7 @@ public class DustedPlanets {
     public static Planet krakai;
 
     public static void load() {
-        krakai = new Planet("krakai", Planets.sun, 3, 1f) {{
+        krakai = new Planet("krakai", Planets.sun, 1f, 3) {{
             generator = new KrakaiPlanetGenerator();
             meshLoader = () -> new HexMesh(this, 6);
             atmosphereColor = Color.valueOf("a38772");

@@ -6,7 +6,8 @@ import arc.util.io.*;
 import dusted.type.*;
 import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.values.*;
+import dusted.world.meta.CustomStatValue;
+import dusted.world.meta.DustedStatValues;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.ctype.*;
@@ -34,8 +35,8 @@ public class PowderCrafter extends GenericCrafter {
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("powder-capacity", powderCapacity).add(stats);
-        stats.add(Stat.output, new PowderValue(outputPowder.powder, outputPowder.amount * (60f / craftTime), true));
+        new CustomStatValue("powder-capacity", StatValues.number(powderCapacity, StatUnit.none)).add(stats);
+        stats.add(Stat.output, DustedStatValues.powder(outputPowder.powder, outputPowder.amount * (60f / craftTime), true));
     }
 
     public class PowderCrafterBuild extends GenericCrafterBuild implements PowderBlockc {

@@ -2,5 +2,5 @@ name: "dusted-lands"
 author: "KayAyeAre"
 main: "dusted.DustedLands"
 version: 0.1
-minGameVersion: 125
+minGameVersion: 129
 java: true

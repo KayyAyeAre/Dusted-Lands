@@ -4,10 +4,11 @@ import arc.*;
 import dusted.type.*;
 import dusted.world.blocks.powder.Chute.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.values.*;
+import dusted.world.meta.CustomStatValue;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
+import mindustry.world.meta.*;
 
 public class PowderJunction extends PowderBlock {
     public int maxCharge = 16;
@@ -19,7 +20,7 @@ public class PowderJunction extends PowderBlock {
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("max-charge", maxCharge).add(stats);
+        new CustomStatValue("max-charge", StatValues.number(maxCharge, StatUnit.none)).add(stats);
     }
 
     @Override
