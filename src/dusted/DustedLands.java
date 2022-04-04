@@ -3,7 +3,6 @@ package dusted;
 import dusted.content.*;
 import mindustry.mod.*;
 
-//test
 public class DustedLands extends Mod {
     @Override
     public void loadContent() {
