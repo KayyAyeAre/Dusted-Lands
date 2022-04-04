@@ -19,7 +19,7 @@ public class PowderDisplay extends Table {
         this.perSecond = perSecond;
 
         add(new Stack() {{
-            add(new Image(powder.icon(Cicon.medium)));
+            add(new Image(powder.uiIcon));
 
             if (amount != 0) {
                 Table t = new Table().left().bottom();

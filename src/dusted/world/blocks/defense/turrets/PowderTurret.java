@@ -7,7 +7,7 @@ import arc.util.io.*;
 import dusted.type.*;
 import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.values.*;
+import dusted.world.meta.CustomStatValue;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.ctype.*;
@@ -18,7 +18,6 @@ import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
-import mindustry.world.meta.values.*;
 
 public class PowderTurret extends Turret {
     public float powderCapacity = 20;
@@ -44,8 +43,8 @@ public class PowderTurret extends Turret {
     public void setStats() {
         super.setStats();
 
-        new CustomStatValue("powder-capacity", powderCapacity).add(stats);
-        stats.add(Stat.ammo, new AmmoListValue<>(ammoTypes));
+        new CustomStatValue("powder-capacity", StatValues.number(powderCapacity, StatUnit.none)).add(stats);
+        stats.add(Stat.ammo, StatValues.ammo(ammoTypes));
     }
 
     public void ammo(Object... objects) {

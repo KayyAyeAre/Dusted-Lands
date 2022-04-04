@@ -50,16 +50,16 @@ public class DustedBlocks {
 
         charredTree = new TreeBlock("charred-tree");
 
-        volcanFlower = new Boulder("volcan-flower") {{
+        volcanFlower = new Prop("volcan-flower") {{
             variants = 2;
         }};
 
-        cavnenBoulder = new Boulder("cavnen-boulder") {{
+        cavnenBoulder = new Prop("cavnen-boulder") {{
             variants = 2;
             cavnenSediment.asFloor().decoration = cavnenDusting.asFloor().decoration = this;
         }};
 
-        volcanBoulder = new Boulder("volcan-boulder") {{
+        volcanBoulder = new Prop("volcan-boulder") {{
             variants = 2;
             volcanGravel.asFloor().decoration = this;
         }};

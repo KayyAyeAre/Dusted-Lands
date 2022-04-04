@@ -6,13 +6,14 @@ import arc.util.io.*;
 import dusted.type.*;
 import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.values.*;
+import dusted.world.meta.CustomStatValue;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.gen.*;
 import mindustry.ui.*;
 import mindustry.world.*;
+import mindustry.world.meta.*;
 
 public class PowderBlock extends Block implements CustomReplacec {
     public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
@@ -40,7 +41,7 @@ public class PowderBlock extends Block implements CustomReplacec {
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("powder-capacity", powderCapacity).add(stats);
+        new CustomStatValue("powder-capacity", StatValues.number(powderCapacity, StatUnit.none)).add(stats);
     }
 
     @Override

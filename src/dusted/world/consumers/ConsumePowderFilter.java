@@ -5,7 +5,7 @@ import arc.scene.ui.layout.*;
 import arc.struct.*;
 import dusted.type.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.values.*;
+import dusted.world.meta.DustedStatValues;
 import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.gen.*;
@@ -29,7 +29,7 @@ public class ConsumePowderFilter extends ConsumePowderBase {
     public void build(Building build, Table table) {
         Seq<Powder> list = Vars.content.<Powder>getBy(ContentType.effect_UNUSED).select(p -> !p.isHidden() && filter.get(p));
         MultiReqImage image = new MultiReqImage();
-        list.each(powder -> image.add(new ReqImage(powder.icon(Cicon.medium), () ->
+        list.each(powder -> image.add(new ReqImage(powder.uiIcon, () ->
                 build instanceof PowderBlockc entity && entity.powderModule().current() == powder && entity.powderModule().get(powder) >= Math.max(use(entity), amount * build.delta()))));
 
         table.add(image).size(8 * 4);
@@ -54,6 +54,6 @@ public class ConsumePowderFilter extends ConsumePowderBase {
 
     @Override
     public void display(Stats stats) {
-        stats.add(booster ? Stat.booster : Stat.input, new PowderFilterValue(filter, amount * 60f, true));
+        stats.add(booster ? Stat.booster : Stat.input, DustedStatValues.powders(filter, amount * 60f, true));
     }
 }

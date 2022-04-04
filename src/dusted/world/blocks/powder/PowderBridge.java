@@ -1,21 +1,21 @@
 package dusted.world.blocks.powder;
 
 import arc.*;
-import arc.math.*;
 import arc.struct.*;
 import arc.util.io.*;
 import dusted.type.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.values.*;
+import dusted.world.meta.CustomStatValue;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
-import mindustry.type.*;
 import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
+import mindustry.world.meta.StatUnit;
+import mindustry.world.meta.StatValues;
 
 public class PowderBridge extends ItemBridge implements CustomReplacec {
     public int maxCharge = 16;
@@ -35,8 +35,8 @@ public class PowderBridge extends ItemBridge implements CustomReplacec {
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("powder-capacity", powderCapacity).add(stats);
-        new CustomStatValue("max-charge", maxCharge).add(stats);
+        new CustomStatValue("powder-capacity", StatValues.number(powderCapacity, StatUnit.none)).add(stats);
+        new CustomStatValue("max-charge", StatValues.number(maxCharge, StatUnit.none)).add(stats);
     }
 
     @Override
@@ -65,72 +65,22 @@ public class PowderBridge extends ItemBridge implements CustomReplacec {
         public int charge, properCharge;
 
         @Override
+        public void updateTransport(Building other) {
+            if (warmup >= 0.25f) {
+                moved |= movePowder(other, powders.current()) > 0.05f;
+            }
+        }
+
+        @Override
         public void updateTile() {
-            time += cycleSpeed * delta();
-            time2 += (cycleSpeed - 1f) * delta();
+            super.updateTile();
 
-            checkIncoming();
-            Building other = Vars.world.build(link);
-
-            if (other == null || !linkValid(tile, other.tile())) {
-                dumpPowder(powders.current(), 1f);
-            } else {
-                properCharge = 0;
-                proximity.each(build -> {
-                    if (build instanceof Chargedc entity && canCharge(build, this)) {
-                        properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge(this) - 1));
-                    }
-                });
-
-                charge = properCharge;
-
-                if (charge > 0) {
-                    ((Chargedc) other).setCharge(charge - 1);
-                    ((ItemBridgeBuild) other).incoming.add(tile.pos());
-                    if (consValid()) {
-                        float alpha = 0.04f;
-                        if (hasPower) {
-                            alpha *= efficiency();
-                        }
-                        uptime = Mathf.lerpDelta(uptime, 1f, alpha);
-                    } else {
-                        uptime = Mathf.lerpDelta(uptime, 0f, 0.02f);
-                    }
-
-                    if (uptime >= 0.5f) {
-                        if (movePowder(other, powders.current()) > 0.1f) {
-                            cycleSpeed = Mathf.lerpDelta(cycleSpeed, 4f, 0.05f);
-                        } else {
-                            cycleSpeed = Mathf.lerpDelta(cycleSpeed, 1f, 0.01f);
-                        }
-                    }
-                }
-            }
+            //TODO
         }
 
         @Override
-        public boolean acceptPowder(Building source, Powder powder) {
-            if (team != source.team) return false;
-
-            Tile other = Vars.world.tile(link);
-
-            if (powders.total() >= powderCapacity) return false;
-
-            if (linked(source)) return true;
-
-            if (linkValid(tile, other)) {
-                int rel = relativeTo(other);
-                int rel2 = relativeTo(Edges.getFacingEdge(source, this));
-
-                return rel != rel2;
-            }
-
-            return false;
-        }
-
-        @Override
-        public boolean acceptItem(Building source, Item item) {
-            return false;
+        public void doDump() {
+            dumpPowder(powders.current(), 1f);
         }
 
         @Override
