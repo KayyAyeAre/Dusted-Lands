@@ -8,7 +8,7 @@ import mindustry.type.weather.*;
 import mindustry.world.meta.*;
 
 public class DustedWeathers {
-    public static Weather dustStorm, cavnenHaze, volcanicEruption;
+    public static Weather dustStorm, cavnenHaze;
 
     public static void load() {
         dustStorm = new ParticleWeather("dust-storm") {{
@@ -34,22 +34,6 @@ public class DustedWeathers {
             attrs.set(Attribute.light, -0.65f);
         }};
 
-        volcanicEruption = new EruptionWeather("volcanic-eruption") {{
-            color = noiseColor = Color.valueOf("db401c");
-            drawNoise = true;
-            particleRegion = "particle";
-            sizeMax = 16f;
-            sizeMin = 6f;
-            density = 1100f;
-
-            sound = Sounds.windhowl;
-            soundVol = 0f;
-            soundVolOscMag = 1.5f;
-            soundVolOscScl = 1000f;
-            soundVolMin = 0.02f;
-
-            attrs.set(Attribute.light, -0.25f);
-            attrs.set(Attribute.heat, 0.5f);
-        }};
+        //TODO create weather for volcan areas
     }
 }

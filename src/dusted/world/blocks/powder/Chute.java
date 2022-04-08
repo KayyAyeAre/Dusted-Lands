@@ -64,7 +64,7 @@ public class Chute extends PowderBlock implements Autotiler {
 
     @Override
     public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock) {
-        return otherblock instanceof PowderBlock && lookingAtEither(tile, rotation, otherx, othery, otherrot, otherblock);
+        return Vars.world.build(otherx, othery) instanceof PowderBlockc && lookingAtEither(tile, rotation, otherx, othery, otherrot, otherblock);
     }
 
     @Override

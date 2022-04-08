@@ -84,8 +84,8 @@ public class PowderBridge extends ItemBridge implements CustomReplacec {
         }
 
         @Override
-        public void writeBase(Writes write) {
-            super.writeBase(write);
+        public void write(Writes write) {
+            super.write(write);
             powders.write(write);
         }
 

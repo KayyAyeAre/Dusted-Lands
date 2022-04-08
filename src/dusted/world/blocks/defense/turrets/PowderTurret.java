@@ -144,8 +144,8 @@ public class PowderTurret extends Turret {
         }
 
         @Override
-        public void writeBase(Writes write) {
-            super.writeBase(write);
+        public void write(Writes write) {
+            super.write(write);
             powders.write(write);
         }
 

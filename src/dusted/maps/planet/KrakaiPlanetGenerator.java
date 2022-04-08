@@ -181,7 +181,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         inverseFloodFill(tiles.getn(spawn.x, spawn.y));
 
-        Seq<Block> ores = Seq.with(Blocks.oreCopper, Blocks.oreLead, Blocks.oreCoal);
+        Seq<Block> ores = Seq.with(Blocks.oreCopper, DustedBlocks.orePlastel);
         float poles = Math.abs(sector.tile.v.y);
         float nmag = 0.5f;
         float scl = 1f;
@@ -193,10 +193,6 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         if (Simplex.noise3d(seed, 2, 0.5, scl, sector.tile.v.x + 2, sector.tile.v.y, sector.tile.v.z) * nmag + poles > 0.7f * addscl) {
             ores.add(Blocks.oreThorium);
         }
-        if (rand.chance(0.25)) {
-            ores.add(Blocks.oreScrap);
-        }
-
         FloatSeq frequencies = new FloatSeq();
         for (int i = 0; i < ores.size; i++) {
             frequencies.add(rand.random(-0.1f, 0.01f) - i * 0.01f + poles * 0.04f);
@@ -220,9 +216,6 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         trimDark();
         median(2);
 
-        //why
-        boolean[] weathers = new boolean[2];
-
         pass((x, y) -> {
             //sediment
             if (floor == DustedBlocks.cavnenDusting) {
@@ -245,10 +238,6 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             if (decorate && rand.chance(0.01) && floor.asFloor().hasSurface() && block == Blocks.air) {
                 block = floor == DustedBlocks.volcanGravel && Mathf.chance(0.6) ? DustedBlocks.volcanFlower : floor.asFloor().decoration;
             }
-
-            //weather stuff
-            if (floor == DustedBlocks.volcanGravel) weathers[0] = true;
-            if (floor == DustedBlocks.cavnenSediment || floor == DustedBlocks.cavnenDusting) weathers[1] = true;
         });
 
         float difficulty = sector.threat;
@@ -272,11 +261,6 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         state.rules.enemyCoreBuildRadius = 600f;
 
         state.rules.weather.add(new WeatherEntry(DustedWeathers.dustStorm));
-
-        //java sucks
-        if (weathers[0]) state.rules.weather.add(new WeatherEntry(DustedWeathers.volcanicEruption));
-        if (weathers[1]) state.rules.weather.add(new WeatherEntry(DustedWeathers.cavnenHaze));
-
         state.rules.spawns = Waves.generate(difficulty, new Rand(), state.rules.attackMode);
     }
 
