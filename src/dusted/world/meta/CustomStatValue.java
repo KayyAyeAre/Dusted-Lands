@@ -33,10 +33,11 @@ public class CustomStatValue implements StatValue {
     public void display(Table table) {
         //TODO maybe change this implementation
         Core.app.post(() -> {
-            table.clearChildren();
-            table.add("[lightgray]" + Core.bundle.format("stat." + name) + ":[] ").left();
-            value.display(table);
-            table.add().size(10f);
+            ((Table) table.parent).table(inset -> {
+                inset.add("[lightgray]" + Core.bundle.format("stat." + name) + ":[] ").left();
+                value.display(inset);
+                inset.add().size(10f);
+            });
         });
     }
 }

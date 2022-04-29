@@ -4,7 +4,7 @@ import arc.*;
 import dusted.type.*;
 import dusted.world.blocks.powder.Chute.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.CustomStatValue;
+import dusted.world.meta.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
@@ -15,12 +15,16 @@ public class PowderRouter extends PowderBlock {
 
     public PowderRouter(String name) {
         super(name);
+        hasPower = true;
     }
 
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("max-charge", StatValues.number(maxCharge, StatUnit.none)).add(stats);
+
+        DustedStatValues.customStats(stats, cstats -> {
+            cstats.addCStat("max-charge", StatValues.number(maxCharge, StatUnit.none));
+        });
     }
 
     @Override
@@ -33,18 +37,11 @@ public class PowderRouter extends PowderBlock {
     }
 
     public class PowderRouterBuild extends PowderBuild implements Chargedc {
-        public int charge, properCharge;
+        public int charge;
 
         @Override
         public void updateTile() {
-            properCharge = 0;
-            proximity.each(build -> {
-                if (build instanceof Chargedc entity && canCharge(build, this)) {
-                    properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge(this) - 1));
-                }
-            });
-
-            charge = properCharge;
+            updateCharge();
 
             if (charge > 0 && powders.total() > 0.01f) {
                 dumpPowder(powders.current());

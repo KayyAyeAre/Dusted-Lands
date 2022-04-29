@@ -14,15 +14,24 @@ import static arc.math.Angles.*;
 
 public class DustedFx {
     public static Effect
-
     powderLeak = new Effect(46f, 20f, e -> {
-        if (!(e.data instanceof PowderEffectData pData)) return;
+        if (!(e.data instanceof Powder powder)) return;
         Draw.z(Mathf.lerpDelta(Layer.block - 0.001f, Layer.blockUnder, e.finpow()));
-        color(pData.powder.color, Color.gray, e.finpow() / 2f);
+        color(powder.color, Color.gray, e.finpow() / 2f);
 
-        randLenVectors(e.id, 10, e.finpow() * pData.amount, e.rotation, 22f, (x, y) -> {
+        randLenVectors(e.id, 10, e.finpow() * 10f, e.rotation, 22f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, 0.1f + e.fout() * 2f);
         });
+    }),
+
+    smallBounce = new Effect(40f, 120f, e -> {
+        if (!(e.data instanceof Float distance)) return;
+        for (int i : Mathf.signs) {
+            Draw.color(Pal.accent);
+            Drawf.tri(e.x, e.y, distance, e.foutpow() * 8f, e.rotation + 90 * i);
+            Draw.color();
+            Drawf.tri(e.x, e.y, distance, e.foutpow() * 4f, e.rotation + 90 * i);
+        }
     }),
 
     shootTitaniumSpray = new Effect(20f, 70f, e -> {
@@ -37,17 +46,4 @@ public class DustedFx {
         color(Pal.orangeSpark, Color.valueOf("8da1e3"), e.fin());
         Fill.rect(e.x, e.y, 0.2f + e.fout() * 1.2f, 0.2f + e.fout() * 1.2f, e.rotation);
     });
-
-    public static class PowderEffectData {
-        public static PowderEffectData tmp = new PowderEffectData();
-        public float amount;
-        public Powder powder;
-
-        public PowderEffectData set(Powder powder, float amount) {
-            this.powder = powder;
-            this.amount = amount;
-
-            return this;
-        }
-    }
 }

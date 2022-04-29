@@ -35,7 +35,9 @@ public class PowderCrafter extends GenericCrafter {
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("powder-capacity", StatValues.number(powderCapacity, StatUnit.none)).add(stats);
+        DustedStatValues.customStats(stats, cstats -> {
+            cstats.addCStat("powder-capacity", StatValues.number(powderCapacity, StatUnit.none));
+        });
         stats.add(Stat.output, DustedStatValues.powder(outputPowder.powder, outputPowder.amount * (60f / craftTime), true));
     }
 

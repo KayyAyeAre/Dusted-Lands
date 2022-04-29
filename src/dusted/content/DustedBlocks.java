@@ -14,8 +14,11 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.power.*;
+import mindustry.world.blocks.storage.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
+
+import static mindustry.type.ItemStack.with;
 
 public class DustedBlocks {
     public static Block
@@ -25,13 +28,16 @@ public class DustedBlocks {
     //defense
     spume, cascade,
     //powder distribution
-    chute, chuteDrive, powderRouter, powderJunction, bridgeChute,
+    chute, powderRouter, powderJunction, bridgeChute,
+    denseChute, armoredChute,
     //power
     crudeThermalGenerator,
     //crafters
     titaniumMill, quartzExtractor, graphiteCompactor, siliconForge,
     //production
     pneumaticVacuum, thermalVacuum, blastVacuum,
+    //cores
+    coreCavor,
     //sandbox
     powderSource, powderVoid;
 
@@ -47,6 +53,8 @@ public class DustedBlocks {
 
         cavnenDusting = new PowderFloor("cavnen-dusting") {{
             powderDrop = Powders.cavnenDust;
+            status = DustedStatusEffects.deteriorating;
+            statusDuration = 180f;
             attributes.set(Attribute.oil, 0.9f);
             attributes.set(Attribute.water, -0.65f);
         }};
@@ -62,6 +70,7 @@ public class DustedBlocks {
             volcanGravel.asFloor().wall = this;
         }};
 
+        //TODO no sprites?
         charredTree = new TreeBlock("charred-tree");
 
         volcanFlower = new Prop("volcan-flower") {{
@@ -80,19 +89,17 @@ public class DustedBlocks {
 
         chute = new Chute("chute") {{
             requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 2));
-        }};
-
-        chuteDrive = new ChuteDrive("chute-drive") {{
-            requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 2, Items.copper, 2));
             consumes.power(0.5f);
         }};
 
         powderRouter = new PowderRouter("powder-router") {{
             requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 3));
+            consumes.power(0.5f);
         }};
 
         powderJunction = new PowderJunction("powder-junction") {{
             requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 3, Items.copper, 2));
+            consumes.power(0.5f);
         }};
 
         bridgeChute = new PowderBridge("bridge-chute") {{
@@ -204,6 +211,18 @@ public class DustedBlocks {
             size = 2;
             reloadTime = 120f;
             shootSound = Sounds.laser;
+        }};
+
+        coreCavor = new CoreBlock("core-cavor") {{
+            requirements(Category.effect, BuildVisibility.editorOnly, with(Items.copper, 1000, Items.lead, 800));
+            alwaysUnlocked = true;
+
+            unitType = UnitTypes.alpha;
+            health = 1100;
+            itemCapacity = 4000;
+            size = 3;
+
+            unitCapModifier = 6;
         }};
 
         powderSource = new PowderSource("powder-source") {{

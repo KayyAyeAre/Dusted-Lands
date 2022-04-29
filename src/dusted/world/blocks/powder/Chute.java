@@ -11,7 +11,7 @@ import arc.util.*;
 import dusted.content.*;
 import dusted.type.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.CustomStatValue;
+import dusted.world.meta.*;
 import mindustry.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
@@ -31,6 +31,7 @@ public class Chute extends PowderBlock implements Autotiler {
 
     public Chute(String name) {
         super(name);
+        hasPower = true;
         rotate = true;
         solid = false;
         conveyorPlacement = true;
@@ -39,7 +40,10 @@ public class Chute extends PowderBlock implements Autotiler {
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("max-charge", StatValues.number(maxCharge, StatUnit.none)).add(stats);
+
+        DustedStatValues.customStats(stats, cstats -> {
+            cstats.addCStat("max-charge", StatValues.number(maxCharge, StatUnit.none));
+        });
     }
 
     @Override
@@ -82,9 +86,6 @@ public class Chute extends PowderBlock implements Autotiler {
                 req.tile().block() instanceof Chute &&
                 Mathf.mod(req.build().rotation - req.rotation, 2) == 1) {
             return DustedBlocks.powderJunction;
-        } else if (false) {
-            //TODO
-            return DustedBlocks.chuteDrive;
         }
 
         return this;
@@ -99,7 +100,7 @@ public class Chute extends PowderBlock implements Autotiler {
         private Rect prect = new Rect();
         public float smoothPowder;
         public int blendbits, xscl = 1, yscl = 1, blending;
-        public int charge, properCharge;
+        public int charge;
 
         @Override
         public void draw() {
@@ -155,23 +156,15 @@ public class Chute extends PowderBlock implements Autotiler {
 
         @Override
         public void updateTile() {
-
             smoothPowder = Mathf.lerpDelta(smoothPowder, powders.currentAmount() / powderCapacity, 0.05f);
-
-            properCharge = 0;
-            proximity.each(build -> {
-                if (build instanceof Chargedc entity && canCharge(build, this)) {
-                    properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge(this) - 1));
-                }
-            });
-
-            charge = properCharge;
+            updateCharge();
 
             if (charge > 0 && powders.total() > 0.001f && timer(timerFlow, 1)) {
                 movePowderForward(true, powders.current());
             }
         }
 
+        //TODO broken
         @Override
         public Rect prect(float amount) {
             Point2 p = Geometry.d4[rotation];

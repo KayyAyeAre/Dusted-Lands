@@ -30,7 +30,6 @@ public class DustedTechTree {
         entryNode(Blocks.mechanicalDrill, () -> {
             node(pneumaticVacuum, () -> {
                 node(chute, Seq.with(new Research(crudeThermalGenerator)), () -> {
-                    node(chuteDrive);
                     node(powderJunction, () -> {
                         node(powderRouter);
                     });

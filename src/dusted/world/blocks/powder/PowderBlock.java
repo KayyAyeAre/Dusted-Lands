@@ -6,7 +6,7 @@ import arc.util.io.*;
 import dusted.type.*;
 import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.CustomStatValue;
+import dusted.world.meta.*;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.ctype.*;
@@ -41,7 +41,10 @@ public class PowderBlock extends Block implements CustomReplacec {
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("powder-capacity", StatValues.number(powderCapacity, StatUnit.none)).add(stats);
+
+        DustedStatValues.customStats(stats, cstats -> {
+            cstats.addCStat("powder-capacity", StatValues.number(powderCapacity, StatUnit.none));
+        });
     }
 
     @Override

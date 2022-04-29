@@ -14,10 +14,8 @@ import mindustry.gen.*;
 import mindustry.world.*;
 
 //interface for blocks with a powder module to transfer powder
-public interface PowderBlockc {
+public interface PowderBlockc extends BuildAccessor {
     PowderModule powderModule();
-
-    Building build();
 
     Bits filters();
 
@@ -98,7 +96,8 @@ public interface PowderBlockc {
             return movePowder(next.build, powder);
         } else if (leaks && !next.block().solid) {
             float leakAmount = powderModule().get(powder) / 1.5f;
-            if (Mathf.chanceDelta(0.2f)) DustedFx.powderLeak.at((build().tile.worldx() + next.worldx()) / 2, (build().tile.worldy() + next.worldy()) / 2, build().rotdeg(), PowderEffectData.tmp.set(powder, leakAmount));
+            if (Mathf.chanceDelta(0.2f * leakAmount)) DustedFx.powderLeak.at((build().tile.worldx() + next.worldx()) / 2, (build().tile.worldy() + next.worldy()) / 2, build().rotdeg(), powder);
+            //TODO prect doesnt work here
             Units.nearby(prect(leakAmount), u -> u.apply(powder.effect, leakAmount * 60));
             powderModule().remove(powder, leakAmount);
         }

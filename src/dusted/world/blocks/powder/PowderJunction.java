@@ -4,7 +4,7 @@ import arc.*;
 import dusted.type.*;
 import dusted.world.blocks.powder.Chute.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.CustomStatValue;
+import dusted.world.meta.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.ui.*;
@@ -15,12 +15,16 @@ public class PowderJunction extends PowderBlock {
 
     public PowderJunction(String name) {
         super(name);
+        hasPower = true;
     }
 
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("max-charge", StatValues.number(maxCharge, StatUnit.none)).add(stats);
+
+        DustedStatValues.customStats(stats, cstats -> {
+            cstats.addCStat("max-charge", StatValues.number(maxCharge, StatUnit.none));
+        });
     }
 
     @Override
@@ -34,18 +38,11 @@ public class PowderJunction extends PowderBlock {
 
 
     public class PowderJunctionBuild extends PowderBuild implements Chargedc {
-        public int charge, properCharge;
+        public int charge;
 
         @Override
         public void updateTile() {
-            properCharge = 0;
-            proximity.each(build -> {
-                if (build instanceof Chargedc entity && canCharge(build, this)) {
-                    properCharge = Math.min(maxCharge, Math.max(properCharge, entity.charge(this) - 1));
-                }
-            });
-
-            charge = properCharge;
+            updateCharge();
         }
 
         @Override
@@ -70,11 +67,7 @@ public class PowderJunction extends PowderBlock {
 
         @Override
         public int charge(Building accessor) {
-            int dir = accessor.relativeTo(tile.x, tile.y);
-            dir = (dir + 4) % 4;
-            Building next = nearby(dir);
-
-            if (next instanceof Chargedc build) {
+            if (back() instanceof Chargedc build) {
                 return build.charge(this) - 1;
             }
 

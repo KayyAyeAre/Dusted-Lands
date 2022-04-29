@@ -11,7 +11,6 @@ import mindustry.gen.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.meta.*;
 
-//TODO there's gotta be a better implementation
 public class PowderConsumeCrafter extends GenericCrafter {
     public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
     public float powderCapacity = 20;
@@ -23,7 +22,10 @@ public class PowderConsumeCrafter extends GenericCrafter {
     @Override
     public void setStats() {
         super.setStats();
-        new CustomStatValue("powder-capacity", StatValues.number(powderCapacity, StatUnit.none)).add(stats);
+
+        DustedStatValues.customStats(stats, cstats -> {
+            cstats.addCStat("powder-capacity", StatValues.number(powderCapacity, StatUnit.none));
+        });
     }
 
     @Override
