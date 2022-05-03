@@ -16,12 +16,7 @@ public class DustedStatusEffects {
 
         deteriorating = new StatusEffect("deteriorating") {{
             damage = 0.56f;
-            Events.on(UnitDestroyEvent.class, e -> {
-                if (((UnitEntity) e.unit).statuses.contains(stentry -> stentry.effect == this)) {
-                    //gonna replace flare with another type, just placeholder
-                    e.unit.type.spawn(e.unit).setType(UnitTypes.flare);
-                }
-            });
+            //TODO
         }};
     }
 }

@@ -1,6 +1,7 @@
 package dusted.content;
 
 import arc.graphics.*;
+import arc.struct.*;
 import dusted.type.*;
 import dusted.world.blocks.defense.turrets.*;
 import dusted.world.blocks.environment.*;
@@ -15,6 +16,7 @@ import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.storage.*;
+import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
@@ -26,7 +28,7 @@ public class DustedBlocks {
     orePlastel, oreTelonate, cavnenSediment, cavnenDusting, volcanGravel, cavnenWall, volcanWall,
     charredTree, volcanFlower, volcanBoulder, cavnenBoulder,
     //defense
-    spume, cascade,
+    spume,
     //powder distribution
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
@@ -36,6 +38,8 @@ public class DustedBlocks {
     titaniumMill, quartzExtractor, graphiteCompactor, siliconForge,
     //production
     pneumaticVacuum, thermalVacuum, blastVacuum,
+    //units
+    cavnenGroundFactory, cavnenAirFactory,
     //cores
     coreCavor,
     //sandbox
@@ -202,15 +206,13 @@ public class DustedBlocks {
             shootSound = Sounds.none;
         }};
 
-        cascade = new PowderTurret("cascade") {{
-            requirements(Category.turret, ItemStack.with());
-            ammo(
-                    Powders.quartzDust, DustedBullets.quartzCascadeShot,
-                    Powders.cavnenDust, DustedBullets.cavnenCascadeShot
+        cavnenAirFactory = new UnitFactory("cavnen-air-factory") {{
+            requirements(Category.units, ItemStack.with(Items.copper, 80, DustedItems.plastel, 60, Items.titanium, 50));
+            plans = Seq.with(
+                    new UnitPlan(DustedUnitTypes.seism, 60f * 15f, ItemStack.with(DustedItems.plastel, 10, Items.titanium, 10))
             );
-            size = 2;
-            reloadTime = 120f;
-            shootSound = Sounds.laser;
+            size = 3;
+            consumes.power(1f);
         }};
 
         coreCavor = new CoreBlock("core-cavor") {{

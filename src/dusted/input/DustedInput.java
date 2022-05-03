@@ -9,8 +9,12 @@ public class DustedInput implements ApplicationListener {
     @Override
     public void update() {
         if (Vars.state.isPlaying()) {
-            if (Vars.player.unit() instanceof BouncingUnitEntity bounce && Core.input.keyTap(KeyCode.k) && !Core.scene.hasKeyboard()) {
+            if (Core.input.keyTap(KeyCode.b) && !Core.scene.hasKeyboard() && Vars.player.unit() instanceof BouncingUnitEntity bounce) {
                 bounce.bounce();
+            }
+
+            if (Core.input.keyTap(KeyCode.q) && !Core.scene.hasKeyboard() && Vars.player.unit() instanceof QuakeUnitEntity quake) {
+                quake.quake();
             }
         }
     }

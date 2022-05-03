@@ -8,18 +8,17 @@ import mindustry.entities.*;
 import mindustry.gen.*;
 
 public class BouncingUnitEntity extends UnitEntity {
+    public static int classID;
     public Vec2 targetpos = new Vec2();
     public float bounceDelay;
-    public float bounceTimer;
+    public float bounceCooldown;
     public int steps;
 
     //spaghetti
     @Override
     public void update() {
         super.update();
-        if (bounceTimer > 0) {
-            bounceTimer -= Time.delta;
-        }
+        if (bounceCooldown > 0) bounceCooldown -= Time.delta;
 
         if (bounceDelay <= 0) {
             steps--;
@@ -30,13 +29,13 @@ public class BouncingUnitEntity extends UnitEntity {
                 Tmp.v1.trns(rotation, btype().bounceDistance);
                 btype().bounceEffect.at(Mathf.lerp(x, x + Tmp.v1.x, 0.5f), Mathf.lerp(y, y + Tmp.v1.y, 0.5f), rotation, btype().bounceDistance);
                 Vars.world.raycastEachWorld(x, y, x + Tmp.v1.x, y + Tmp.v1.y, (rx, ry) -> {
-                    Units.nearbyEnemies(team, rx * Vars.tilesize, ry * Vars.tilesize, 8f, u -> u.damage(btype().bounceDamage));
+                    Damage.damage(team, rx * 8, ry * 8, 8f, btype().bounceDamage);
                     return false;
                 });
                 x += Tmp.v1.x;
                 y += Tmp.v1.y;
                 btype().bounceSound.at(this, Mathf.random(btype().minBouncePitch, btype().maxBouncePitch));
-                if (steps == 0) bounceTimer = btype().bounceCooldown;
+                if (steps == 0) bounceCooldown = btype().bounceCooldown;
             }
         }
 
@@ -45,8 +44,13 @@ public class BouncingUnitEntity extends UnitEntity {
         }
     }
 
+    public void bounce(Position target) {
+        targetpos.set(target);
+        steps = btype().bounces;
+    }
+
     public void bounce() {
-        if (bounceDelay > 0 || bounceTimer > 0 || steps > 0) return;
+        if (bounceDelay > 0 || bounceCooldown > 0 || steps > 0) return;
         targetpos.setZero();
         Unit target = Units.closestEnemy(team, x, y, btype().bounceDistance, u -> true);
         if (target != null) {
@@ -61,5 +65,10 @@ public class BouncingUnitEntity extends UnitEntity {
     //lazy
     public BouncingUnitType btype() {
         return (BouncingUnitType) type;
+    }
+
+    @Override
+    public int classId() {
+        return classID;
     }
 }
