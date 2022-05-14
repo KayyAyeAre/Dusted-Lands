@@ -20,6 +20,10 @@ public class BouncingUnitEntity extends UnitEntity {
         super.update();
         if (bounceCooldown > 0) bounceCooldown -= Time.delta;
 
+        if (steps >= 0) {
+            bounceDelay -= Time.delta;
+        }
+
         if (bounceDelay <= 0) {
             steps--;
             if (steps >= 0) {
@@ -38,13 +42,10 @@ public class BouncingUnitEntity extends UnitEntity {
                 if (steps == 0) bounceCooldown = btype().bounceCooldown;
             }
         }
-
-        if (steps >= 0) {
-            bounceDelay -= Time.delta;
-        }
     }
 
     public void bounce(Position target) {
+        if (bounceDelay > 0 || bounceCooldown > 0 || steps > 0) return;
         targetpos.set(target);
         steps = btype().bounces;
     }

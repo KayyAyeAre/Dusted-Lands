@@ -1,6 +1,7 @@
 package dusted.world.blocks.environment;
 
 import dusted.type.*;
+import dusted.world.interfaces.*;
 import mindustry.world.blocks.environment.*;
 
 public class PowderFloor extends Floor {

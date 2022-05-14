@@ -11,7 +11,6 @@ public class DustedLands extends Mod {
 
     public DustedLands() {
         Vars.enableConsole = true;
-
         Core.app.addListener(input = new DustedInput());
     }
 
@@ -19,13 +18,12 @@ public class DustedLands extends Mod {
     public void loadContent() {
         DustedStatusEffects.load();
         DustedItems.load();
-        Powders.load();
-        DustedBullets.load();
+        DustedPowders.load();
         DustedUnitTypes.load();
         DustedBlocks.load();
         DustedWeathers.load();
-        //DustedPlanets.load();
-        //DustedSectorPresets.load();
+        DustedPlanets.load();
+        DustedSectorPresets.load();
         DustedTechTree.load();
     }
 }

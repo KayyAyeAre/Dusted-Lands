@@ -11,6 +11,7 @@ public class DustedPlanets {
 
     public static void load() {
         krakai = new Planet("krakai", Planets.sun, 1f, 3) {{
+            alwaysUnlocked = true;
             generator = new KrakaiPlanetGenerator();
             meshLoader = () -> new HexMesh(this, 6);
             atmosphereColor = Color.valueOf("a38772");

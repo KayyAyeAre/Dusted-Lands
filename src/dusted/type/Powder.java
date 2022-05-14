@@ -2,12 +2,17 @@ package dusted.type;
 
 import arc.*;
 import arc.graphics.*;
+import dusted.world.meta.*;
 import mindustry.content.*;
 import mindustry.ctype.*;
 import mindustry.type.*;
+import mindustry.world.meta.*;
 
 public class Powder extends UnlockableContent {
     public Color color;
+    public float temperature;
+    public float flammability;
+    public float density;
     public StatusEffect effect = StatusEffects.none;
 
     public Powder(String name, Color color) {
@@ -21,6 +26,15 @@ public class Powder extends UnlockableContent {
 
     public Powder(String name) {
         this(name, new Color(Color.black));
+    }
+
+    @Override
+    public void setStats() {
+        stats.addPercent(Stat.temperature, temperature);
+        stats.addPercent(Stat.flammability, flammability);
+        DustedStatValues.customStats(stats, cstats -> {
+            cstats.addCStat("density", StatValues.number((int) (density * 100), StatUnit.percent));
+        }, false);
     }
 
     @Override

@@ -13,10 +13,13 @@ public class DustedTechTree {
     private static TechNode context = null;
 
     public static void load() {
+        entryNode(SectorPresets.groundZero, () -> {
+            node(DustedSectorPresets.dormantChasm);
+        });
         entryNode(Items.copper, () -> {
-            nodeProduce(Powders.titaniumPowder, () -> {
-                nodeProduce(Powders.cavnenDust, () -> {});
-                nodeProduce(Powders.quartzDust, () -> {});
+            nodeProduce(DustedPowders.titaniumPowder, () -> {
+                nodeProduce(DustedPowders.cavnenDust, () -> {});
+                nodeProduce(DustedPowders.quartzDust, () -> {});
             });
             nodeProduce(DustedItems.plastel, () -> {
                 nodeProduce(DustedItems.telonate, () -> {});

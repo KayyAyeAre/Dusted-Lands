@@ -2,6 +2,7 @@ package dusted.content;
 
 import arc.graphics.*;
 import dusted.entities.units.*;
+import dusted.graphics.*;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
@@ -26,7 +27,7 @@ public class DustedUnitTypes {
             commandLimit = 4;
             rotateSpeed = 8f;
             range = 120f;
-            outlineColor = Color.valueOf("4d5048");
+            outlineColor = DustedPal.darkerCavnen;
         }};
 
         EntityMapping.nameMap.put("dusted-lands-recur", BouncingUnitEntity::new);
@@ -44,7 +45,7 @@ public class DustedUnitTypes {
             range = 180f;
             engineOffset = 8f;
             engineSize = 3f;
-            outlineColor = Color.valueOf("4d5048");
+            outlineColor = DustedPal.darkerCavnen;
 
             weapons.add(new Weapon() {{
                 x = 0f;
@@ -58,7 +59,7 @@ public class DustedUnitTypes {
                     length = 50f;
                     sideWidth = 0.8f;
                     sideLength = 52f;
-                    colors = new Color[]{Color.valueOf("d5ad7f"), Color.valueOf("fff0a1"), Color.white};
+                    colors = new Color[]{DustedPal.cavnenYellowBack, DustedPal.cavnenYellow, Color.white};
                 }};
             }});
         }};
@@ -79,7 +80,7 @@ public class DustedUnitTypes {
             range = 180f;
             engineOffset = 8f;
             engineSize = 6f;
-            outlineColor = Color.valueOf("4d5048");
+            outlineColor = DustedPal.darkerCavnen;
 
             weapons.add(new Weapon("dusted-lands-saltate-launcher") {{
                 reload = 70f;
@@ -87,15 +88,15 @@ public class DustedUnitTypes {
                 y = -2f;
                 rotate = true;
                 shootSound = Sounds.missile;
-                outlineColor = Color.valueOf("4d5048");
+                outlineColor = DustedPal.darkerCavnen;
 
                 bullet = new BasicBulletType(3.5f, 12f) {{
                     width = height = 14f;
                     splashDamageRadius = 18f;
                     splashDamage = 14f;
                     lifetime = 40f;
-                    frontColor = Color.valueOf("fff0a1");
-                    backColor = Color.valueOf("d5ad7f");
+                    frontColor = DustedPal.cavnenYellow;
+                    backColor = DustedPal.cavnenYellowBack;
                     shootEffect = Fx.shootHealYellow;
                     hitEffect = despawnEffect = Fx.hitYellowLaser;
 
@@ -109,9 +110,9 @@ public class DustedUnitTypes {
                         splashDamageRadius = 16f;
                         splashDamage = 12f;
                         hitEffect = despawnEffect = Fx.hitYellowLaser;
-                        frontColor = Color.valueOf("fff0a1");
-                        backColor = Color.valueOf("d5ad7f");
-                        trailColor = Color.valueOf("fff0a1");
+                        frontColor = DustedPal.cavnenYellow;
+                        backColor = DustedPal.cavnenYellowBack;
+                        trailColor = DustedPal.cavnenYellow;
                         trailLength = 6;
                         trailWidth = 8f;
                     }};

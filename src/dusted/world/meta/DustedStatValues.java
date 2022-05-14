@@ -28,8 +28,11 @@ public class DustedStatValues {
             }
         };
     }
-
     public static void customStats(Stats stats, Cons<CustomStatContainer> cons) {
+        customStats(stats, cons, true);
+    }
+
+    public static void customStats(Stats stats, Cons<CustomStatContainer> cons, boolean addCategory) {
         var map = stats.toMap();
 
         for (Stat stat : Stat.values()) {
@@ -41,7 +44,7 @@ public class DustedStatValues {
             }
         }
 
-        CustomStatContainer out = new CustomStatContainer();
+        CustomStatContainer out = new CustomStatContainer(addCategory);
         cons.get(out);
 
         for (Stat stat : Stat.values()) {
@@ -53,7 +56,12 @@ public class DustedStatValues {
     }
 
     public static class CustomStatContainer implements StatValue {
+        public boolean addCategory;
         public ObjectMap<String, Seq<StatValue>> statmap = new ObjectMap<>();
+
+        public CustomStatContainer(boolean addCategory) {
+            this.addCategory = addCategory;
+        }
 
         public void addCStat(String name, StatValue value) {
             statmap.get(name, Seq::new).add(value);
@@ -65,8 +73,10 @@ public class DustedStatValues {
             Core.app.post(() -> {
                 table.getChildren().get(table.getChildren().indexOf(Core.scene.find("cstatmarker"))).remove();
                 Table parent = (Table) table.parent;
-                parent.add("@category.custom").color(Pal.accent).fillX();
-                parent.row();
+                if (addCategory) {
+                    parent.add("@category.custom").color(Pal.accent).fillX();
+                    parent.row();
+                }
                 for (String name : statmap.keys()) {
                     parent.table(inset -> {
                         inset.left();

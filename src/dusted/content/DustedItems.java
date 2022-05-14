@@ -4,14 +4,15 @@ import arc.graphics.*;
 import mindustry.type.*;
 
 public class DustedItems {
-    public static Item plastel, telonate;
+    public static Item plastel, shirrote, telonate;
 
     public static void load() {
         plastel = new Item("plastel", Color.valueOf("e9e49f")) {{
             alwaysUnlocked = true;
         }};
-        telonate = new Item("telonate") {{
-            hardness = 4;
-        }};
+
+        shirrote = new Item("shirrote");
+
+        telonate = new Item("telonate");
     }
 }
