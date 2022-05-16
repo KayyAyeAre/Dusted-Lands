@@ -24,16 +24,10 @@ import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
-/*
-* missing sprites:
-* crude thermal generator
-* plastel ore
-*/
 public class DustedBlocks {
     public static Block
     //environment
     orePlastel, oreShirrote, pyreolDeposit, cavnenSediment, cavnenDusting, volcanGravel, cavnenWall, volcanWall,
-    //TODO resprite scoria, the sprites look kinda bad
     scoria, scoriaWall, scoriaBoulder,
     charredTree, volcanFlower, volcanBoulder, cavnenBoulder,
     //walls
@@ -61,10 +55,12 @@ public class DustedBlocks {
 
         //oreShirrote = new OreBlock(DustedItems.shirrote);
 
+        /*
         pyreolDeposit = new PowderFloor("pyreol-deposit") {{
             powderDrop = DustedPowders.pyreol;
             attributes.set(Attribute.water, -0.7f);
         }};
+        */
 
         cavnenSediment = new Floor("cavnen-sediment") {{
             attributes.set(Attribute.oil, 1.2f);

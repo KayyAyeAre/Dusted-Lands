@@ -24,6 +24,7 @@ public class DustedUnitTypes {
         carom = new DustedUnitType("carom") {{
             unitCategory = DustedUnitCategory.bounce;
             speed = 3f;
+            bounceDamage = 6f;
             flying = true;
             health = 80;
             commandLimit = 4;
@@ -41,7 +42,7 @@ public class DustedUnitTypes {
             accel = 0.16f;
             flying = true;
             hitSize = 8f;
-            bounceDamage = 20f;
+            bounceDamage = 14f;
             bounceDistance = 180f;
             bounces = 2;
             bounceCooldown = 70f;
@@ -77,10 +78,10 @@ public class DustedUnitTypes {
             lowAltitude = true;
             armor = 4f;
             hitSize = 10f;
-            bounceDamage = 15f;
+            bounceDamage = 10f;
             bounceDistance = 180f;
             bounces = 4;
-            bounceCooldown = 90f;
+            bounceCooldown = 110f;
             range = 180f;
             engineOffset = 8f;
             engineSize = 6f;
