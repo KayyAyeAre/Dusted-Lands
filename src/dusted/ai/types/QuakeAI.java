@@ -11,7 +11,7 @@ public class QuakeAI extends GroundAI {
         if (unit.type.omniMovement || unit instanceof Mechc) {
             QuakeUnitEntity qunit = (QuakeUnitEntity) unit;
             if (!Units.invalidateTarget(target, unit, unit.range()) && unit.type.rotateShooting && unit.type.hasWeapons()) {
-                unit.lookAt(Predict.intercept(unit, target, qunit.qtype().quakeSpacing / qunit.qtype().quakeDelay));
+                unit.lookAt(Predict.intercept(unit, target, qunit.dtype().quakeSpacing / qunit.dtype().quakeDelay));
             } else if (unit.moving()) {
                 unit.lookAt(unit.vel().angle());
             }

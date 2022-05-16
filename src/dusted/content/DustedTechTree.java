@@ -9,52 +9,67 @@ import mindustry.type.*;
 
 import static dusted.content.DustedBlocks.*;
 
+//TODO add sector completion to requirements
 public class DustedTechTree {
     private static TechNode context = null;
 
     public static void load() {
         entryNode(SectorPresets.groundZero, () -> {
-            node(DustedSectorPresets.dormantChasm);
+            //node(DustedSectorPresets.dormantChasm);
         });
+
         entryNode(Items.copper, () -> {
             nodeProduce(DustedPowders.titaniumPowder, () -> {
                 nodeProduce(DustedPowders.cavnenDust, () -> {});
-                nodeProduce(DustedPowders.quartzDust, () -> {});
+                nodeProduce(DustedPowders.quartzDust, () -> {
+                    nodeProduce(DustedPowders.cafraegen, () -> {});
+                    nodeProduce(DustedPowders.pyreol, () -> {});
+                });
             });
             nodeProduce(DustedItems.plastel, () -> {
-                nodeProduce(DustedItems.telonate, () -> {});
+                //nodeProduce(DustedItems.telonate, () -> {});
+                //nodeProduce(DustedItems.shirrote, () -> {});
             });
         });
 
-        entryNode(Blocks.thermalGenerator, () -> {
-            node(crudeThermalGenerator);
+        entryNode(Blocks.powerNode, () -> {
+            node(powerElectrode);
         });
 
         entryNode(Blocks.mechanicalDrill, () -> {
-            node(pneumaticVacuum, () -> {
-                node(chute, Seq.with(new Research(crudeThermalGenerator)), () -> {
+            node(pneumaticFunnel, () -> {
+                node(chute, () -> {
                     node(powderJunction, () -> {
                         node(powderRouter);
                     });
                     node(bridgeChute);
                 });
 
-                node(thermalVacuum, () -> {
-                    node(blastVacuum);
+                node(rotaryFunnel, () -> {
+                    node(blastFunnel);
                 });
             });
         });
 
         entryNode(Blocks.graphitePress, () -> {
             node(graphiteCompactor, () -> {
-                node(titaniumMill, Seq.with(new Research(crudeThermalGenerator)), () -> {});
-                node(quartzExtractor, Seq.with(new Research(crudeThermalGenerator)), () -> {});
+                node(titaniumMill, () -> {});
+                node(quartzExtractor, () -> {});
             });
         });
 
         entryNode(Blocks.scorch, () -> {
-            //TODO add sector completion to requirements
-            node(spume);
+            node(spume, () -> {
+                node(abrade, () -> {
+                    node(degrade);
+                });
+                node(scald, () -> {
+                    node(coruscate, () -> {
+                        node(cauterize);
+                        node(pyrexia);
+                    });
+                });
+            });
         });
     }
 

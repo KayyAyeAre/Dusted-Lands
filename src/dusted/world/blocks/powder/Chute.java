@@ -11,48 +11,25 @@ import arc.util.*;
 import dusted.content.*;
 import dusted.type.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.*;
 import mindustry.*;
 import mindustry.entities.units.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.input.*;
-import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.*;
 import mindustry.world.blocks.distribution.*;
-import mindustry.world.meta.*;
 
 public class Chute extends PowderBlock implements Autotiler {
-    public int maxCharge = 16;
     public final int timerFlow = timers++;
     public Color bottomColor = Color.valueOf("565656");
-    public TextureRegion[] powerRegions = new TextureRegion[5], topRegions = new TextureRegion[5], bottomRegions = new TextureRegion[5];
+    public TextureRegion[] topRegions = new TextureRegion[5], bottomRegions = new TextureRegion[5];
 
     public Chute(String name) {
         super(name);
-        hasPower = true;
         rotate = true;
         solid = false;
         conveyorPlacement = true;
-    }
-
-    @Override
-    public void setStats() {
-        super.setStats();
-
-        DustedStatValues.customStats(stats, cstats -> {
-            cstats.addCStat("max-charge", StatValues.number(maxCharge, StatUnit.none));
-        });
-    }
-
-    @Override
-    public void setBars() {
-        super.setBars();
-        bars.add("charge", build -> {
-            Chargedc charged = (Chargedc) build;
-            return new Bar(() -> Core.bundle.format("bar.charge"), () -> Pal.accent, () -> ((float) charged.charge(build)) / ((float) charged.maxCharge()));
-        });
     }
 
     @Override
@@ -61,7 +38,6 @@ public class Chute extends PowderBlock implements Autotiler {
 
         for (int i = 0; i < 5; i++) {
             bottomRegions[i] = Core.atlas.find("dusted-lands-chute-bottom-" + i);
-            powerRegions[i] = Core.atlas.find(name + "-power-" + i);
             topRegions[i] = Core.atlas.find(name + "-top-" + i);
         }
     }
@@ -73,7 +49,7 @@ public class Chute extends PowderBlock implements Autotiler {
 
     @Override
     public TextureRegion[] icons() {
-        return new TextureRegion[]{Core.atlas.find("dusted-lands-chute-bottom"), topRegions[0], Core.atlas.find(name + "-power")};
+        return new TextureRegion[]{Core.atlas.find("dusted-lands-chute-bottom"), topRegions[0]};
     }
 
     @Override
@@ -96,11 +72,10 @@ public class Chute extends PowderBlock implements Autotiler {
         Placement.calculateBridges(plans, (ItemBridge) DustedBlocks.bridgeChute);
     }
 
-    public class ChuteBuild extends PowderBuild implements ChainedBuilding, Chargedc {
+    public class ChuteBuild extends PowderBuild implements ChainedBuilding {
         private Rect prect = new Rect();
         public float smoothPowder;
         public int blendbits, xscl = 1, yscl = 1, blending;
-        public int charge;
 
         @Override
         public void draw() {
@@ -131,11 +106,6 @@ public class Chute extends PowderBlock implements Autotiler {
 
             Draw.color();
             Draw.rect(sliced(topRegions[bits], slice), x, y, rotation);
-
-            Draw.color(Pal.darkerMetal);
-            Draw.rect(sliced(powerRegions[bits], slice), x, y, rotation);
-            Draw.color(Pal.accent, ((float) charge) / ((float) maxCharge));
-            Draw.rect(sliced(powerRegions[bits], slice), x, y, rotation);
         }
 
         @Override
@@ -157,9 +127,8 @@ public class Chute extends PowderBlock implements Autotiler {
         @Override
         public void updateTile() {
             smoothPowder = Mathf.lerpDelta(smoothPowder, powders.currentAmount() / powderCapacity, 0.05f);
-            updateCharge();
 
-            if (charge > 0 && powders.total() > 0.001f && timer(timerFlow, 1)) {
+            if (powders.total() > 0.001f && timer(timerFlow, 1)) {
                 movePowderForward(true, powders.current());
             }
         }
@@ -181,21 +150,6 @@ public class Chute extends PowderBlock implements Autotiler {
                 return next.build;
             }
             return null;
-        }
-
-        @Override
-        public int charge(Building accessor) {
-            return charge;
-        }
-
-        @Override
-        public int maxCharge() {
-            return maxCharge;
-        }
-
-        @Override
-        public void setCharge(int charge) {
-            this.charge = charge;
         }
     }
 }

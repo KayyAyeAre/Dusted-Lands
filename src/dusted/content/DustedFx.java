@@ -50,6 +50,13 @@ public class DustedFx {
         Fill.rect(e.x, e.y, 0.2f + e.fout() * 1.2f, 0.2f + e.fout() * 1.2f, e.rotation);
     }),
 
+    shootLine = new Effect(25f, 80f, e -> {
+        color(DustedPal.cavnenYellow, DustedPal.cavnenYellowBack, DustedPal.darkCavnen, e.fin());
+
+        Lines.stroke(e.foutpow() * 4f);
+        Lines.line(e.x, e.y, Angles.trnsx(e.rotation, 75f) + e.x, Angles.trnsy(e.rotation, 75f) + e.y);
+    }),
+
     shootQuartzFlame = new Effect(20f, 90f, e -> {
         color(DustedPal.lightQuartz, DustedPal.darkQuartz, e.fin());
 

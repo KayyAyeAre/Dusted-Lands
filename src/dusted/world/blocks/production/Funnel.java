@@ -12,17 +12,18 @@ import mindustry.world.meta.*;
 
 import static mindustry.Vars.*;
 
-public class Vacuum extends PowderBlock {
-    public float vacuumAmount = 0.2f;
+public class Funnel extends PowderBlock {
+    public float funnelAmount = 0.2f;
+    public TextureRegion powderRegion;
 
-    public Vacuum(String name) {
+    public Funnel(String name) {
         super(name);
     }
 
     @Override
     public void setStats() {
         super.setStats();
-        stats.add(Stat.output, 60f * vacuumAmount * size * size, StatUnit.perSecond);
+        stats.add(Stat.output, 60f * funnelAmount * size * size, StatUnit.perSecond);
     }
 
     @Override
@@ -43,7 +44,7 @@ public class Vacuum extends PowderBlock {
         }
 
         if (powderDrop != null) {
-            float width = drawPlaceText(Core.bundle.formatFloat("bar.vacuumspeed", amount * vacuumAmount * 60f, 0), x, y, valid);
+            float width = drawPlaceText(Core.bundle.formatFloat("bar.funnelspeed", amount * funnelAmount * 60f, 0), x, y, valid);
             float dx = x * tilesize + offset - width / 2f - 4f, dy = y * tilesize + offset + size * tilesize / 2f + 5, s = iconSmall / 4f;
             Draw.mixcol(Color.darkGray, 1f);
             Draw.rect(powderDrop.fullIcon, dx, dy - 1, s, s);
@@ -67,13 +68,27 @@ public class Vacuum extends PowderBlock {
         }
     }
 
+    @Override
+    public void load() {
+        super.load();
+        powderRegion = Core.atlas.find(name + "-powder");
+    }
+
     protected boolean drops(Tile tile) {
         return tile != null && tile.floor() instanceof PowderFloor;
     }
 
-    public class VacuumBuild extends PowderBuild {
+    public class FunnelBuild extends PowderBuild {
         public float amount;
         public Powder powderDrop;
+
+        @Override
+        public void draw() {
+            Draw.rect(region, x, y);
+            Draw.color(powderDrop.color, powders.currentAmount() / powderCapacity);
+            Draw.rect(powderRegion, x, y);
+            Draw.color();
+        }
 
         @Override
         public void onProximityUpdate() {
@@ -98,7 +113,7 @@ public class Vacuum extends PowderBlock {
         @Override
         public void updateTile() {
             if (consValid() && powderDrop != null) {
-                float add = Math.min(powderCapacity - powders.total(), amount * vacuumAmount * edelta());
+                float add = Math.min(powderCapacity - powders.total(), amount * funnelAmount * edelta());
                 powders.add(powderDrop, add);
             }
 

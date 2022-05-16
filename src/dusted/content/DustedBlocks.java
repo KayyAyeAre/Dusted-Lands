@@ -14,21 +14,20 @@ import dusted.world.consumers.*;
 import dusted.world.draw.*;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
+import mindustry.entities.effect.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.power.*;
-import mindustry.world.blocks.storage.*;
 import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
 /*
 * missing sprites:
-* charred tree, crude thermal generator,
-* every vacuum, abrade, scald, degrade, additional restructurer,
-* every single status effect, pyreol, shirrote, telonate, plastel ore
+* crude thermal generator
+* plastel ore
 */
 public class DustedBlocks {
     public static Block
@@ -46,21 +45,21 @@ public class DustedBlocks {
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
     //power
-    powerElectrode, crudeThermalGenerator,
+    powerElectrode, decayChamber,
     //crafters
     titaniumMill, quartzExtractor, graphiteCompactor, siliconForge, cafraegenRadiator,
     //production
-    pneumaticVacuum, thermalVacuum, blastVacuum,
+    pneumaticFunnel, rotaryFunnel, blastFunnel,
     //units
     cavnenTerraConstructor, cavnenAerialConstructor,
-    additionalRestructurer, triennialRestructurer,
+    binaryRestructurer, ternaryRestructurer,
     //sandbox
     powderSource, powderVoid;
 
     public static void load() {
         orePlastel = new OreBlock(DustedItems.plastel);
 
-        oreShirrote = new OreBlock(DustedItems.shirrote);
+        //oreShirrote = new OreBlock(DustedItems.shirrote);
 
         pyreolDeposit = new PowderFloor("pyreol-deposit") {{
             powderDrop = DustedPowders.pyreol;
@@ -118,17 +117,14 @@ public class DustedBlocks {
 
         chute = new Chute("chute") {{
             requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 2));
-            consumes.power(0.5f);
         }};
 
         powderRouter = new PowderRouter("powder-router") {{
             requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 3));
-            consumes.power(0.5f);
         }};
 
         powderJunction = new PowderJunction("powder-junction") {{
             requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 3, Items.copper, 2));
-            consumes.power(0.5f);
         }};
 
         bridgeChute = new PowderBridge("bridge-chute") {{
@@ -140,30 +136,26 @@ public class DustedBlocks {
         powerElectrode = new PowerNode("power-electrode") {{
             requirements(Category.power, ItemStack.with(Items.graphite, 3, DustedItems.plastel, 1));
             maxNodes = 5;
+            laserRange = 3.5f;
             laserColor2 = DustedPal.lightTitanium;
         }};
 
-        crudeThermalGenerator = new ThermalGenerator("crude-thermal-generator") {{
-            requirements(Category.power, ItemStack.with(Items.copper, 50, DustedItems.plastel, 30));
-            powerProduction = 1f;
-        }};
-
-        pneumaticVacuum = new Vacuum("pneumatic-vacuum") {{
+        pneumaticFunnel = new Funnel("pneumatic-funnel") {{
             requirements(Category.production, ItemStack.with(Items.copper, 20, DustedItems.plastel, 10));
-            vacuumAmount = 7f / 60f;
+            funnelAmount = 7f / 60f;
         }};
 
-        thermalVacuum = new Vacuum("thermal-vacuum") {{
+        rotaryFunnel = new Funnel("rotary-funnel") {{
             requirements(Category.production, ItemStack.with(Items.graphite, 50, Items.copper, 40, DustedItems.plastel, 20));
             size = 2;
             hasPower = true;
             consumes.power(0.4f);
         }};
 
-        blastVacuum = new Vacuum("blast-vacuum") {{
+        blastFunnel = new Funnel("blast-funnel") {{
             requirements(Category.production, ItemStack.with(Items.titanium, 90, Items.graphite, 60, DustedItems.plastel, 50, Items.copper, 60));
             size = 3;
-            vacuumAmount = 0.4f;
+            funnelAmount = 0.4f;
             hasPower = true;
             consumes.power(1.6f);
         }};
@@ -249,14 +241,14 @@ public class DustedBlocks {
             shootSound = Sounds.none;
 
             ammo(
-                    DustedPowders.titaniumPowder, new BulletType(3.25f, 0) {{
+                    DustedPowders.titaniumPowder, new BulletType(3.25f, 6f) {{
                         hitSize = 8f;
                         lifetime = 18f;
                         pierce = true;
                         shootEffect = DustedFx.shootTitaniumSpray;
                         hitEffect = DustedFx.hitTitaniumSpray;
                         despawnEffect = Fx.none;
-                        status = DustedStatusEffects.sprayed;
+                        status = StatusEffects.burning;
                         statusDuration = 60f * 3;
                         hittable = false;
                     }}
@@ -268,23 +260,23 @@ public class DustedBlocks {
             size = 2;
             health = 240 * size * size;
             targetGround = false;
-            reloadTime = 25f;
-            shots = 5;
-            spread = 25f;
-            recoilAmount = 12f;
+            reloadTime = 12f;
+            recoilAmount = 4f;
             restitution = 0.1f;
-            range = 50f;
-            shootSound = Sounds.shotgun;
-            rotateSpeed = 16f;
+            range = 75f;
+            shootSound = Sounds.pew;
+            rotateSpeed = 18f;
 
             ammo(
-                    DustedPowders.cavnenDust, new ShrapnelBulletType() {{
+                    DustedPowders.cavnenDust, new BulletType(3f, 14f) {{
                         collidesGround = false;
-                        serrations = 6;
-                        damage = 18f;
-                        width = 20f;
-                        length = 50f;
-                        toColor = DustedPal.darkCavnen;
+                        hitSize = 6f;
+                        lifetime = 25f;
+                        pierce = true;
+                        shootEffect = new MultiEffect(Fx.shootSmall, DustedFx.shootLine);
+                        status = DustedStatusEffects.deteriorating;
+                        statusDuration = 8 * 60f;
+                        despawnEffect = Fx.none;
                     }}
             );
         }};
@@ -415,9 +407,9 @@ public class DustedBlocks {
             rotateSpeed = 14f;
 
             ammo(
-                    DustedPowders.cavnenDust, new BasicBulletType(4f, 9f, "circle-bullet") {{
+                    DustedPowders.cavnenDust, new BasicBulletType(4f, 14f, "circle-bullet") {{
                         width = height = 15f;
-                        shrinkX = shrinkY = 0.4f;
+                        shrinkX = shrinkY = 0.8f;
                         lifetime = 40f;
                         collidesGround = false;
                         frontColor = DustedPal.cavnenYellow;
@@ -436,6 +428,7 @@ public class DustedBlocks {
             size = 3;
             health = 300 * size * size;
             reloadTime = 120f;
+            recoilAmount = 6f;
             shots = 3;
             spread = 20f;
             shootSound = Sounds.shootBig;
@@ -480,9 +473,10 @@ public class DustedBlocks {
             consumes.power(1f);
         }};
 
-        additionalRestructurer = new PowderReconstructor("additional-restructurer") {{
+        binaryRestructurer = new PowderReconstructor("binary-restructurer") {{
             requirements(Category.units, ItemStack.with(Items.copper, 120, Items.titanium, 90, DustedItems.plastel, 75, Items.thorium, 50));
             size = 3;
+            constructTime = 10 * 60f;
 
             consumes.power(2f);
             consumes.items(ItemStack.with(Items.silicon, 50, DustedItems.plastel, 40));
@@ -490,7 +484,7 @@ public class DustedBlocks {
             upgrades.addAll(new UnitType[]{DustedUnitTypes.carom, DustedUnitTypes.recur});
         }};
 
-        triennialRestructurer = new PowderReconstructor("triennial-restructurer") {{
+        ternaryRestructurer = new PowderReconstructor("ternary-restructurer") {{
             requirements(Category.units, ItemStack.with());
             size = 5;
 

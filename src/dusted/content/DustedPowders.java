@@ -3,6 +3,7 @@ package dusted.content;
 import arc.graphics.*;
 import dusted.type.*;
 
+//TODO pyreol is currently unobtainable
 public class DustedPowders {
     public static Powder titaniumPowder, quartzDust, cavnenDust, pyreol, cafraegen, cocaine;
 
@@ -21,7 +22,7 @@ public class DustedPowders {
             density = 0.2f;
         }};
 
-        pyreol = new Powder("pyreol") {{
+        pyreol = new Powder("pyreol", Color.valueOf("ffa1ab")) {{
             flammability =  0.6f;
             temperature = 0.7f;
         }};

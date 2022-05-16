@@ -4,6 +4,7 @@ import arc.graphics.*;
 import mindustry.type.*;
 
 public class DustedItems {
+    //TODO more than half of these are unobtainable
     public static Item plastel, shirrote, telonate;
 
     public static void load() {
@@ -11,8 +12,8 @@ public class DustedItems {
             alwaysUnlocked = true;
         }};
 
-        shirrote = new Item("shirrote");
+        //shirrote = new Item("shirrote");
 
-        telonate = new Item("telonate");
+        //telonate = new Item("telonate");
     }
 }

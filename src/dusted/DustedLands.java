@@ -22,8 +22,8 @@ public class DustedLands extends Mod {
         DustedUnitTypes.load();
         DustedBlocks.load();
         DustedWeathers.load();
-        DustedPlanets.load();
-        DustedSectorPresets.load();
+        //DustedPlanets.load();
+        //DustedSectorPresets.load();
         DustedTechTree.load();
     }
 }

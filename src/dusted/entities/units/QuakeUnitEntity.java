@@ -18,17 +18,17 @@ public class QuakeUnitEntity extends MechUnit {
         if (quakeDelay <= 0) {
             steps--;
             if (steps >= 0) {
-                quakeDelay = qtype().quakeDelay;
+                quakeDelay = dtype().quakeDelay;
 
-                for (int line = 0; line < qtype().quakes; line++) {
-                    Tmp.v1.trns(line * (360f / qtype().quakes) + rotation, (qtype().quakeSteps - (steps + 1)) * qtype().quakeSpacing).add(this);
+                for (int line = 0; line < dtype().quakes; line++) {
+                    Tmp.v1.trns(line * (360f / dtype().quakes) + rotation, (dtype().quakeSteps - (steps + 1)) * dtype().quakeSpacing).add(this);
 
-                    Damage.damage(team, Tmp.v1.x, Tmp.v1.y, qtype().quakeRadius, qtype().quakeDamage);
-                    qtype().quakeEffect.at(Tmp.v1);
-                    qtype().quakeSound.at(Tmp.v1);
+                    Damage.damage(team, Tmp.v1.x, Tmp.v1.y, dtype().quakeRadius, dtype().quakeDamage);
+                    dtype().quakeEffect.at(Tmp.v1);
+                    dtype().quakeSound.at(Tmp.v1);
                 }
 
-                if (steps == 0) quakeCooldown = qtype().quakeCooldown;
+                if (steps == 0) quakeCooldown = dtype().quakeCooldown;
             }
         }
 
@@ -39,11 +39,11 @@ public class QuakeUnitEntity extends MechUnit {
 
     public void quake() {
         if (steps > 0 || quakeCooldown > 0 || quakeDelay > 0) return;
-        steps = qtype().quakeSteps;
+        steps = dtype().quakeSteps;
     }
 
-    public QuakeUnitType qtype() {
-        return (QuakeUnitType) type;
+    public DustedUnitType dtype() {
+        return (DustedUnitType) type;
     }
 
     @Override

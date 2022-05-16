@@ -1,33 +1,25 @@
 package dusted.content;
 
 import arc.graphics.*;
+import dusted.type.*;
+import mindustry.content.*;
 import mindustry.type.*;
 
 public class DustedStatusEffects {
-    public static StatusEffect deteriorating, shirroteCorrosion, sprayed;
+    public static StatusEffect deteriorating;
 
     public static void load() {
-        sprayed = new StatusEffect("sprayed") {{
-            damage = 0.36f;
-        }};
-
+        //sprite by sh1p :D
         deteriorating = new StatusEffect("deteriorating") {{
+            color = Color.valueOf("6d726b");
             damage = 0.56f;
             transitionDamage = 28f;
 
             init(() -> {
-                affinity(shirroteCorrosion, (unit, result, time) -> {
+                affinity(StatusEffects.burning, (unit, result, time) -> {
                     unit.damagePierce(transitionDamage);
                 });
             });
-        }};
-
-        shirroteCorrosion = new StatusEffect("shirrote-corrosion") {{
-            color = Color.valueOf("78ffdb");
-            permanent = true;
-            healthMultiplier = 0.6f;
-            damageMultiplier = 1.3f;
-            speedMultiplier = 1.1f;
         }};
     }
 }

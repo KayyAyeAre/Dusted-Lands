@@ -4,12 +4,13 @@ import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import dusted.world.interfaces.*;
+import mindustry.graphics.*;
 import mindustry.world.*;
 import mindustry.world.blocks.production.GenericCrafter.*;
 import mindustry.world.draw.*;
 
 public class DrawPowderRotator extends DrawBlock {
-    public TextureRegion powder, rotator;
+    public TextureRegion powderRegion, rotatorRegion, topRegion;
 
     @Override
     public void draw(GenericCrafterBuild entity) {
@@ -17,22 +18,25 @@ public class DrawPowderRotator extends DrawBlock {
 
         if (entity instanceof PowderBlockc build) {
             Draw.color(build.powderModule().current() == null ? Color.clear : build.powderModule().current().color, build.powderModule().currentAmount() / build.powderCapacity());
-            Draw.rect(powder, entity.x, entity.y);
+            Draw.rect(powderRegion, entity.x, entity.y);
             Draw.color();
         }
 
-        Draw.rect(rotator, entity.x, entity.y, entity.totalProgress * 2f);
+
+        Drawf.spinSprite(rotatorRegion, entity.x, entity.y, entity.totalProgress * 2f);
+        Draw.rect(topRegion, entity.x, entity.y);
     }
 
     @Override
     public void load(Block block) {
         super.load(block);
-        rotator = Core.atlas.find(block.name + "-rotator");
-        powder = Core.atlas.find(block.name + "-powder");
+        rotatorRegion = Core.atlas.find(block.name + "-rotator");
+        powderRegion = Core.atlas.find(block.name + "-powder");
+        topRegion = Core.atlas.find(block.name + "-top");
     }
 
     @Override
     public TextureRegion[] icons(Block block) {
-        return new TextureRegion[]{block.region, rotator};
+        return new TextureRegion[]{block.region, rotatorRegion, topRegion};
     }
 }

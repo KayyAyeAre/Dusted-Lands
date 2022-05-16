@@ -9,6 +9,7 @@ import mindustry.gen.*;
 import mindustry.type.*;
 
 public class DustedUnitTypes {
+    //TODO implement units
     public static UnitType
     carom, recur, saltate, ricochet, recrudesce,
     seism, quaver, temblor, convulse,
@@ -20,7 +21,8 @@ public class DustedUnitTypes {
         QuakeUnitEntity.classID = EntityMapping.register("QuakeUnitEntity", QuakeUnitEntity::new);
 
         EntityMapping.nameMap.put("dusted-lands-carom", BouncingUnitEntity::new);
-        carom = new BouncingUnitType("carom") {{
+        carom = new DustedUnitType("carom") {{
+            unitCategory = DustedUnitCategory.bounce;
             speed = 3f;
             flying = true;
             health = 80;
@@ -31,7 +33,8 @@ public class DustedUnitTypes {
         }};
 
         EntityMapping.nameMap.put("dusted-lands-recur", BouncingUnitEntity::new);
-        recur = new BouncingUnitType("recur") {{
+        recur = new DustedUnitType("recur") {{
+            unitCategory = DustedUnitCategory.bounce;
             health = 320;
             armor = 2f;
             speed = 1.8f;
@@ -65,7 +68,8 @@ public class DustedUnitTypes {
         }};
 
         EntityMapping.nameMap.put("dusted-lands-saltate", BouncingUnitEntity::new);
-        saltate = new BouncingUnitType("saltate") {{
+        saltate = new DustedUnitType("saltate") {{
+            unitCategory = DustedUnitCategory.bounce;
             health = 650;
             speed = 1.6f;
             accel = 0.08f;
@@ -120,14 +124,17 @@ public class DustedUnitTypes {
             }});
         }};
 
+        /*
         EntityMapping.nameMap.put("dusted-lands-seism", QuakeUnitEntity::new);
-        seism = new QuakeUnitType("seism") {{
+        seism = new DustedUnitType("seism") {{
+            unitCategory = DustedUnitCategory.quake;
             quakeSteps = 3;
             quakes = 3;
             speed = 0.6f;
             health = 120;
             commandLimit = 5;
         }};
+        */
 
         //TODO
         //cavanimate = new UnitType("cavanimate");
