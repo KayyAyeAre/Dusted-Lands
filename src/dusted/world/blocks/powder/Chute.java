@@ -22,6 +22,7 @@ import mindustry.world.blocks.distribution.*;
 
 public class Chute extends PowderBlock implements Autotiler {
     public final int timerFlow = timers++;
+    public boolean leaks = true;
     public Color bottomColor = Color.valueOf("565656");
     public TextureRegion[] topRegions = new TextureRegion[5], bottomRegions = new TextureRegion[5];
 
@@ -44,7 +45,7 @@ public class Chute extends PowderBlock implements Autotiler {
 
     @Override
     public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock) {
-        return Vars.world.build(otherx, othery) instanceof PowderBlockc && lookingAtEither(tile, rotation, otherx, othery, otherrot, otherblock);
+        return Vars.world.build(otherx, othery) instanceof PowderBlockc pow && pow.outputsPowder() && lookingAtEither(tile, rotation, otherx, othery, otherrot, otherblock);
     }
 
     @Override
@@ -73,7 +74,6 @@ public class Chute extends PowderBlock implements Autotiler {
     }
 
     public class ChuteBuild extends PowderBuild implements ChainedBuilding {
-        private Rect prect = new Rect();
         public float smoothPowder;
         public int blendbits, xscl = 1, yscl = 1, blending;
 
@@ -129,17 +129,8 @@ public class Chute extends PowderBlock implements Autotiler {
             smoothPowder = Mathf.lerpDelta(smoothPowder, powders.currentAmount() / powderCapacity, 0.05f);
 
             if (powders.total() > 0.001f && timer(timerFlow, 1)) {
-                movePowderForward(true, powders.current());
+                movePowderForward(leaks, powders.current());
             }
-        }
-
-        //TODO broken
-        @Override
-        public Rect prect(float amount) {
-            Point2 p = Geometry.d4[rotation];
-            float w = 8 + Math.abs(p.x) * 8;
-            float h = 8 + Math.abs(p.y) * 8;
-            return prect.set(x + (p.x * amount) * 8, y + (p.y * amount) * 8, w, h);
         }
 
         @Nullable

@@ -1,20 +1,25 @@
 package dusted.world.blocks.powder;
 
+import arc.*;
 import arc.struct.*;
 import arc.util.io.*;
+import dusted.type.*;
+import dusted.world.blocks.powder.PowderBlock.*;
 import dusted.world.interfaces.*;
 import dusted.world.meta.*;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.ctype.*;
 import mindustry.gen.*;
+import mindustry.ui.*;
 import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.meta.*;
 
 public class PowderBridge extends ItemBridge implements CustomReplacec {
     public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
-    public float powderCapacity = 20f;
+    public float powderCapacity = 10f;
+    public float powderPressure = 1f;
 
     public PowderBridge(String name) {
         super(name);
@@ -32,6 +37,17 @@ public class PowderBridge extends ItemBridge implements CustomReplacec {
 
         DustedStatValues.customStats(stats, cstats -> {
             cstats.addCStat("powder-capacity", StatValues.number(powderCapacity, StatUnit.none));
+        });
+    }
+
+    @Override
+    public void setBars() {
+        super.setBars();
+
+        bars.add("powders", build -> {
+            PowderBridgeBuild entity = (PowderBridgeBuild) build;
+            Powder powder = entity.powders.current();
+            return new Bar(() -> entity.powders.get(powder) <= 0.001f ? Core.bundle.get("bar.powder") : powder.localizedName, () -> powder.color, () -> entity.powders.get(powder) / powderCapacity);
         });
     }
 
@@ -68,8 +84,23 @@ public class PowderBridge extends ItemBridge implements CustomReplacec {
         }
 
         @Override
+        public boolean acceptPowder(Building source, Powder powder) {
+            return team == source.team && (this.powders.current() == powder || this.powders.currentAmount() < 0.2F) && this.checkAccept(source, Vars.world.tile(this.link));
+        }
+
+        @Override
+        public boolean outputsPowder() {
+            return true;
+        }
+
+        @Override
         public PowderModule powderModule() {
             return powders;
+        }
+
+        @Override
+        public float powderPressure() {
+            return powderPressure;
         }
 
         @Override

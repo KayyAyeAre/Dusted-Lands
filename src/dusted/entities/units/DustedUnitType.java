@@ -1,10 +1,8 @@
 package dusted.entities.units;
 
-import arc.*;
 import arc.audio.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
-import arc.util.*;
 import dusted.ai.types.*;
 import dusted.content.*;
 import mindustry.content.*;
@@ -24,7 +22,7 @@ public class DustedUnitType extends UnitType {
     public float quakeCooldown = 40f;
     public Effect quakeEffect = Fx.explosion;
     public Sound quakeSound = Sounds.explosion;
-    public DustedUnitCategory unitCategory;
+    public DustedUnitCategory unitCategory = DustedUnitCategory.def;
 
     public Effect bounceEffect = DustedFx.smallBounce;
     public float bounceDistance = 120f;
@@ -41,15 +39,17 @@ public class DustedUnitType extends UnitType {
 
     @Override
     public void init() {
-        super.init();
         switch (unitCategory) {
             case quake:
                 defaultController = QuakeAI::new;
+                constructor = QuakeUnitEntity::new;
                 break;
             case bounce:
                 defaultController = BounceAI::new;
+                constructor = BouncingUnitEntity::new;
                 break;
         }
+        super.init();
     }
 
     @Override
@@ -60,19 +60,41 @@ public class DustedUnitType extends UnitType {
         //TODO broken
         //Pixmap cell = Core.atlas.getPixmap(name + "-cell").pixmap.copy();
         //cell.replace(in -> in == 0xffffffff ? 0xffa664ff : in == 0xdcc6c6ff || in == 0xdcc5c5ff ? 0xd06b53ff : 0);
-        //base.pixmap.draw(cell, base.width / 2 - (cell.width / 2), base.height / 2 + (cell.height / 2), true);
+        //base.pixmap.draw(cell, true);
 
         for (Weapon weapon : weapons) {
             if (!weapon.name.isEmpty()) {
-                Pixmap weaponRegion = packer.get(weapon.name + "-outline").crop();
-                int wx = (base.width / 2) + (((int) weapon.x * 4) - (weaponRegion.width / 2));
-                int wy = (base.height / 2) + (((int) weapon.y * 4) + (weaponRegion.height / 2));
-                base.pixmap.draw(weaponRegion, wx, wy, true);
+                Pixmap over = base.crop();
+                Pixmap weaponRegion = packer.get(weapon.name).crop();
+                Pixmap weaponOutlineRegion = packer.get(weapon.name + "-outline").crop();
+                base.pixmap.draw(weaponOutlineRegion,
+                        (int) (weapon.x * 4 + base.width / 2f - weaponOutlineRegion.width / 2f),
+                        (int) (-weapon.y * 4 + base.height / 2f - weaponOutlineRegion.height / 2f),
+                        true);
+
+                if (!weapon.top) {
+                    base.pixmap.draw(over, true);
+                    base.pixmap.draw(weaponRegion,
+                            (int) (weapon.x * 4 + base.width / 2f - weaponRegion.width / 2f),
+                            (int) (-weapon.y * 4 + base.height / 2f - weaponRegion.height / 2f),
+                            true);
+                }
 
                 if (weapon.mirror) {
-                    int wfx = (base.width / 2) - (((int) weapon.x * 4) + (weaponRegion.width / 2));
+                    Pixmap overFlip = base.crop();
                     Pixmap flipRegion = weaponRegion.flipX();
-                    base.pixmap.draw(flipRegion, wfx, wy, true);
+                    Pixmap flipOutlineRegion = weaponOutlineRegion.flipX();
+                    base.pixmap.draw(flipOutlineRegion,
+                            (int) (-weapon.x * 4 + base.width / 2f - weaponOutlineRegion.width / 2f),
+                            (int) (-weapon.y * 4 + base.height / 2f - weaponOutlineRegion.height / 2f),
+                            true);
+                    if (!weapon.top) {
+                        base.pixmap.draw(overFlip, true);
+                        base.pixmap.draw(flipRegion,
+                                (int) (-weapon.x * 4 + base.width / 2f - weaponRegion.width / 2f),
+                                (int) (-weapon.y * 4 + base.height / 2f - weaponRegion.height / 2f),
+                                true);
+                    }
                 }
             }
         }
@@ -81,6 +103,7 @@ public class DustedUnitType extends UnitType {
     }
 
     public enum DustedUnitCategory {
+        def,
         quake,
         bounce
     }

@@ -7,6 +7,7 @@ import mindustry.*;
 import mindustry.entities.*;
 import mindustry.gen.*;
 
+//maybe this could be converted to an ability?
 public class BouncingUnitEntity extends UnitEntity {
     public static int classID;
     public Vec2 targetpos = new Vec2();
@@ -30,8 +31,8 @@ public class BouncingUnitEntity extends UnitEntity {
                 bounceDelay = dtype().bounceDelay;
 
                 rotation = angleTo(targetpos);
-                Tmp.v1.trns(rotation, dtype().bounceDistance);
-                dtype().bounceEffect.at(Mathf.lerp(x, x + Tmp.v1.x, 0.5f), Mathf.lerp(y, y + Tmp.v1.y, 0.5f), rotation, dtype().bounceDistance);
+                Tmp.v1.trns(rotation, trueBounceDistance());
+                dtype().bounceEffect.at(Mathf.lerp(x, x + Tmp.v1.x, 0.5f), Mathf.lerp(y, y + Tmp.v1.y, 0.5f), rotation, trueBounceDistance());
                 Vars.world.raycastEachWorld(x, y, x + Tmp.v1.x, y + Tmp.v1.y, (rx, ry) -> {
                     Damage.damage(team, rx * 8, ry * 8, 8f, dtype().bounceDamage);
                     return false;
@@ -53,14 +54,18 @@ public class BouncingUnitEntity extends UnitEntity {
     public void bounce() {
         if (bounceDelay > 0 || bounceCooldown > 0 || steps > 0) return;
         targetpos.setZero();
-        Unit target = Units.closestEnemy(team, x, y, dtype().bounceDistance, u -> true);
+        Unit target = Units.closestEnemy(team, x, y, trueBounceDistance(), u -> true);
         if (target != null) {
             targetpos.set(target);
         } else {
-            targetpos.trns(rotation, dtype().bounceDistance / 2).add(this);
+            targetpos.trns(rotation, trueBounceDistance() / 2).add(this);
         }
 
         steps = dtype().bounces;
+    }
+
+    public float trueBounceDistance() {
+        return dtype().bounceDistance * speedMultiplier();
     }
 
     //lazy

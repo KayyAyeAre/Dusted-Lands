@@ -3,16 +3,12 @@ package dusted.content;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
-import arc.util.*;
 import dusted.graphics.*;
 import dusted.type.*;
-import dusted.world.interfaces.PowderBlockc.*;
 import mindustry.entities.*;
 import mindustry.graphics.*;
 
 import static arc.graphics.g2d.Draw.*;
-import static arc.graphics.g2d.Lines.lineAngle;
-import static arc.graphics.g2d.Lines.stroke;
 import static arc.math.Angles.*;
 
 public class DustedFx {
@@ -37,6 +33,33 @@ public class DustedFx {
         }
     }),
 
+    shootCavnenShrapnel = new Effect(20f, e -> {
+        color(DustedPal.cavnenYellow, DustedPal.cavnenYellowBack, e.fin());
+        Lines.stroke(e.fout() + 0.5f);
+
+        randLenVectors(e.id, 5, 20f * e.finpow(), e.rotation, 30f, (x, y) -> {
+            Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fin() * 4f + 1f);
+        });
+    }),
+
+    orbSummon = new Effect(40f, e -> {
+        color(DustedPal.cavnenYellow, DustedPal.cavnenYellowBack, e.fin());
+        randLenVectors(e.id, 12, e.finpow() * 12f, e.rotation, 360f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.foutpow() * 2f);
+        });
+    }),
+
+    stasis = new Effect(20f, e -> {
+        color(Color.white, Pal.lancerLaser, e.fin());
+        Lines.stroke(e.foutpow() * 3f);
+        randLenVectors(e.id, 8, e.finpow() * 16f, e.rotation, 360f, (x, y) -> {
+            Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.foutpow() * 3f);
+        });
+
+        Lines.stroke(e.foutpow() * 4f);
+        Lines.circle(e.x, e.y, e.finpow() * 12f);
+    }),
+
     shootTitaniumSpray = new Effect(20f, 70f, e -> {
         color(Pal.orangeSpark, DustedPal.lightTitanium, Color.gray, e.fin());
 
@@ -53,8 +76,9 @@ public class DustedFx {
     shootLine = new Effect(25f, 80f, e -> {
         color(DustedPal.cavnenYellow, DustedPal.cavnenYellowBack, DustedPal.darkCavnen, e.fin());
 
-        Lines.stroke(e.foutpow() * 4f);
-        Lines.line(e.x, e.y, Angles.trnsx(e.rotation, 75f) + e.x, Angles.trnsy(e.rotation, 75f) + e.y);
+        for (int i : Mathf.signs) {
+            Drawf.tri(e.x + Angles.trnsx(e.rotation, 37.5f), e.y + Angles.trnsy(e.rotation, 37.5f), 100f, e.foutpow() * 8f, e.rotation + 90 * i);
+        }
     }),
 
     shootQuartzFlame = new Effect(20f, 90f, e -> {
@@ -67,11 +91,10 @@ public class DustedFx {
 
     hitQuartzFlame = new Effect(14f, e -> {
         color(DustedPal.lightQuartz, DustedPal.darkQuartz, e.fin());
-        stroke(0.7f + e.fout());
+        Lines.stroke(0.7f + e.fout());
 
         randLenVectors(e.id, 4, 1f + e.fin() * 15f, e.rotation, 40f, (x, y) -> {
-            float ang = Mathf.angle(x, y);
-            lineAngle(e.x + x, e.y + y, ang, e.fout() * 3 + 2.6f);
+            Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fout() * 3 + 2.6f);
         });
     });
 }

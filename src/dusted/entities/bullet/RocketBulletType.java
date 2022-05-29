@@ -17,10 +17,6 @@ public class RocketBulletType extends BasicBulletType {
         super(speed, damage);
     }
 
-    public RocketBulletType(float speed, float damage, String sprite) {
-        super(speed, damage, sprite);
-    }
-
     @Override
     public void update(Bullet b) {
         super.update(b);

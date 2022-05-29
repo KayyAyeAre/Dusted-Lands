@@ -17,7 +17,8 @@ import mindustry.world.meta.*;
 
 public class PowderBlock extends Block implements CustomReplacec {
     public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
-    public float powderCapacity = 20f;
+    public float powderCapacity = 10f;
+    public float powderPressure = 1f;
 
     public PowderBlock(String name) {
         super(name);
@@ -64,6 +65,11 @@ public class PowderBlock extends Block implements CustomReplacec {
     }
 
     public class PowderBuild extends Building implements PowderBlockc {
+        @Override
+        public boolean outputsPowder() {
+            return true;
+        }
+
         public PowderModule powders = new PowderModule();
 
         @Override
@@ -81,6 +87,11 @@ public class PowderBlock extends Block implements CustomReplacec {
         @Override
         public PowderModule powderModule() {
             return powders;
+        }
+
+        @Override
+        public float powderPressure() {
+            return powderPressure;
         }
 
         @Override

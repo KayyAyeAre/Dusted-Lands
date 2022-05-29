@@ -1,39 +1,96 @@
 package dusted.content;
 
 import arc.graphics.*;
+import dusted.entities.abilities.*;
+import dusted.entities.bullet.*;
 import dusted.entities.units.*;
 import dusted.graphics.*;
+import mindustry.ai.types.*;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 import mindustry.type.*;
+import mindustry.type.weapons.*;
 
 public class DustedUnitTypes {
-    //TODO implement units
+    //why did i look for 28 different names to only use 9 of them
     public static UnitType
-    carom, recur, saltate, ricochet, recrudesce,
-    seism, quaver, temblor, convulse,
-    cavanimate
-    ;
+    carom, recur, saltate, staccato, recrudesce,
+
+    revoke, negate, preclude, repudiate, terminate,
+
+    quail, seism, quaver, temblor, convulse,
+
+    pique, rancor, animus, enmity, acrimony,
+
+    protei, hynobii, sirenid, pleurodel, dicamptodon,
+
+    erode, recede, atrophy;
 
     public static void load() {
+        //TODO these could be abilities instead
         BouncingUnitEntity.classID = EntityMapping.register("BouncingUnitEntity", BouncingUnitEntity::new);
         QuakeUnitEntity.classID = EntityMapping.register("QuakeUnitEntity", QuakeUnitEntity::new);
 
-        EntityMapping.nameMap.put("dusted-lands-carom", BouncingUnitEntity::new);
+        erode = new DustedUnitType("erode") {{
+            constructor = UnitEntity::create;
+            defaultController = BuilderAI::new;
+            isCounted = false;
+            flying = true;
+            itemCapacity = 30;
+            outlineColor = DustedPal.darkerCavnen;
+            alwaysUnlocked = true;
+            accel = 0.1f;
+            drag = 0.05f;
+            commandLimit = 3;
+            speed = 3.2f;
+            mineSpeed = 7f;
+            mineTier = 1;
+            buildSpeed = 0.5f;
+            rotateSpeed = 12f;
+
+            weapons.add(new Weapon("dusted-lands-core-decay-weapon") {{
+                x = 3.1f;
+                y = 2f;
+                top = false;
+                reload = 40f;
+                shootSound = Sounds.lasershoot;
+
+                bullet = new BasicBulletType(3f, 18f) {{
+                    width = 8f;
+                    height = 12f;
+                    lifetime = 40f;
+                    buildingDamageMultiplier = 0.01f;
+                    trailWidth = 2f;
+                    trailLength = 16;
+                    status = DustedStatusEffects.deteriorating;
+                    statusDuration = 6 * 60f;
+                    frontColor = DustedPal.cavnenYellow;
+                    backColor = trailColor = DustedPal.cavnenYellowBack;
+                }};
+            }});
+        }};
+
+        recede = new UnitType("recede") {{
+            constructor = UnitEntity::create;
+        }};
+
+        atrophy = new UnitType("atrophy") {{
+            constructor = UnitEntity::create;
+        }};
+
         carom = new DustedUnitType("carom") {{
             unitCategory = DustedUnitCategory.bounce;
-            speed = 3f;
+            speed = 2.5f;
             bounceDamage = 6f;
             flying = true;
             health = 80;
             commandLimit = 4;
-            rotateSpeed = 8f;
+            rotateSpeed = 10f;
             range = 120f;
             outlineColor = DustedPal.darkerCavnen;
         }};
 
-        EntityMapping.nameMap.put("dusted-lands-recur", BouncingUnitEntity::new);
         recur = new DustedUnitType("recur") {{
             unitCategory = DustedUnitCategory.bounce;
             health = 320;
@@ -68,7 +125,6 @@ public class DustedUnitTypes {
             }});
         }};
 
-        EntityMapping.nameMap.put("dusted-lands-saltate", BouncingUnitEntity::new);
         saltate = new DustedUnitType("saltate") {{
             unitCategory = DustedUnitCategory.bounce;
             health = 650;
@@ -125,9 +181,156 @@ public class DustedUnitTypes {
             }});
         }};
 
-        /*
-        EntityMapping.nameMap.put("dusted-lands-seism", QuakeUnitEntity::new);
-        seism = new DustedUnitType("seism") {{
+        pique = new DustedUnitType("pique") {{
+            constructor = MechUnit::create;
+            speed = 0.8f;
+            hitSize = 7f;
+            health = 140f;
+            outlineColor = DustedPal.darkerCavnen;
+            mechLegColor = DustedPal.darkerCavnen;
+
+            weapons.add(new Weapon("dusted-lands-decay-gun") {{
+                y = -1f;
+                x = 2.5f;
+                reload = 50f;
+                shots = 3;
+                inaccuracy = 10f;
+                shootSound = Sounds.missile;
+
+                bullet = new BasicBulletType(3.6f, 8f, "circle-bullet") {{
+                    width = height = 10f;
+                    shrinkX = shrinkY = 0.4f;
+                    drag = 0.04f;
+                    lifetime = 50f;
+                    status = DustedStatusEffects.deteriorating;
+                    statusDuration = 4 * 60f;
+                }};
+            }});
+
+            abilities.add(new RevolvingOrbAbility() {{
+                damage = 22f;
+                orbs = 2;
+                radius = 20f;
+                rotationSpeed = 10f;
+                orbRadius = 5f;
+                orbLifetime = 320f;
+                orbCooldown = 200f;
+            }});
+        }};
+
+        rancor = new DustedUnitType("rancor") {{
+            constructor = MechUnit::create;
+            speed = 0.7f;
+            hitSize = 10f;
+            health = 300f;
+            armor = 5f;
+            outlineColor = DustedPal.darkerCavnen;
+            mechLegColor = DustedPal.darkerCavnen;
+
+            weapons.add(new Weapon("dusted-lands-large-decay-gun") {{
+                x = 3;
+                y = -2;
+                reload = 40f;
+                shots = 2;
+                spacing = 15f;
+                shootSound = Sounds.shootBig;
+
+                bullet = new ShrapnelBulletType() {{
+                    length = 80f;
+                    damage = 22f;
+                    width = 20f;
+                    serrations = 8;
+                    shootEffect = DustedFx.shootCavnenShrapnel;
+                    smokeEffect = Fx.shootSmallSmoke;
+                    fromColor = DustedPal.cavnenYellow;
+                    toColor = DustedPal.cavnenYellowBack;
+                }};
+            }});
+
+            abilities.add(new RevolvingOrbAbility() {{
+                damage = 30f;
+                orbs = 3;
+                radius = 28f;
+                rotationSpeed = 12f;
+                orbRadius = 7f;
+                orbLifetime = 400f;
+                orbCooldown = 320f;
+            }});
+        }};
+
+        animus = new DustedUnitType("animus") {{
+            outlineColor = DustedPal.darkerCavnen;
+            speed = 0.5f;
+            health = 800f;
+            hitSize = 12f;
+            rotateSpeed = 4f;
+            armor = 7f;
+            constructor = MechUnit::create;
+
+            weapons.addAll(
+                    new Weapon("dusted-lands-decay-launcher") {{
+                        x = 6f;
+                        y = 2f;
+                        top = false;
+                        recoil = 5f;
+                        reload = 110f;
+                        shake = 1.6f;
+                        shootSound = Sounds.shootBig;
+
+                        bullet = new RocketBulletType(2.6f, 30f) {{
+                            width = height = 18f;
+                            splashDamage = 16f;
+                            splashDamageRadius = 20f;
+                            lifetime = 80f;
+                            frontColor = DustedPal.cavnenYellow;
+                            backColor = trailColor = DustedPal.cavnenYellowBack;
+                            trailLength = 18;
+                            trailWidth = 6f;
+                            status = DustedStatusEffects.deteriorating;
+                            statusDuration = 12 * 60f;
+                            rockets = 3;
+                            rocketSpread = 20f;
+                            shootSound = Sounds.explosion;
+
+                            rocketBulletType = new BasicBulletType(2f, 12f) {{
+                                width = height = 12f;
+                                splashDamage = 14f;
+                                splashDamageRadius = 14f;
+                                lifetime = 40f;
+                                frontColor = DustedPal.cavnenYellow;
+                                backColor = DustedPal.cavnenYellowBack;
+                                status = DustedStatusEffects.deteriorating;
+                                statusDuration = 4 * 60f;
+                            }};
+                        }};
+                    }},
+                    new RepairBeamWeapon("dusted-lands-animus-repair-weapon") {{
+                        x = 0f;
+                        y = -6f;
+                        shootY = 5f;
+                        beamWidth = 0.8f;
+                        laserColor = DustedPal.cavnenYellow;
+                        mirror = false;
+                        repairSpeed = 1f;
+
+                        bullet = new BulletType() {{
+                            maxRange = 140f;
+                        }};
+                    }}
+            );
+
+            abilities.add(new RevolvingOrbAbility() {{
+                damage = 40f;
+                orbs = 6;
+                radius = 40f;
+                rotationSpeed = 9f;
+                orbRadius = 8f;
+                orbLifetime = 720f;
+                orbCooldown = 420f;
+            }});
+        }};
+
+        quail = new DustedUnitType("quail") {{
             unitCategory = DustedUnitCategory.quake;
             quakeSteps = 3;
             quakes = 3;
@@ -135,9 +338,5 @@ public class DustedUnitTypes {
             health = 120;
             commandLimit = 5;
         }};
-        */
-
-        //TODO
-        //cavanimate = new UnitType("cavanimate");
     }
 }

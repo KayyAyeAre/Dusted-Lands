@@ -27,8 +27,10 @@ public class DustedTechTree {
                 });
             });
             nodeProduce(DustedItems.plastel, () -> {
-                //nodeProduce(DustedItems.telonate, () -> {});
-                //nodeProduce(DustedItems.shirrote, () -> {});
+                nodeProduce(DustedItems.biotite, () -> {
+                    node(DustedItems.pyresin, Seq.with(new Produce(DustedItems.pyresin), new Produce(DustedPowders.pyreol)), () -> {});
+                    nodeProduce(DustedItems.telonate, () -> {});
+                });
             });
         });
 

@@ -13,6 +13,7 @@ import mindustry.world.blocks.units.*;
 public class PowderReconstructor extends Reconstructor {
     public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
     public float powderCapacity = 20f;
+    public float powderPressure = 1f;
 
     public PowderReconstructor(String name) {
         super(name);
@@ -37,6 +38,11 @@ public class PowderReconstructor extends Reconstructor {
         @Override
         public PowderModule powderModule() {
             return powders;
+        }
+
+        @Override
+        public float powderPressure() {
+            return powderPressure;
         }
 
         @Override

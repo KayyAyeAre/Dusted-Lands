@@ -3,8 +3,8 @@ package dusted.world.interfaces;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
+import arc.util.*;
 import dusted.content.*;
-import dusted.content.DustedFx.*;
 import dusted.type.*;
 import dusted.world.blocks.powder.*;
 import dusted.world.modules.*;
@@ -16,11 +16,11 @@ import mindustry.world.*;
 //interface for blocks with a powder module to transfer powder
 public interface PowderBlockc extends BuildAccessor {
     PowderModule powderModule();
-
+    float powderPressure();
     Bits filters();
 
-    default Rect prect(float amount) {
-        return null;
+    default boolean outputsPowder() {
+        return false;
     }
 
     default Building getPowderDestination(Building from, Powder powder) {
@@ -74,7 +74,7 @@ public interface PowderBlockc extends BuildAccessor {
             building = pow.getPowderDestination(build(), powder);
             if (building.team == build().team && building instanceof PowderBlockc next && powderModule().get(powder) > 0f) {
                 float ofract = next.powderModule().get(powder) / next.powderCapacity();
-                float fract = powderModule().get(powder) / powderCapacity();
+                float fract = powderModule().get(powder) / powderCapacity() * powderPressure();
                 float flow = Math.min(Mathf.clamp((fract - ofract)) * powderCapacity(), powderModule().get(powder));
                 flow = Math.min(flow, powderCapacity() - next.powderModule().get(powder));
 
@@ -97,8 +97,7 @@ public interface PowderBlockc extends BuildAccessor {
         } else if (leaks && !next.block().solid) {
             float leakAmount = powderModule().get(powder) / 1.5f;
             if (Mathf.chanceDelta(0.2f * leakAmount)) DustedFx.powderLeak.at((build().tile.worldx() + next.worldx()) / 2, (build().tile.worldy() + next.worldy()) / 2, build().rotdeg(), powder);
-            //TODO prect doesnt work here
-            Units.nearby(prect(leakAmount), u -> u.apply(powder.effect, leakAmount * 60));
+            Units.nearby(Tmp.r1.set(Geometry.d4x(build().rotation) * 8 + build().x, Geometry.d4y(build().rotation) * 8 + build().y, 8, 8), u -> u.apply(powder.effect, leakAmount * 60));
             powderModule().remove(powder, leakAmount);
         }
 
