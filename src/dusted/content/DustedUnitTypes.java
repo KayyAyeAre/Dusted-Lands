@@ -1,6 +1,7 @@
 package dusted.content;
 
 import arc.graphics.*;
+import dusted.ai.types.*;
 import dusted.entities.abilities.*;
 import dusted.entities.bullet.*;
 import dusted.entities.units.*;
@@ -28,10 +29,6 @@ public class DustedUnitTypes {
     erode, recede, atrophy;
 
     public static void load() {
-        //TODO these could be abilities instead
-        BouncingUnitEntity.classID = EntityMapping.register("BouncingUnitEntity", BouncingUnitEntity::new);
-        QuakeUnitEntity.classID = EntityMapping.register("QuakeUnitEntity", QuakeUnitEntity::new);
-
         erode = new DustedUnitType("erode") {{
             constructor = UnitEntity::create;
             defaultController = BuilderAI::new;
@@ -80,29 +77,30 @@ public class DustedUnitTypes {
         }};
 
         carom = new DustedUnitType("carom") {{
-            unitCategory = DustedUnitCategory.bounce;
+            constructor = UnitEntity::create;
+            defaultController = BounceAI::new;
             speed = 2.5f;
-            bounceDamage = 6f;
             flying = true;
             health = 80;
             commandLimit = 4;
             rotateSpeed = 10f;
             range = 120f;
             outlineColor = DustedPal.darkerCavnen;
+
+            abilities.add(new BounceAbility() {{
+                bounceDamage = 6f;
+            }});
         }};
 
         recur = new DustedUnitType("recur") {{
-            unitCategory = DustedUnitCategory.bounce;
+            constructor = UnitEntity::create;
+            defaultController = BounceAI::new;
             health = 320;
             armor = 2f;
             speed = 1.8f;
             accel = 0.16f;
             flying = true;
             hitSize = 8f;
-            bounceDamage = 14f;
-            bounceDistance = 180f;
-            bounces = 2;
-            bounceCooldown = 70f;
             range = 180f;
             engineOffset = 8f;
             engineSize = 3f;
@@ -123,10 +121,18 @@ public class DustedUnitTypes {
                     colors = new Color[]{DustedPal.cavnenYellowBack, DustedPal.cavnenYellow, Color.white};
                 }};
             }});
+
+            abilities.add(new BounceAbility() {{
+                bounceDamage = 14f;
+                bounceDistance = 180f;
+                bounces = 2;
+                bounceCooldown = 70f;
+            }});
         }};
 
         saltate = new DustedUnitType("saltate") {{
-            unitCategory = DustedUnitCategory.bounce;
+            constructor = UnitEntity::create;
+            defaultController = BounceAI::new;
             health = 650;
             speed = 1.6f;
             accel = 0.08f;
@@ -134,10 +140,6 @@ public class DustedUnitTypes {
             lowAltitude = true;
             armor = 4f;
             hitSize = 10f;
-            bounceDamage = 10f;
-            bounceDistance = 180f;
-            bounces = 4;
-            bounceCooldown = 110f;
             range = 180f;
             engineOffset = 8f;
             engineSize = 6f;
@@ -179,10 +181,18 @@ public class DustedUnitTypes {
                     }};
                 }};
             }});
+
+            abilities.add(new BounceAbility() {{
+                bounceDamage = 10f;
+                bounceDistance = 180f;
+                bounces = 4;
+                bounceCooldown = 110f;
+            }});
         }};
 
         pique = new DustedUnitType("pique") {{
             constructor = MechUnit::create;
+            defaultController = OrbsAI::new;
             speed = 0.8f;
             hitSize = 7f;
             health = 140f;
@@ -220,6 +230,7 @@ public class DustedUnitTypes {
 
         rancor = new DustedUnitType("rancor") {{
             constructor = MechUnit::create;
+            defaultController = OrbsAI::new;
             speed = 0.7f;
             hitSize = 10f;
             health = 300f;
@@ -259,13 +270,15 @@ public class DustedUnitTypes {
         }};
 
         animus = new DustedUnitType("animus") {{
-            outlineColor = DustedPal.darkerCavnen;
             speed = 0.5f;
             health = 800f;
             hitSize = 12f;
             rotateSpeed = 4f;
             armor = 7f;
             constructor = MechUnit::create;
+            defaultController = OrbsAI::new;
+            outlineColor = DustedPal.darkerCavnen;
+            mechLegColor = DustedPal.darkerCavnen;
 
             weapons.addAll(
                     new Weapon("dusted-lands-decay-launcher") {{
@@ -331,12 +344,18 @@ public class DustedUnitTypes {
         }};
 
         quail = new DustedUnitType("quail") {{
-            unitCategory = DustedUnitCategory.quake;
-            quakeSteps = 3;
-            quakes = 3;
+            constructor = MechUnit::create;
+            defaultController = QuakeAI::new;
             speed = 0.6f;
             health = 120;
             commandLimit = 5;
+            outlineColor = DustedPal.darkerCavnen;
+            mechLegColor = DustedPal.darkerCavnen;
+
+            abilities.add(new QuakeAbility() {{
+                quakeSteps = 3;
+                quakes = 3;
+            }});
         }};
     }
 }

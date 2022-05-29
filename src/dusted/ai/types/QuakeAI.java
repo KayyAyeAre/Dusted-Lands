@@ -1,5 +1,6 @@
 package dusted.ai.types;
 
+import dusted.entities.abilities.*;
 import dusted.entities.units.*;
 import mindustry.ai.types.*;
 import mindustry.entities.*;
@@ -9,9 +10,9 @@ public class QuakeAI extends GroundAI {
     @Override
     public void faceTarget() {
         if (unit.type.omniMovement || unit instanceof Mechc) {
-            QuakeUnitEntity qunit = (QuakeUnitEntity) unit;
+            QuakeAbility ability = (QuakeAbility) unit.abilities.find(a -> a instanceof QuakeAbility);
             if (!Units.invalidateTarget(target, unit, unit.range()) && unit.type.rotateShooting && unit.type.hasWeapons()) {
-                unit.lookAt(Predict.intercept(unit, target, qunit.dtype().quakeSpacing / qunit.dtype().quakeDelay));
+                unit.lookAt(Predict.intercept(unit, target, ability.quakeSpacing / ability.quakeDelay));
             } else if (unit.moving()) {
                 unit.lookAt(unit.vel().angle());
             }
@@ -21,6 +22,6 @@ public class QuakeAI extends GroundAI {
     @Override
     public void updateWeapons() {
         super.updateWeapons();
-        if (target != null && unit instanceof QuakeUnitEntity qunit) qunit.quake();
+        if (target != null) unit.abilities.each(a -> a instanceof QuakeAbility, a -> ((QuakeAbility) a).quake());
     }
 }

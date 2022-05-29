@@ -1,55 +1,14 @@
 package dusted.entities.units;
 
-import arc.audio.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
-import dusted.ai.types.*;
-import dusted.content.*;
-import mindustry.content.*;
-import mindustry.entities.*;
-import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.graphics.MultiPacker.*;
 import mindustry.type.*;
 
 public class DustedUnitType extends UnitType {
-    public float quakeDamage = 60f;
-    public float quakeSpacing = 20f;
-    public int quakeSteps = 1;
-    public int quakes = 1;
-    public float quakeRadius = 8f;
-    public float quakeDelay = 10f;
-    public float quakeCooldown = 40f;
-    public Effect quakeEffect = Fx.explosion;
-    public Sound quakeSound = Sounds.explosion;
-    public DustedUnitCategory unitCategory = DustedUnitCategory.def;
-
-    public Effect bounceEffect = DustedFx.smallBounce;
-    public float bounceDistance = 120f;
-    public float bounceCooldown = 30f;
-    public float bounceDelay = 15f;
-    public float bounceDamage = 10f;
-    public int bounces = 1;
-    public Sound bounceSound = Sounds.shotgun;
-    public float minBouncePitch = 0.9f, maxBouncePitch = 1.1f;
-
     public DustedUnitType(String name) {
         super(name);
-    }
-
-    @Override
-    public void init() {
-        switch (unitCategory) {
-            case quake:
-                defaultController = QuakeAI::new;
-                constructor = QuakeUnitEntity::new;
-                break;
-            case bounce:
-                defaultController = BounceAI::new;
-                constructor = BouncingUnitEntity::new;
-                break;
-        }
-        super.init();
     }
 
     @Override
@@ -100,11 +59,5 @@ public class DustedUnitType extends UnitType {
         }
 
         packer.add(PageType.main, name + "-full", base);
-    }
-
-    public enum DustedUnitCategory {
-        def,
-        quake,
-        bounce
     }
 }
