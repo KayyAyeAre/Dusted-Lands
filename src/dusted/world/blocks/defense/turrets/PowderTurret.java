@@ -20,7 +20,6 @@ import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.meta.*;
 
 public class PowderTurret extends Turret {
-    public float powderPressure = 1f;
     public float powderCapacity = 20;
     public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
     public ObjectMap<Powder, BulletType> ammoTypes = new ObjectMap<>();
@@ -161,11 +160,6 @@ public class PowderTurret extends Turret {
         @Override
         public PowderModule powderModule() {
             return powders;
-        }
-
-        @Override
-        public float powderPressure() {
-            return powderPressure;
         }
 
         @Override

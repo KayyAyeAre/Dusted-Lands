@@ -14,11 +14,10 @@ import mindustry.type.*;
 import mindustry.type.weapons.*;
 
 public class DustedUnitTypes {
-    //why did i look for 28 different names to only use 9 of them
     public static UnitType
     carom, recur, saltate, staccato, recrudesce,
 
-    revoke, negate, preclude, repudiate, terminate,
+    revoke, negate, preclude, abrogate, repudiate,
 
     quail, seism, quaver, temblor, convulse,
 
@@ -43,7 +42,7 @@ public class DustedUnitTypes {
             speed = 3.2f;
             mineSpeed = 7f;
             mineTier = 1;
-            buildSpeed = 0.5f;
+            buildSpeed = 0.6f;
             rotateSpeed = 12f;
 
             weapons.add(new Weapon("dusted-lands-core-decay-weapon") {{
@@ -68,8 +67,40 @@ public class DustedUnitTypes {
             }});
         }};
 
-        recede = new UnitType("recede") {{
+        recede = new DustedUnitType("recede") {{
             constructor = UnitEntity::create;
+            outlineColor = DustedPal.darkerCavnen;
+            defaultController = BuilderAI::new;
+            isCounted = false;
+            flying = true;
+            mineSpeed = 7f;
+            mineTier = 1;
+            buildSpeed = 0.8f;
+            drag = 0.05f;
+            accel = 0.1f;
+            speed = 3.5f;
+            rotateSpeed = 16f;
+            itemCapacity = 40;
+            health = 160f;
+            engineOffset = 7f;
+            engineSize = 3f;
+            hitSize = 8f;
+            lowAltitude = true;
+            commandLimit = 4;
+
+            weapons.add(new RepairBeamWeapon("dusted-lands-recede-repair-weapon") {{
+                x = 0f;
+                y = -2f;
+                shootY = 2.5f;
+                beamWidth = 0.6f;
+                laserColor = DustedPal.cavnenYellow;
+                mirror = false;
+                repairSpeed = 0.7f;
+
+                bullet = new BulletType() {{
+                    maxRange = 120f;
+                }};
+            }});
         }};
 
         atrophy = new UnitType("atrophy") {{
@@ -83,12 +114,14 @@ public class DustedUnitTypes {
             flying = true;
             health = 80;
             commandLimit = 4;
+            accel = 0.1f;
+            drag = 0.06f;
             rotateSpeed = 10f;
             range = 120f;
             outlineColor = DustedPal.darkerCavnen;
 
             abilities.add(new BounceAbility() {{
-                bounceDamage = 6f;
+                bounceDamage = 8f;
             }});
         }};
 
@@ -97,7 +130,7 @@ public class DustedUnitTypes {
             defaultController = BounceAI::new;
             health = 320;
             armor = 2f;
-            speed = 1.8f;
+            speed = 2.6f;
             accel = 0.16f;
             flying = true;
             hitSize = 8f;
@@ -134,7 +167,7 @@ public class DustedUnitTypes {
             constructor = UnitEntity::create;
             defaultController = BounceAI::new;
             health = 650;
-            speed = 1.6f;
+            speed = 2f;
             accel = 0.08f;
             flying = true;
             lowAltitude = true;
@@ -145,7 +178,7 @@ public class DustedUnitTypes {
             engineSize = 6f;
             outlineColor = DustedPal.darkerCavnen;
 
-            weapons.add(new Weapon("dusted-lands-saltate-launcher") {{
+            weapons.add(new Weapon("dusted-lands-decay-mount") {{
                 reload = 70f;
                 x = 6f;
                 y = -2f;
@@ -164,7 +197,7 @@ public class DustedUnitTypes {
                     hitEffect = despawnEffect = Fx.hitYellowLaser;
 
                     fragBullets = 5;
-                    fragBullet = new MissileBulletType(4f, 10f) {{
+                    fragBullet = new MissileBulletType(4f, 10f, "circle-bullet") {{
                         width = height = 8f;
                         homingPower = 0.1f;
                         weaveMag = 3f;
@@ -177,7 +210,7 @@ public class DustedUnitTypes {
                         backColor = DustedPal.cavnenYellowBack;
                         trailColor = DustedPal.cavnenYellow;
                         trailLength = 6;
-                        trailWidth = 8f;
+                        trailWidth = 3f;
                     }};
                 }};
             }});
@@ -187,6 +220,107 @@ public class DustedUnitTypes {
                 bounceDistance = 180f;
                 bounces = 4;
                 bounceCooldown = 110f;
+            }});
+        }};
+
+        staccato = new DustedUnitType("staccato") {{
+            constructor = UnitEntity::create;
+            defaultController = BounceAI::new;
+            health = 6800f;
+            armor = 7f;
+            rotateSpeed = 4f;
+            speed = 1.2f;
+            hitSize = 22f;
+            engineOffset = 18f;
+            engineSize = 4.6f;
+            flying = true;
+            lowAltitude = true;
+            outlineColor = DustedPal.darkerCavnen;
+
+            weapons.addAll(
+                    new Weapon("dusted-lands-decay-launcher-mount") {{
+                        x = 12f;
+                        y = -3f;
+                        reload = 180f;
+                        rotate = true;
+                        shootSound = Sounds.shotgun;
+
+                        bullet = new RocketBulletType(5.5f, 110f, "dusted-lands-arrow-bullet") {{
+                            width = 18f;
+                            height = 10f;
+                            shrinkX = 0.2f;
+                            shrinkY = 0.1f;
+                            drag = 0.012f;
+                            lifetime = 120f;
+                            status = DustedStatusEffects.deteriorating;
+                            statusDuration = 16 * 60f;
+                            rocketReload = 10f;
+                            weaveScale = 7f;
+                            weaveMag = 1f;
+                            homingPower = 0.08f;
+                            homingRange = 80f;
+                            frontColor = DustedPal.cavnenYellow;
+                            backColor = DustedPal.cavnenYellowBack;
+
+                            rocketBulletType = new BasicBulletType(1f, 44f, "circle-bullet") {{
+                                drag = 0.06f;
+                                width = height = 8f;
+                                shrinkX = shrinkY = 0.3f;
+                                pierce = true;
+                                lifetime = 140f;
+                                frontColor = DustedPal.cavnenYellow;
+                                backColor = DustedPal.cavnenYellowBack;
+                                status = DustedStatusEffects.deteriorating;
+                                statusDuration = 4 * 60f;
+                            }};
+                        }};
+                    }},
+                    new Weapon("dusted-lands-decay-mount") {{
+                        x = 9f;
+                        y = 11f;
+                        reload = 70f;
+                        rotate = true;
+                        shootSound = Sounds.missile;
+
+                        bullet = new BasicBulletType(3f, 32f) {{
+                            width = 12f;
+                            height = 16f;
+                            lifetime = 60f;
+                            trailWidth = 2f;
+                            trailLength = 18;
+                            status = DustedStatusEffects.deteriorating;
+                            statusDuration = 8 * 60f;
+                            frontColor = DustedPal.cavnenYellow;
+                            backColor = trailColor = DustedPal.cavnenYellowBack;
+                        }};
+                    }},
+                    new Weapon("dusted-lands-decay-mount") {{
+                        x = 12f;
+                        y = -11f;
+                        reload = 80f;
+                        rotate = true;
+                        shootSound = Sounds.missile;
+
+                        bullet = new BasicBulletType(3f, 32f) {{
+                            width = 12f;
+                            height = 16f;
+                            lifetime = 60f;
+                            trailWidth = 2f;
+                            trailLength = 18;
+                            status = DustedStatusEffects.deteriorating;
+                            statusDuration = 8 * 60f;
+                            frontColor = DustedPal.cavnenYellow;
+                            backColor = trailColor = DustedPal.cavnenYellowBack;
+                        }};
+                    }}
+            );
+
+            abilities.add(new BounceAbility() {{
+                bounceDamage = 70f;
+                bounceDistance = 180f;
+                bounces = 10;
+                bounceDelay = 10f;
+                bounceCooldown = 320f;
             }});
         }};
 
@@ -212,6 +346,8 @@ public class DustedUnitTypes {
                     shrinkX = shrinkY = 0.4f;
                     drag = 0.04f;
                     lifetime = 50f;
+                    frontColor = DustedPal.cavnenYellow;
+                    backColor = DustedPal.cavnenYellowBack;
                     status = DustedStatusEffects.deteriorating;
                     statusDuration = 4 * 60f;
                 }};
@@ -290,7 +426,7 @@ public class DustedUnitTypes {
                         shake = 1.6f;
                         shootSound = Sounds.shootBig;
 
-                        bullet = new RocketBulletType(2.6f, 30f) {{
+                        bullet = new RocketBulletType(2.6f, 26f) {{
                             width = height = 18f;
                             splashDamage = 16f;
                             splashDamageRadius = 20f;
@@ -298,14 +434,14 @@ public class DustedUnitTypes {
                             frontColor = DustedPal.cavnenYellow;
                             backColor = trailColor = DustedPal.cavnenYellowBack;
                             trailLength = 18;
-                            trailWidth = 6f;
+                            trailWidth = 4f;
                             status = DustedStatusEffects.deteriorating;
                             statusDuration = 12 * 60f;
                             rockets = 3;
                             rocketSpread = 20f;
                             shootSound = Sounds.explosion;
 
-                            rocketBulletType = new BasicBulletType(2f, 12f) {{
+                            rocketBulletType = new BasicBulletType(2f, 8f) {{
                                 width = height = 12f;
                                 splashDamage = 14f;
                                 splashDamageRadius = 14f;

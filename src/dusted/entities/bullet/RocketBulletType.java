@@ -15,7 +15,13 @@ public class RocketBulletType extends BasicBulletType {
 
     public RocketBulletType(float speed, float damage) {
         super(speed, damage);
+        pierce = true;
     }
+
+    public RocketBulletType(float speed, float damage, String sprite) {
+        super(speed, damage, sprite);
+        pierce = true;
+    };
 
     @Override
     public void update(Bullet b) {

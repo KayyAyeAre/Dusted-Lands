@@ -12,7 +12,7 @@ import mindustry.entities.abilities.*;
 import mindustry.gen.*;
 
 public class BounceAbility extends Ability {
-    public Effect bounceEffect = DustedFx.smallBounce;
+    public Effect bounceEffect = DustedFx.bounce;
     public float bounceDistance = 120f;
     public float bounceCooldown = 30f;
     public float bounceDelay = 15f;

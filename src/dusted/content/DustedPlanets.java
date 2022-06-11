@@ -17,7 +17,7 @@ public class DustedPlanets {
             atmosphereColor = Color.valueOf("a38772");
             atmosphereRadIn = 0.02f;
             atmosphereRadOut = 0.3f;
-            startSector = 56;
+            startSector = 269;
         }};
     }
 }

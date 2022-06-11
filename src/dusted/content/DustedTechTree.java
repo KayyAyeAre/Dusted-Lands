@@ -9,7 +9,7 @@ import mindustry.type.*;
 
 import static dusted.content.DustedBlocks.*;
 
-//TODO add sector completion to requirements
+//TODO add sector completion to requirements, maybe completely restructure
 public class DustedTechTree {
     private static TechNode context = null;
 
@@ -27,7 +27,7 @@ public class DustedTechTree {
                 });
             });
             nodeProduce(DustedItems.plastel, () -> {
-                nodeProduce(DustedItems.biotite, () -> {
+                nodeProduce(DustedItems.arsenic, () -> {
                     node(DustedItems.pyresin, Seq.with(new Produce(DustedItems.pyresin), new Produce(DustedPowders.pyreol)), () -> {});
                     nodeProduce(DustedItems.telonate, () -> {});
                 });
@@ -62,13 +62,10 @@ public class DustedTechTree {
 
         entryNode(Blocks.scorch, () -> {
             node(spume, () -> {
-                node(abrade, () -> {
-                    node(degrade);
-                });
+                node(abrade);
                 node(scald, () -> {
                     node(coruscate, () -> {
                         node(cauterize);
-                        node(pyrexia);
                     });
                 });
             });

@@ -17,7 +17,6 @@ import mindustry.world.meta.*;
 public class PowderCrafter extends GenericCrafter {
     public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
     public float powderCapacity = 20f;
-    public float powderPressure = 1f;
     public @Nullable PowderStack outputPowder;
 
     public PowderCrafter(String name) {
@@ -94,11 +93,6 @@ public class PowderCrafter extends GenericCrafter {
         @Override
         public PowderModule powderModule() {
             return powders;
-        }
-
-        @Override
-        public float powderPressure() {
-            return powderPressure;
         }
 
         @Override

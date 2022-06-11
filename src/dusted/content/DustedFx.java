@@ -23,14 +23,30 @@ public class DustedFx {
         });
     }),
 
-    smallBounce = new Effect(40f, 120f, e -> {
+    bounce = new Effect(40f, 120f, e -> {
         if (!(e.data instanceof Float distance)) return;
+        float tx = e.x + Angles.trnsx(e.rotation + 180f, distance / 2) + Angles.trnsx(e.rotation, e.finpow() * distance);
+        float ty = e.y + Angles.trnsy(e.rotation + 180f, distance / 2) + Angles.trnsy(e.rotation, e.finpow() * distance);
+        float width = distance / 4f;
+        float height = distance / 10f;
+
         for (int i : Mathf.signs) {
-            Draw.color(Pal.accent);
-            Drawf.tri(e.x, e.y, distance, e.foutpow() * 8f, e.rotation + 90 * i);
-            Draw.color();
-            Drawf.tri(e.x, e.y, distance, e.foutpow() * 4f, e.rotation + 90 * i);
+            Draw.color(DustedPal.cavnenYellow);
+            Drawf.tri(e.x, e.y, distance + 22f, e.foutpow() * (distance / 16f), e.rotation + 90 * i);
+
+            Fill.tri(tx + Angles.trnsx(e.rotation + 140f * i, e.foutpow() * width), ty + Angles.trnsy(e.rotation + 140f * i, e.foutpow() * width), tx + Angles.trnsx(e.rotation, e.foutpow() * height), ty + Angles.trnsy(e.rotation, e.foutpow() * height), tx - Angles.trnsx(e.rotation, e.foutpow() * height), ty - Angles.trnsy(e.rotation, e.foutpow() * height));
         }
+    }),
+
+    eruption = new Effect(80f, 1200f, e -> {
+        color(Pal.lighterOrange, Pal.lightOrange, Color.gray, e.fin());
+        randLenVectors(e.id, 32, 520f * e.finpow(), (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 12f + 0.5f);
+        });
+        color(Color.gray);
+        randLenVectors(e.id, 44, 580f * e.finpow(), (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 6f);
+        });
     }),
 
     shootCavnenShrapnel = new Effect(20f, e -> {
@@ -39,6 +55,14 @@ public class DustedFx {
 
         randLenVectors(e.id, 5, 20f * e.finpow(), e.rotation, 30f, (x, y) -> {
             Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fin() * 4f + 1f);
+        });
+    }),
+
+    bisectShoot = new Effect(40f, e -> {
+        color(DustedPal.cavnenYellow, DustedPal.cavnenYellowBack, e.fin());
+
+        randLenVectors(e.id, 7, 18f * e.fin(), e.rotation, 40f, (x, y) -> {
+            Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fslope() * 4f + 2f);
         });
     }),
 
@@ -73,12 +97,21 @@ public class DustedFx {
         Fill.rect(e.x, e.y, 0.2f + e.fout() * 1.2f, 0.2f + e.fout() * 1.2f, e.rotation);
     }),
 
-    shootLine = new Effect(25f, 80f, e -> {
-        color(DustedPal.cavnenYellow, DustedPal.cavnenYellowBack, DustedPal.darkCavnen, e.fin());
+    shootQuartz = new Effect(16, e -> {
+        color(DustedPal.lightQuartz, DustedPal.darkQuartz, e.fin());
+        float w = 1.4f + 6 * e.fout();
+        Drawf.tri(e.x, e.y, w, 18f * e.fout(), e.rotation);
+        Drawf.tri(e.x, e.y, w, 6f * e.fout(), e.rotation + 180f);
+    }),
 
-        for (int i : Mathf.signs) {
-            Drawf.tri(e.x + Angles.trnsx(e.rotation, 37.5f), e.y + Angles.trnsy(e.rotation, 37.5f), 100f, e.foutpow() * 8f, e.rotation + 90 * i);
-        }
+    hitQuartz = new Effect(33f, e -> {
+        color(DustedPal.lightQuartz, DustedPal.darkQuartz, e.fin());
+
+        Lines.stroke(e.fout() * 2.5f);
+        Lines.circle(e.x, e.y, e.finpow() * 6f);
+        randLenVectors(e.id, 5, e.finpow() * 8f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 4f);
+        });
     }),
 
     shootQuartzFlame = new Effect(20f, 90f, e -> {

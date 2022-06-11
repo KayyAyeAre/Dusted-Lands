@@ -4,18 +4,21 @@ import arc.graphics.*;
 import mindustry.type.*;
 
 public class DustedItems {
-    //TODO more than half of these are unobtainable
-    public static Item plastel, biotite, pyresin, telonate;
+    public static Item plastel, arsenic, pyresin, volMembrane, telonate;
 
     public static void load() {
         plastel = new Item("plastel", Color.valueOf("e9e49f")) {{
             alwaysUnlocked = true;
         }};
 
-        biotite = new Item("biotite");
+        arsenic = new Item("arsenic", Color.valueOf("cd8594")) {{
+            alwaysUnlocked = true;
+        }};
 
-        pyresin = new Item("pyresin");
+        pyresin = new Item("pyresin", Color.valueOf("e997b1"));
 
-        telonate = new Item("telonate");
+        //volMembrane = new Item("vol-membrane");
+
+        telonate = new Item("telonate", Color.valueOf("9b77bc"));
     }
 }
