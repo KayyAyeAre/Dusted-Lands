@@ -1,6 +1,7 @@
 package dusted.ai.types;
 
 import dusted.entities.abilities.*;
+import mindustry.*;
 import mindustry.ai.types.*;
 import mindustry.gen.*;
 
@@ -9,11 +10,11 @@ public class OrbsAI extends GroundAI {
     public void updateUnit() {
         super.updateUnit();
 
-        if (unit.abilities.contains(a -> a instanceof RevolvingOrbAbility)) {
-            RevolvingOrbAbility ability = (RevolvingOrbAbility) unit.abilities.find(a -> a instanceof RevolvingOrbAbility);
-            if (Groups.bullet.intersect(unit.x - (ability.radius * 2), unit.y - (ability.radius * 2), ability.radius * 4, ability.radius * 4).contains(b -> b.team.isEnemy(unit.team))) {
-                ability.summon();
+        unit.abilities.each(a -> a instanceof RevolvingOrbAbility, a -> {
+            RevolvingOrbAbility orbs = (RevolvingOrbAbility) a;
+            if (Groups.bullet.intersect(unit.x - (orbs.radius * 2), unit.y - (orbs.radius * 2), orbs.radius * 4, orbs.radius * 4).contains(b -> b.team.isEnemy(Vars.player.unit().team))) {
+                orbs.summon();
             }
-        }
+        });
     }
 }

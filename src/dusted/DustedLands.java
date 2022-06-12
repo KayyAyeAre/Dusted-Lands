@@ -1,20 +1,18 @@
 package dusted;
 
 import arc.*;
-import arc.struct.*;
 import dusted.content.*;
 import dusted.input.*;
 import dusted.world.*;
 import mindustry.*;
 import mindustry.mod.*;
-import mindustry.world.*;
 
 public class DustedLands extends Mod {
-    public static DustedInput input;
+    public DustedInputHandler inputHandler;
 
     public DustedLands() {
         Vars.enableConsole = true;
-        Core.app.addListener(input = new DustedInput());
+        Core.app.addListener(inputHandler = new DustedInputHandler());
         VolcanoSpawner.load();
     }
 

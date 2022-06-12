@@ -6,8 +6,8 @@ import mindustry.ai.types.*;
 
 public class BounceAI extends FlyingAI {
     @Override
-    public void updateWeapons() {
-        super.updateWeapons();
+    public void updateTargeting() {
+        super.updateTargeting();
         if (target != null) unit.abilities.each(a -> a instanceof BounceAbility, a -> ((BounceAbility) a).bounce(unit, target));
     }
 }

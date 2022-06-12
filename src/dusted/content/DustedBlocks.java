@@ -589,7 +589,10 @@ public class DustedBlocks {
 
             consumes.power(5f);
             consumes.items(ItemStack.with(Items.silicon, 120, Items.titanium, 100, DustedItems.plastel, 60));
-            upgrades.addAll(new UnitType[]{DustedUnitTypes.recur, DustedUnitTypes.saltate});
+            upgrades.addAll(
+                    new UnitType[]{DustedUnitTypes.recur, DustedUnitTypes.saltate},
+                    new UnitType[]{DustedUnitTypes.rancor, DustedUnitTypes.animus}
+            );
         }};
         //endregion
         //region cores

@@ -2,6 +2,6 @@
 # Dusted Lands
 A small mod which adds powders to the game, along with a ton of turrets, units, and other content.
 # Compiling
-1. Download Java 16.
-2. Run `gradlew jar` (or `./gradlew jar` on Linux/Mac).
-3. The mod jar will be in `/build/libs/`. Currently doesn't support android.
+1. Clone this repository.
+2. Install any necessary files, such as Java 16 and the Android SDK.
+3. Run `gradlew deploy`. This should create a jar in the `build/libs` directory.

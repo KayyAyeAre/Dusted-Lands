@@ -1,10 +1,10 @@
 name: "dusted-lands"
 main: "dusted.DustedLands"
-version: 0.2
+version: 0.21
 minGameVersion: 129
 java: true
 
 displayName: "Dusted Lands"
 author: "KayAyeAre"
-description: "A small mod which adds powders to the game, along with a ton of turrets, units, and other content."
+description: "A small mod which adds powders to the game, along with some of turrets, units, and other content."
 repo: "KayyAyeAre/Dusted-Lands"
