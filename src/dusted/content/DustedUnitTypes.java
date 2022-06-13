@@ -175,7 +175,7 @@ public class DustedUnitTypes {
             hitSize = 10f;
             range = 180f;
             engineOffset = 8f;
-            engineSize = 6f;
+            engineSize = 3f;
             outlineColor = DustedPal.darkerCavnen;
 
             weapons.add(new Weapon("dusted-lands-decay-mount") {{
@@ -228,6 +228,8 @@ public class DustedUnitTypes {
             defaultController = BounceAI::new;
             health = 6800f;
             armor = 7f;
+            accel = 0.1f;
+            drag = 0.06f;
             rotateSpeed = 4f;
             speed = 1.2f;
             hitSize = 22f;

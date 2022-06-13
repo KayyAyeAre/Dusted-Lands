@@ -6,7 +6,7 @@ import mindustry.content.*;
 import mindustry.type.*;
 
 public class DustedStatusEffects {
-    public static StatusEffect deteriorating, adhered;
+    public static StatusEffect deteriorating;
 
     public static void load() {
         //sprite by sh1p :D
@@ -20,10 +20,6 @@ public class DustedStatusEffects {
                     unit.damagePierce(transitionDamage);
                 });
             });
-        }};
-
-        adhered = new StatusEffect("adhered") {{
-            speedMultiplier = 0.5f;
         }};
     }
 }
