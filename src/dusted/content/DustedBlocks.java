@@ -16,6 +16,7 @@ import dusted.world.consumers.*;
 import dusted.world.draw.*;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
+import mindustry.entities.pattern.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
@@ -55,6 +56,7 @@ public class DustedBlocks {
     coreAbate, coreDissent, coreDecadence,
     //units
     cavnenTerraConstructor, cavnenAerialConstructor,
+    //TODO bad names?
     binaryRestructurer, ternaryRestructurer,
     //sandbox
     powderSource, powderVoid;
@@ -188,7 +190,7 @@ public class DustedBlocks {
             size = 2;
             hasPower = true;
             powderCapacity = 40f;
-            consumes.power(0.4f);
+            consumePower(0.4f);
             squareSprite = false;
         }};
 
@@ -198,7 +200,7 @@ public class DustedBlocks {
             funnelAmount = 0.4f;
             hasPower = true;
             powderCapacity = 80f;
-            consumes.power(1.6f);
+            consumePower(1.6f);
             squareSprite = false;
         }};
         //endregion
@@ -210,12 +212,15 @@ public class DustedBlocks {
             laserColor2 = DustedPal.lightTitanium;
         }};
 
-        pressureBurner = new PowderBurnerGenerator("pressure-burner") {{
+        pressureBurner = new PowderConsumeGenerator("pressure-burner") {{
             requirements(Category.power, ItemStack.with());
             powerProduction = 1.5f;
             size = 2;
             ambientSound = Sounds.smelter;
             ambientSoundVolume = 0.03f;
+            drawer = new DrawMulti(new DrawDefault(), new DrawWarmupRegion());
+
+            consume(new ConsumePowderFlammable(0.2f, 0.2f));
         }};
 
         //endregion
@@ -228,7 +233,7 @@ public class DustedBlocks {
             craftTime = 60f;
             hasItems = true;
 
-            new ConsumePowder(DustedPowders.cavnenDust, 0.1f).add(consumes);
+            consume(new ConsumePowder(DustedPowders.cavnenDust, 0.1f));
         }};
 
         quartzExtractor = new PowderCrafter("quartz-extractor") {{
@@ -236,11 +241,11 @@ public class DustedBlocks {
             hasPower = true;
             size = 2;
 
-            drawer = new DrawPowderMixer();
+            drawer = new DrawMulti(new DrawDefault(), new DrawPowder());
             outputPowder = new PowderStack(DustedPowders.quartzDust, 1f);
             craftTime = 12f;
-            consumes.power(1f);
-            consumes.item(Items.sand, 3);
+            consumePower(1f);
+            consumeItem(Items.sand, 3);
         }};
 
         titaniumMill = new PowderCrafter("titanium-mill") {{
@@ -250,8 +255,8 @@ public class DustedBlocks {
             drawer = new DrawPowderRotator();
             outputPowder = new PowderStack(DustedPowders.titaniumPowder, 1f);
             craftTime = 10f;
-            consumes.power(2f);
-            consumes.item(Items.titanium, 2);
+            consumePower(2f);
+            consumeItem(Items.titanium, 2);
         }};
 
         siliconForge = new PowderCrafter("silicon-forge") {{
@@ -262,12 +267,12 @@ public class DustedBlocks {
 
             outputItem = new ItemStack(Items.silicon, 2);
             craftTime = 90f;
-            drawer = new DrawSmelter(Color.valueOf("ffef99"));
+            drawer = new DrawMulti(new DrawDefault(), new DrawFlame(Color.valueOf("ffef99")));
             ambientSound = Sounds.smelter;
             ambientSoundVolume = 0.08f;
 
-            consumes.power(1.2f);
-            new ConsumePowder(DustedPowders.quartzDust, 0.05f).add(consumes);
+            consumePower(1.2f);
+            consume(new ConsumePowder(DustedPowders.quartzDust, 0.05f));
         }};
 
         pyresinCondenser = new PowderCrafter("pyresin-condenser") {{
@@ -275,11 +280,11 @@ public class DustedBlocks {
             hasPower = true;
             size = 3;
 
-            drawer = new DrawPowderRotator();
+            drawer = new DrawMulti(new DrawDefault(), new DrawPowderRotator());
             outputItem = new ItemStack(DustedItems.pyresin, 2);
             craftTime = 50f;
-            consumes.power(1f);
-            new ConsumePowder(DustedPowders.pyreol, 0.1f).add(consumes);
+            consumePower(1f);
+            consume(new ConsumePowder(DustedPowders.pyreol, 0.1f));
         }};
 
         cafraegenRadiator = new PowderCrafter("cafraegen-radiator") {{
@@ -289,14 +294,14 @@ public class DustedBlocks {
             size = 3;
             outputPowder = new PowderStack(DustedPowders.cafraegen, 1f);
             craftTime = 15f;
-            drawer = new DrawSmelter(Color.valueOf("9ef4ef")) {{
+            drawer = new DrawMulti(new DrawDefault(), new DrawFlame(Color.valueOf("9ef4ef")) {{
                 flameRadius = 6f;
                 flameRadiusIn = 4f;
-            }};
+            }});
 
-            consumes.power(2.5f);
-            consumes.item(Items.thorium, 3);
-            new ConsumePowder(DustedPowders.quartzDust, 0.2f).add(consumes);
+            consumePower(2.5f);
+            consumeItem(Items.thorium, 3);
+            consume(new ConsumePowder(DustedPowders.quartzDust, 0.2f));
         }};
         //endregion
         //region defense
@@ -314,16 +319,16 @@ public class DustedBlocks {
         stasisProjector = new StasisProjector("stasis-projector") {{
             requirements(Category.effect, ItemStack.with());
             size = 3;
-            consumes.power(4f);
+            consumePower(4f);
         }};
         //endregion
         //region turrets
         rive = new PowderTurret("rive") {{
             requirements(Category.turret, ItemStack.with());
             health = 240;
-            reloadTime = 25f;
+            reload = 25f;
             rotateSpeed = 12f;
-            recoilAmount = 3f;
+            recoil = 3f;
 
             ammo(
                     DustedPowders.cavnenDust, new BasicBulletType(4f, 10f) {{
@@ -338,6 +343,8 @@ public class DustedBlocks {
                         backColor = trailColor = DustedPal.cavnenYellowBack;
                     }}
             );
+
+            coolant = consumeCoolant(0.1f);
         }};
 
         abrade = new PowderTurret("abrade") {{
@@ -345,9 +352,8 @@ public class DustedBlocks {
             size = 2;
             health = 240 * size * size;
             targetGround = false;
-            reloadTime = 12f;
-            recoilAmount = 4f;
-            restitution = 0.1f;
+            reload = 12f;
+            recoil = 4f;
             range = 75f;
             shootSound = Sounds.pew;
             rotateSpeed = 18f;
@@ -368,6 +374,8 @@ public class DustedBlocks {
                         serrations = 0;
                     }}
             );
+
+            coolant = consumeCoolant(0.1f);
         }};
 
         bisect = new PowderTurret("bisect") {{
@@ -375,9 +383,8 @@ public class DustedBlocks {
             size = 2;
             health = 220 * size * size;
             targetAir = false;
-            reloadTime = 70f;
-            recoilAmount = 1f;
-            restitution = 0.04f;
+            reload = 70f;
+            recoil = 1f;
             range = 100f;
             shootSound = Sounds.laser;
 
@@ -392,15 +399,16 @@ public class DustedBlocks {
                         ammoMultiplier = 1f;
                     }}
             );
+
+            coolant = consumeCoolant(0.1f);
         }};
 
         scald = new PowderTurret("scald") {{
             requirements(Category.turret, ItemStack.with());
             size = 2;
             health = 260 * size * size;
-            reloadTime = 80f;
-            recoilAmount = 3f;
-            restitution = 0.1f;
+            reload = 80f;
+            recoil = 3f;
             range = 100f;
             shootEffect = Fx.shootBig2;
             shootSound = Sounds.shootBig;
@@ -436,13 +444,15 @@ public class DustedBlocks {
                         }};
                     }}
             );
+
+            coolant = consumeCoolant(0.1f);
         }};
 
         spume = new PowderTurret("spume") {{
             requirements(Category.turret, ItemStack.with());
             size = 2;
-            recoilAmount = 0f;
-            reloadTime = 4f;
+            recoil = 0f;
+            reload = 4f;
             coolantMultiplier = 1.5f;
             range = 70f;
             shootCone = 50f;
@@ -464,14 +474,16 @@ public class DustedBlocks {
                         hittable = false;
                     }}
             );
+
+            coolant = consumeCoolant(0.1f);
         }};
 
         coruscate = new PowderTurret("coruscate") {{
             requirements(Category.turret, ItemStack.with());
             size = 3;
             health = 280 * size * size;
-            reloadTime = 110f;
-            recoilAmount = 5f;
+            reload = 110f;
+            recoil = 5f;
             shootSound = Sounds.artillery;
             range = 3f * 70f;
 
@@ -507,16 +519,17 @@ public class DustedBlocks {
                         }};
                     }}
             );
+
+            coolant = consumeCoolant(0.1f);
         }};
 
         cauterize = new PowderTurret("cauterize") {{
             requirements(Category.turret, ItemStack.with());
             size = 3;
             health = 300 * size * size;
-            reloadTime = 120f;
-            recoilAmount = 6f;
-            shots = 3;
-            spread = 20f;
+            reload = 120f;
+            recoil = 6f;
+            shoot = new ShootSpread(3, 20f);
             shootSound = Sounds.shootBig;
 
             ammo(
@@ -548,6 +561,8 @@ public class DustedBlocks {
                         }};
                     }}
             );
+
+            coolant = consumeCoolant(0.1f);
         }};
         //endregion
         //region units
@@ -557,7 +572,7 @@ public class DustedBlocks {
                     new UnitPlan(DustedUnitTypes.pique, 60f * 15f, ItemStack.with(Items.silicon, 15, DustedItems.arsenic, 10))
             );
             size = 3;
-            consumes.power(1f);
+            consumePower(1f);
         }};
 
         cavnenAerialConstructor = new UnitFactory("cavnen-aerial-constructor") {{
@@ -566,7 +581,7 @@ public class DustedBlocks {
                     new UnitPlan(DustedUnitTypes.carom, 60f * 10f, ItemStack.with(Items.silicon, 10, Items.titanium, 10))
             );
             size = 3;
-            consumes.power(1f);
+            consumePower(1f);
         }};
 
         binaryRestructurer = new PowderReconstructor("binary-restructurer") {{
@@ -574,8 +589,8 @@ public class DustedBlocks {
             size = 3;
             constructTime = 10 * 60f;
 
-            consumes.power(2f);
-            consumes.items(ItemStack.with(Items.silicon, 50, DustedItems.arsenic, 40));
+            consumePower(2f);
+            consumeItems(ItemStack.with(Items.silicon, 50, DustedItems.arsenic, 40));
 
             upgrades.addAll(
                     new UnitType[]{DustedUnitTypes.carom, DustedUnitTypes.recur},
@@ -587,8 +602,8 @@ public class DustedBlocks {
             requirements(Category.units, ItemStack.with());
             size = 5;
 
-            consumes.power(5f);
-            consumes.items(ItemStack.with(Items.silicon, 120, Items.titanium, 100, DustedItems.plastel, 60));
+            consumePower(5f);
+            consumeItems(ItemStack.with(Items.silicon, 120, Items.titanium, 100, DustedItems.plastel, 60));
             upgrades.addAll(
                     new UnitType[]{DustedUnitTypes.recur, DustedUnitTypes.saltate},
                     new UnitType[]{DustedUnitTypes.rancor, DustedUnitTypes.animus}
@@ -640,18 +655,17 @@ public class DustedBlocks {
                     }}
             );
 
-            spread = 4f;
-            shots = 2;
-            alternate = true;
-            reloadTime = 20f;
-            restitution = 0.03f;
+            shoot = new ShootAlternate(3.5f);
+
+            shootY = 3f;
+            reload = 20f;
             range = 110;
             shootCone = 15f;
             ammoUseEffect = Fx.casing1;
-            shootSound = Sounds.rockBreak;
             health = 250;
             inaccuracy = 2f;
             rotateSpeed = 10f;
+            coolant = consumeCoolant(0.1f);
         }};
         //endregion
     }

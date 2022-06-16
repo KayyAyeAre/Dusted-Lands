@@ -5,6 +5,7 @@ import arc.math.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 
+//TODO add shootpattern to this
 public class RocketBulletType extends BasicBulletType {
     public float rocketReload = 10f;
     public int rockets = 1;

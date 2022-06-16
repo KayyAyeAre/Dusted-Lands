@@ -24,7 +24,7 @@ public class ArmoredChute extends Chute {
 
     @Override
     public boolean blends(Tile tile, int rotation, int otherx, int othery, int otherrot, Block otherblock) {
-        return (Vars.world.build(otherx, othery) instanceof PowderBlockc pow && pow.outputsPowder() && blendsArmored(tile, rotation, otherx, othery, otherrot, otherblock)) ||
+        return (Vars.world.build(otherx, othery) instanceof PowderBuildc pow && pow.outputsPowder() && blendsArmored(tile, rotation, otherx, othery, otherrot, otherblock)) ||
                 (lookingAt(tile, rotation, otherx, othery, otherblock));
     }
 
@@ -34,7 +34,7 @@ public class ArmoredChute extends Chute {
             super.draw();
             //copied straight from armored conduit code lmao
             Building next = front();
-            if (next != null && next.team == team && next instanceof PowderBlockc) return;
+            if (next != null && next.team == team && next instanceof PowderBuildc) return;
 
             Draw.rect(capRegion, x, y, rotdeg());
         }

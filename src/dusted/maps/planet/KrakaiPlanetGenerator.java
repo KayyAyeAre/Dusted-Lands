@@ -6,6 +6,7 @@ import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
 import arc.util.noise.*;
+import dusted.*;
 import dusted.content.*;
 import mindustry.ai.*;
 import mindustry.content.*;
@@ -40,6 +41,11 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.darksand, Blocks.darksand, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.cavnenDusting, DustedBlocks.latite, DustedBlocks.cavnenDusting},
             {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite}
     };
+
+    @Override
+    public Schematic getDefaultLoadout() {
+        return DustedLoadouts.basicAbate;
+    }
 
     @Override
     public float getHeight(Vec3 position) {

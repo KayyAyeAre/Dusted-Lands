@@ -20,7 +20,7 @@ public class PowderJunction extends PowderBlock {
             dir = (dir + 4) % 4;
             Building next = nearby(dir);
 
-            if (next instanceof PowderBlockc build) {
+            if (next instanceof PowderBuildc build) {
                 return build.getPowderDestination(this, powder);
             }
 

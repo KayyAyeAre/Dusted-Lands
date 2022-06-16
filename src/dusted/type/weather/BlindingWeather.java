@@ -6,6 +6,7 @@ import arc.math.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 
+//TODO remove
 public class BlindingWeather extends Weather {
     public Color color = Color.white.cpy();
 

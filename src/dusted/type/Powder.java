@@ -32,9 +32,7 @@ public class Powder extends UnlockableContent {
     public void setStats() {
         stats.addPercent(Stat.temperature, temperature);
         stats.addPercent(Stat.flammability, flammability);
-        DustedStatValues.customStats(stats, cstats -> {
-            cstats.addCStat("density", StatValues.number((int) (density * 100), StatUnit.percent));
-        }, false);
+        stats.addPercent(DustedStats.density, density);
     }
 
     @Override

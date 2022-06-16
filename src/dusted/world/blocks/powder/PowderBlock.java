@@ -1,10 +1,8 @@
 package dusted.world.blocks.powder;
 
 import arc.*;
-import arc.struct.*;
 import arc.util.io.*;
 import dusted.type.*;
-import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
 import dusted.world.meta.*;
 import dusted.world.modules.*;
@@ -13,10 +11,9 @@ import mindustry.ctype.*;
 import mindustry.gen.*;
 import mindustry.ui.*;
 import mindustry.world.*;
-import mindustry.world.meta.*;
 
-public class PowderBlock extends Block implements CustomReplacec {
-    public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
+public class PowderBlock extends Block implements CustomReplacec, PowderBlockc {
+    public boolean[] powderFilter = {};
     public float powderCapacity = 10f;
     public float powderPressure = 1f;
 
@@ -27,32 +24,28 @@ public class PowderBlock extends Block implements CustomReplacec {
     }
 
     @Override
-    public boolean canReplace(Block other) {
-        return customReplace(this, other);
+    public void init() {
+        powderFilter = new boolean[Vars.content.getBy(ContentType.effect_UNUSED).size];
+        super.init();
     }
 
     @Override
-    public void init() {
-        super.init();
-        consumes.each(cons -> {
-            if (cons instanceof ConsumePowderBase pcons) pcons.addPowderFilters(powderFilters);
-        });
+    public boolean canReplace(Block other) {
+        return customReplace(this, other);
     }
 
     @Override
     public void setStats() {
         super.setStats();
 
-        DustedStatValues.customStats(stats, cstats -> {
-            cstats.addCStat("powder-capacity", StatValues.number(powderCapacity, StatUnit.none));
-        });
+        stats.add(DustedStats.powderCapacity, powderCapacity, DustedStatUnits.powderUnits);
     }
 
     @Override
     public void setBars() {
         super.setBars();
 
-        bars.add("powders", build -> {
+        addBar("powders", build -> {
             PowderBuild entity = (PowderBuild) build;
             Powder powder = entity.powders.current();
             return new Bar(() -> entity.powders.get(powder) <= 0.001f ? Core.bundle.get("bar.powder") : powder.localizedName, () -> powder.color, () -> entity.powders.get(powder) / powderCapacity);
@@ -64,7 +57,17 @@ public class PowderBlock extends Block implements CustomReplacec {
         return "powder";
     }
 
-    public class PowderBuild extends Building implements PowderBlockc {
+    @Override
+    public boolean[] powderFilters() {
+        return powderFilter;
+    }
+
+    @Override
+    public float powderCapacity() {
+        return powderCapacity;
+    }
+
+    public class PowderBuild extends Building implements PowderBuildc {
         @Override
         public boolean outputsPowder() {
             return true;
@@ -97,11 +100,6 @@ public class PowderBlock extends Block implements CustomReplacec {
         @Override
         public Building build() {
             return this;
-        }
-
-        @Override
-        public Bits filters() {
-            return powderFilters;
         }
     }
 }

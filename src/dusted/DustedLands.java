@@ -4,14 +4,12 @@ import arc.*;
 import dusted.content.*;
 import dusted.input.*;
 import dusted.world.*;
-import mindustry.*;
 import mindustry.mod.*;
 
 public class DustedLands extends Mod {
     public DustedInputHandler inputHandler;
 
     public DustedLands() {
-        Vars.enableConsole = true;
         Core.app.addListener(inputHandler = new DustedInputHandler());
         VolcanoSpawner.load();
     }
@@ -23,9 +21,10 @@ public class DustedLands extends Mod {
         DustedPowders.load();
         DustedUnitTypes.load();
         DustedBlocks.load();
+        DustedLoadouts.load();
         DustedWeathers.load();
-        //DustedPlanets.load();
-        //DustedSectorPresets.load();
-        DustedTechTree.load();
+        DustedPlanets.load();
+        DustedSectorPresets.load();
+        KrakaiTechTree.load();
     }
 }

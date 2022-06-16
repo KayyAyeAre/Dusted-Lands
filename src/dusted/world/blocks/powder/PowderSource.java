@@ -7,10 +7,8 @@ import arc.util.io.*;
 import dusted.type.*;
 import mindustry.*;
 import mindustry.ctype.*;
-import mindustry.gen.*;
+import mindustry.entities.units.*;
 import mindustry.world.blocks.*;
-
-import static mindustry.Vars.*;
 
 public class PowderSource extends PowderBlock {
     public PowderSource(String name) {
@@ -24,16 +22,22 @@ public class PowderSource extends PowderBlock {
         configClear((PowderSourceBuild build) -> build.source = null);
     }
 
+    @Override
+    public void drawPlanConfig(BuildPlan plan, Eachable<BuildPlan> list) {
+        drawPlanConfigCenter(plan, plan.config, "center", true);
+    }
+
     public class PowderSourceBuild extends PowderBuild {
-        public @Nullable Powder source = null;
+        public @Nullable
+        Powder source = null;
 
         @Override
         public void draw() {
             super.draw();
 
-            if(source == null){
+            if (source == null) {
                 Draw.rect("cross", x, y);
-            }else{
+            } else {
                 Draw.color(source.color);
                 Draw.rect("center", x, y);
                 Draw.color();
@@ -52,18 +56,7 @@ public class PowderSource extends PowderBlock {
 
         @Override
         public void buildConfiguration(Table table) {
-            ItemSelection.buildTable(table, content.getBy(ContentType.effect_UNUSED), () -> source, this::configure);
-        }
-
-        @Override
-        public boolean onConfigureTileTapped(Building other) {
-            if (this == other) {
-                deselect();
-                configure(null);
-                return false;
-            }
-
-            return true;
+            ItemSelection.buildTable(table, Vars.content.getBy(ContentType.effect_UNUSED), () -> source, this::configure);
         }
 
         @Override

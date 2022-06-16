@@ -9,6 +9,7 @@ import dusted.graphics.*;
 import mindustry.ai.types.*;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
+import mindustry.entities.pattern.*;
 import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.type.weapons.*;
@@ -30,15 +31,12 @@ public class DustedUnitTypes {
     public static void load() {
         erode = new DustedUnitType("erode") {{
             constructor = UnitEntity::create;
-            defaultController = BuilderAI::new;
-            isCounted = false;
+            aiController = BuilderAI::new;
             flying = true;
             itemCapacity = 30;
-            outlineColor = DustedPal.darkerCavnen;
             alwaysUnlocked = true;
             accel = 0.1f;
             drag = 0.05f;
-            commandLimit = 3;
             speed = 3.2f;
             mineSpeed = 7f;
             mineTier = 1;
@@ -63,15 +61,14 @@ public class DustedUnitTypes {
                     statusDuration = 6 * 60f;
                     frontColor = DustedPal.cavnenYellow;
                     backColor = trailColor = DustedPal.cavnenYellowBack;
+                    hitEffect = despawnEffect = DustedFx.hitCavnen;
                 }};
             }});
         }};
 
         recede = new DustedUnitType("recede") {{
             constructor = UnitEntity::create;
-            outlineColor = DustedPal.darkerCavnen;
-            defaultController = BuilderAI::new;
-            isCounted = false;
+            aiController = BuilderAI::new;
             flying = true;
             mineSpeed = 7f;
             mineTier = 1;
@@ -86,7 +83,6 @@ public class DustedUnitTypes {
             engineSize = 3f;
             hitSize = 8f;
             lowAltitude = true;
-            commandLimit = 4;
 
             weapons.add(new RepairBeamWeapon("dusted-lands-recede-repair-weapon") {{
                 x = 0f;
@@ -109,16 +105,14 @@ public class DustedUnitTypes {
 
         carom = new DustedUnitType("carom") {{
             constructor = UnitEntity::create;
-            defaultController = BounceAI::new;
+            aiController = BounceAI::new;
             speed = 2.5f;
             flying = true;
             health = 80;
-            commandLimit = 4;
             accel = 0.1f;
             drag = 0.06f;
             rotateSpeed = 10f;
             range = 120f;
-            outlineColor = DustedPal.darkerCavnen;
 
             abilities.add(new BounceAbility() {{
                 bounceDamage = 8f;
@@ -127,7 +121,7 @@ public class DustedUnitTypes {
 
         recur = new DustedUnitType("recur") {{
             constructor = UnitEntity::create;
-            defaultController = BounceAI::new;
+            aiController = BounceAI::new;
             health = 320;
             armor = 2f;
             speed = 2.6f;
@@ -137,7 +131,6 @@ public class DustedUnitTypes {
             range = 180f;
             engineOffset = 8f;
             engineSize = 3f;
-            outlineColor = DustedPal.darkerCavnen;
 
             weapons.add(new Weapon() {{
                 x = 0f;
@@ -165,10 +158,11 @@ public class DustedUnitTypes {
 
         saltate = new DustedUnitType("saltate") {{
             constructor = UnitEntity::create;
-            defaultController = BounceAI::new;
+            aiController = BounceAI::new;
             health = 650;
             speed = 2f;
             accel = 0.08f;
+            drag = 0.03f;
             flying = true;
             lowAltitude = true;
             armor = 4f;
@@ -176,7 +170,6 @@ public class DustedUnitTypes {
             range = 180f;
             engineOffset = 8f;
             engineSize = 3f;
-            outlineColor = DustedPal.darkerCavnen;
 
             weapons.add(new Weapon("dusted-lands-decay-mount") {{
                 reload = 70f;
@@ -184,7 +177,6 @@ public class DustedUnitTypes {
                 y = -2f;
                 rotate = true;
                 shootSound = Sounds.missile;
-                outlineColor = DustedPal.darkerCavnen;
 
                 bullet = new BasicBulletType(3.5f, 12f) {{
                     width = height = 14f;
@@ -194,7 +186,7 @@ public class DustedUnitTypes {
                     frontColor = DustedPal.cavnenYellow;
                     backColor = DustedPal.cavnenYellowBack;
                     shootEffect = Fx.shootHealYellow;
-                    hitEffect = despawnEffect = Fx.hitYellowLaser;
+                    hitEffect = despawnEffect = DustedFx.hitCavnen;
 
                     fragBullets = 5;
                     fragBullet = new MissileBulletType(4f, 10f, "circle-bullet") {{
@@ -205,7 +197,7 @@ public class DustedUnitTypes {
                         lifetime = 30f;
                         splashDamageRadius = 16f;
                         splashDamage = 12f;
-                        hitEffect = despawnEffect = Fx.hitYellowLaser;
+                        hitEffect = despawnEffect = DustedFx.hitCavnen;
                         frontColor = DustedPal.cavnenYellow;
                         backColor = DustedPal.cavnenYellowBack;
                         trailColor = DustedPal.cavnenYellow;
@@ -225,11 +217,11 @@ public class DustedUnitTypes {
 
         staccato = new DustedUnitType("staccato") {{
             constructor = UnitEntity::create;
-            defaultController = BounceAI::new;
+            aiController = BounceAI::new;
             health = 6800f;
             armor = 7f;
-            accel = 0.1f;
-            drag = 0.06f;
+            accel = 0.05f;
+            drag = 0.03f;
             rotateSpeed = 4f;
             speed = 1.2f;
             hitSize = 22f;
@@ -237,7 +229,6 @@ public class DustedUnitTypes {
             engineSize = 4.6f;
             flying = true;
             lowAltitude = true;
-            outlineColor = DustedPal.darkerCavnen;
 
             weapons.addAll(
                     new Weapon("dusted-lands-decay-launcher-mount") {{
@@ -263,6 +254,7 @@ public class DustedUnitTypes {
                             homingRange = 80f;
                             frontColor = DustedPal.cavnenYellow;
                             backColor = DustedPal.cavnenYellowBack;
+                            hitEffect = despawnEffect = DustedFx.hitCavnen;
 
                             rocketBulletType = new BasicBulletType(1f, 44f, "circle-bullet") {{
                                 drag = 0.06f;
@@ -274,6 +266,7 @@ public class DustedUnitTypes {
                                 backColor = DustedPal.cavnenYellowBack;
                                 status = DustedStatusEffects.deteriorating;
                                 statusDuration = 4 * 60f;
+                                hitEffect = despawnEffect = DustedFx.hitCavnen;
                             }};
                         }};
                     }},
@@ -294,6 +287,7 @@ public class DustedUnitTypes {
                             statusDuration = 8 * 60f;
                             frontColor = DustedPal.cavnenYellow;
                             backColor = trailColor = DustedPal.cavnenYellowBack;
+                            hitEffect = despawnEffect = DustedFx.hitCavnen;
                         }};
                     }},
                     new Weapon("dusted-lands-decay-mount") {{
@@ -313,6 +307,7 @@ public class DustedUnitTypes {
                             statusDuration = 8 * 60f;
                             frontColor = DustedPal.cavnenYellow;
                             backColor = trailColor = DustedPal.cavnenYellowBack;
+                            hitEffect = despawnEffect = DustedFx.hitCavnen;
                         }};
                     }}
             );
@@ -328,18 +323,18 @@ public class DustedUnitTypes {
 
         pique = new DustedUnitType("pique") {{
             constructor = MechUnit::create;
-            defaultController = OrbsAI::new;
+            aiController = OrbsAI::new;
             speed = 0.8f;
             hitSize = 7f;
             health = 140f;
-            outlineColor = DustedPal.darkerCavnen;
-            mechLegColor = DustedPal.darkerCavnen;
 
             weapons.add(new Weapon("dusted-lands-decay-gun") {{
                 y = -1f;
                 x = 2.5f;
                 reload = 50f;
-                shots = 3;
+                shoot = new ShootPattern() {{
+                    shots = 3;
+                }};
                 inaccuracy = 10f;
                 shootSound = Sounds.missile;
 
@@ -350,6 +345,7 @@ public class DustedUnitTypes {
                     lifetime = 50f;
                     frontColor = DustedPal.cavnenYellow;
                     backColor = DustedPal.cavnenYellowBack;
+                    hitEffect = despawnEffect = DustedFx.hitCavnen;
                     status = DustedStatusEffects.deteriorating;
                     statusDuration = 4 * 60f;
                 }};
@@ -368,20 +364,17 @@ public class DustedUnitTypes {
 
         rancor = new DustedUnitType("rancor") {{
             constructor = MechUnit::create;
-            defaultController = OrbsAI::new;
+            aiController = OrbsAI::new;
             speed = 0.7f;
             hitSize = 10f;
             health = 300f;
             armor = 5f;
-            outlineColor = DustedPal.darkerCavnen;
-            mechLegColor = DustedPal.darkerCavnen;
 
             weapons.add(new Weapon("dusted-lands-large-decay-gun") {{
                 x = 3;
                 y = -2;
                 reload = 40f;
-                shots = 2;
-                spacing = 15f;
+                shoot = new ShootSpread(2, 15f);
                 shootSound = Sounds.shootBig;
 
                 bullet = new ShrapnelBulletType() {{
@@ -414,9 +407,7 @@ public class DustedUnitTypes {
             rotateSpeed = 4f;
             armor = 7f;
             constructor = MechUnit::create;
-            defaultController = OrbsAI::new;
-            outlineColor = DustedPal.darkerCavnen;
-            mechLegColor = DustedPal.darkerCavnen;
+            aiController = OrbsAI::new;
 
             weapons.addAll(
                     new Weapon("dusted-lands-decay-launcher") {{
@@ -442,6 +433,7 @@ public class DustedUnitTypes {
                             rockets = 3;
                             rocketSpread = 20f;
                             shootSound = Sounds.explosion;
+                            hitEffect = despawnEffect = DustedFx.hitCavnen;
 
                             rocketBulletType = new BasicBulletType(2f, 8f) {{
                                 width = height = 12f;
@@ -452,6 +444,7 @@ public class DustedUnitTypes {
                                 backColor = DustedPal.cavnenYellowBack;
                                 status = DustedStatusEffects.deteriorating;
                                 statusDuration = 4 * 60f;
+                                hitEffect = despawnEffect = DustedFx.hitCavnen;
                             }};
                         }};
                     }},
@@ -483,12 +476,9 @@ public class DustedUnitTypes {
 
         quail = new DustedUnitType("quail") {{
             constructor = MechUnit::create;
-            defaultController = QuakeAI::new;
+            aiController = QuakeAI::new;
             speed = 0.6f;
             health = 120;
-            commandLimit = 5;
-            outlineColor = DustedPal.darkerCavnen;
-            mechLegColor = DustedPal.darkerCavnen;
 
             abilities.add(new QuakeAbility() {{
                 quakeSteps = 3;

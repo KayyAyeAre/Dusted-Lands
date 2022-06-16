@@ -2,6 +2,7 @@ package dusted.input;
 
 import arc.*;
 import arc.input.*;
+import arc.util.*;
 import dusted.entities.abilities.*;
 import mindustry.*;
 
@@ -9,9 +10,12 @@ public class DustedDesktopInput implements CustomInput {
     @Override
     public void update() {
         if (Vars.state.isPlaying()) {
-            if (Core.input.keyTap(KeyCode.b) && !Core.scene.hasKeyboard()) Vars.player.unit().abilities.each(a -> a instanceof BounceAbility, a -> ((BounceAbility) a).bounce(Vars.player.unit()));
-            if (Core.input.keyTap(KeyCode.q) && !Core.scene.hasKeyboard()) Vars.player.unit().abilities.each(a -> a instanceof QuakeAbility, a -> ((QuakeAbility) a).quake());
-            if (Core.input.keyTap(KeyCode.r) && !Core.scene.hasKeyboard()) Vars.player.unit().abilities.each(a -> a instanceof RevolvingOrbAbility, a -> ((RevolvingOrbAbility) a).summon());
+            Structs.each(a -> {
+                if (Core.scene.hasKeyboard()) return;
+                if (Core.input.keyTap(KeyCode.b) && a instanceof BounceAbility bounceAbility) bounceAbility.bounce(Vars.player.unit());
+                if (Core.input.keyTap(KeyCode.q) && a instanceof QuakeAbility quakeAbility) quakeAbility.quake();
+                if (Core.input.keyTap(KeyCode.r) && a instanceof RevolvingOrbAbility orbsAbility) orbsAbility.summon();
+            }, Vars.player.unit().abilities);
         }
     }
 }

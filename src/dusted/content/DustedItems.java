@@ -15,10 +15,15 @@ public class DustedItems {
             alwaysUnlocked = true;
         }};
 
-        pyresin = new Item("pyresin", Color.valueOf("e997b1"));
+        pyresin = new Item("pyresin", Color.valueOf("e997b1")) {{
+            flammability = 0.1f;
+        }};
 
         //volMembrane = new Item("vol-membrane");
 
-        telonate = new Item("telonate", Color.valueOf("9b77bc"));
+        telonate = new Item("telonate", Color.valueOf("9b77bc")) {{
+            charge = 0.3f;
+            radioactivity = 0.2f;
+        }};
     }
 }

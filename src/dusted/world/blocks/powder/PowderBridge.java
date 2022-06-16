@@ -4,7 +4,6 @@ import arc.*;
 import arc.struct.*;
 import arc.util.io.*;
 import dusted.type.*;
-import dusted.world.blocks.powder.PowderBlock.*;
 import dusted.world.interfaces.*;
 import dusted.world.meta.*;
 import dusted.world.modules.*;
@@ -16,8 +15,8 @@ import mindustry.world.*;
 import mindustry.world.blocks.distribution.*;
 import mindustry.world.meta.*;
 
-public class PowderBridge extends ItemBridge implements CustomReplacec {
-    public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
+public class PowderBridge extends ItemBridge implements CustomReplacec, PowderBlockc {
+    public boolean[] powderFilter = {};
     public float powderCapacity = 10f;
     public float powderPressure = 1f;
 
@@ -32,19 +31,23 @@ public class PowderBridge extends ItemBridge implements CustomReplacec {
     }
 
     @Override
+    public void init() {
+        powderFilter = new boolean[Vars.content.getBy(ContentType.effect_UNUSED).size];
+        super.init();
+    }
+
+    @Override
     public void setStats() {
         super.setStats();
 
-        DustedStatValues.customStats(stats, cstats -> {
-            cstats.addCStat("powder-capacity", StatValues.number(powderCapacity, StatUnit.none));
-        });
+        stats.add(DustedStats.powderCapacity, powderCapacity, DustedStatUnits.powderUnits);
     }
 
     @Override
     public void setBars() {
         super.setBars();
 
-        bars.add("powders", build -> {
+        addBar("powders", build -> {
             PowderBridgeBuild entity = (PowderBridgeBuild) build;
             Powder powder = entity.powders.current();
             return new Bar(() -> entity.powders.get(powder) <= 0.001f ? Core.bundle.get("bar.powder") : powder.localizedName, () -> powder.color, () -> entity.powders.get(powder) / powderCapacity);
@@ -56,7 +59,17 @@ public class PowderBridge extends ItemBridge implements CustomReplacec {
         return "powder";
     }
 
-    public class PowderBridgeBuild extends ItemBridgeBuild implements PowderBlockc {
+    @Override
+    public boolean[] powderFilters() {
+        return powderFilter;
+    }
+
+    @Override
+    public float powderCapacity() {
+        return powderCapacity;
+    }
+
+    public class PowderBridgeBuild extends ItemBridgeBuild implements PowderBuildc {
         public PowderModule powders = new PowderModule();
 
         @Override
@@ -106,16 +119,6 @@ public class PowderBridge extends ItemBridge implements CustomReplacec {
         @Override
         public Building build() {
             return this;
-        }
-
-        @Override
-        public float powderCapacity() {
-            return powderCapacity;
-        }
-
-        @Override
-        public Bits filters() {
-            return powderFilters;
         }
     }
 }

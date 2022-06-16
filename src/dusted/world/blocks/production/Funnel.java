@@ -112,7 +112,7 @@ public class Funnel extends PowderBlock {
 
         @Override
         public void updateTile() {
-            if (consValid() && powderDrop != null) {
+            if (canConsume() && powderDrop != null) {
                 float add = Math.min(powderCapacity - powders.total(), amount * funnelAmount * edelta());
                 powders.add(powderDrop, add);
             }

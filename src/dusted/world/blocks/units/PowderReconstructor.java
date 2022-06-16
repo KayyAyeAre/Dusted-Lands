@@ -1,8 +1,6 @@
 package dusted.world.blocks.units;
 
-import arc.struct.*;
 import arc.util.io.*;
-import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
 import dusted.world.modules.*;
 import mindustry.*;
@@ -10,8 +8,8 @@ import mindustry.ctype.*;
 import mindustry.gen.*;
 import mindustry.world.blocks.units.*;
 
-public class PowderReconstructor extends Reconstructor {
-    public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
+public class PowderReconstructor extends Reconstructor implements PowderBlockc {
+    public boolean[] powderFilter = {};
     public float powderCapacity = 20f;
 
     public PowderReconstructor(String name) {
@@ -19,14 +17,22 @@ public class PowderReconstructor extends Reconstructor {
     }
 
     @Override
-    public void init() {
-        super.init();
-        consumes.each(cons -> {
-            if (cons instanceof ConsumePowderBase pcons) pcons.addPowderFilters(powderFilters);
-        });
+    public boolean[] powderFilters() {
+        return powderFilter;
     }
 
-    public class PowderReconstructorBuild extends ReconstructorBuild implements PowderBlockc {
+    @Override
+    public float powderCapacity() {
+        return powderCapacity;
+    }
+
+    @Override
+    public void init() {
+        powderFilter = new boolean[Vars.content.getBy(ContentType.effect_UNUSED).size];
+        super.init();
+    }
+
+    public class PowderReconstructorBuild extends ReconstructorBuild implements PowderBuildc {
         public PowderModule powders = new PowderModule();
 
         @Override
@@ -37,16 +43,6 @@ public class PowderReconstructor extends Reconstructor {
         @Override
         public PowderModule powderModule() {
             return powders;
-        }
-
-        @Override
-        public Bits filters() {
-            return powderFilters;
-        }
-
-        @Override
-        public float powderCapacity() {
-            return powderCapacity;
         }
 
         @Override

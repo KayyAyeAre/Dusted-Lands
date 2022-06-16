@@ -6,7 +6,7 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.util.*;
 import dusted.content.*;
-import mindustry.*;
+import mindustry.core.*;
 import mindustry.entities.*;
 import mindustry.entities.abilities.*;
 import mindustry.gen.*;
@@ -41,7 +41,7 @@ public class BounceAbility extends Ability {
                 unit.rotation = unit.angleTo(targetpos);
                 Tmp.v1.trns(unit.rotation, bounceDistance * unit.speedMultiplier());
                 bounceEffect.at(Mathf.lerp(unit.x, unit.x + Tmp.v1.x, 0.5f), Mathf.lerp(unit.y, unit.y + Tmp.v1.y, 0.5f), unit.rotation, bounceDistance * unit.speedMultiplier());
-                Vars.world.raycastEachWorld(unit.x, unit.y, unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, (rx, ry) -> {
+                World.raycastEachWorld(unit.x, unit.y, unit.x + Tmp.v1.x, unit.y + Tmp.v1.y, (rx, ry) -> {
                     Damage.damage(unit.team, rx * 8, ry * 8, 8f, bounceDamage);
                     return false;
                 });

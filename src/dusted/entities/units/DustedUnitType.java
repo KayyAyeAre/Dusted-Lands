@@ -2,19 +2,27 @@ package dusted.entities.units;
 
 import arc.graphics.*;
 import arc.graphics.g2d.*;
+import arc.util.*;
+import dusted.graphics.*;
 import mindustry.graphics.*;
 import mindustry.graphics.MultiPacker.*;
 import mindustry.type.*;
+import mindustry.world.meta.*;
 
 public class DustedUnitType extends UnitType {
     public DustedUnitType(String name) {
         super(name);
+
+        //just some preset stuff
+        outlineColor = mechLegColor = DustedPal.darkerCavnen;
+        envEnabled = Env.scorching | Env.terrestrial;
+        envDisabled = Env.none;
     }
 
     @Override
     public void createIcons(MultiPacker packer) {
         super.createIcons(packer);
-        PixmapRegion base = new PixmapRegion(packer.get(name + "-outline").crop());
+        PixmapRegion base = new PixmapRegion(packer.get(name).crop());
 
         //TODO broken
         //Pixmap cell = Core.atlas.getPixmap(name + "-cell").pixmap.copy();
@@ -23,9 +31,10 @@ public class DustedUnitType extends UnitType {
 
         for (Weapon weapon : weapons) {
             if (!weapon.name.isEmpty()) {
+                Log.info(weapon.name);
                 Pixmap over = base.crop();
                 Pixmap weaponRegion = packer.get(weapon.name).crop();
-                Pixmap weaponOutlineRegion = packer.get(weapon.name + "-outline").crop();
+                Pixmap weaponOutlineRegion = weapon.top ? weaponRegion.copy() : packer.get(weapon.name + "-outline").crop();
                 base.pixmap.draw(weaponOutlineRegion,
                         (int) (weapon.x * 4 + base.width / 2f - weaponOutlineRegion.width / 2f),
                         (int) (-weapon.y * 4 + base.height / 2f - weaponOutlineRegion.height / 2f),
@@ -58,6 +67,6 @@ public class DustedUnitType extends UnitType {
             }
         }
 
-        packer.add(PageType.main, name + "-full", base);
+        packer.add(PageType.main, name + "-preview", base);
     }
 }

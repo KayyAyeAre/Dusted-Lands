@@ -13,7 +13,7 @@ import static arc.math.Angles.*;
 
 public class DustedFx {
     public static Effect
-    powderLeak = new Effect(46f, 20f, e -> {
+            powderLeak = new Effect(46f, 20f, e -> {
         if (!(e.data instanceof Powder powder)) return;
         Draw.z(Mathf.lerpDelta(Layer.block - 0.001f, Layer.blockUnder, e.finpow()));
         color(powder.color, Color.gray, e.finpow() / 2f);
@@ -104,13 +104,29 @@ public class DustedFx {
         Drawf.tri(e.x, e.y, w, 6f * e.fout(), e.rotation + 180f);
     }),
 
-    hitQuartz = new Effect(33f, e -> {
+    hitQuartz = new Effect(30f, e -> {
         color(DustedPal.lightQuartz, DustedPal.darkQuartz, e.fin());
 
-        Lines.stroke(e.fout() * 2.5f);
-        Lines.circle(e.x, e.y, e.finpow() * 6f);
+        e.scaled(10f, s -> {
+            Lines.stroke(s.fout() * 2.5f);
+            Lines.circle(s.x, s.y, s.finpow() * 6f);
+        });
+
         randLenVectors(e.id, 5, e.finpow() * 8f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, e.fout() * 4f);
+        });
+    }),
+
+    hitCavnen = new Effect(30f, e -> {
+        color(DustedPal.cavnenYellow, DustedPal.cavnenYellowBack, e.fin());
+
+        e.scaled(10f, s -> {
+            Lines.stroke(s.fout() * 2.5f);
+            Lines.circle(s.x, s.y, s.finpow() * 6f);
+        });
+
+        randLenVectors(e.id, 5, e.finpow() * 8f, (x, y) -> {
+            Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fout() * 5f);
         });
     }),
 

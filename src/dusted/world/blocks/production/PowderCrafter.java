@@ -1,12 +1,10 @@
 package dusted.world.blocks.production;
 
-import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
 import dusted.type.*;
-import dusted.world.consumers.*;
 import dusted.world.interfaces.*;
-import dusted.world.meta.DustedStatValues;
+import dusted.world.meta.*;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.ctype.*;
@@ -14,8 +12,8 @@ import mindustry.gen.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.meta.*;
 
-public class PowderCrafter extends GenericCrafter {
-    public Bits powderFilters = new Bits(Vars.content.getBy(ContentType.effect_UNUSED).size);
+public class PowderCrafter extends GenericCrafter implements PowderBlockc {
+    public boolean[] powderFilter = {};
     public float powderCapacity = 20f;
     public @Nullable PowderStack outputPowder;
 
@@ -24,26 +22,32 @@ public class PowderCrafter extends GenericCrafter {
     }
 
     @Override
-    public void init() {
-        super.init();
-        consumes.each(cons -> {
-            if (cons instanceof ConsumePowderBase pcons) pcons.addPowderFilters(powderFilters);
-        });
-    }
-
-    @Override
     public void setStats() {
         super.setStats();
-        DustedStatValues.customStats(stats, cstats -> {
-            cstats.addCStat("powder-capacity", StatValues.number(powderCapacity, StatUnit.none));
-        });
+        stats.add(DustedStats.powderCapacity, powderCapacity, DustedStatUnits.powderUnits);
 
         if (outputPowder != null) {
             stats.add(Stat.output, DustedStatValues.powder(outputPowder.powder, outputPowder.amount * (60f / craftTime), true));
         }
     }
 
-    public class PowderCrafterBuild extends GenericCrafterBuild implements PowderBlockc {
+    @Override
+    public void init() {
+        powderFilter = new boolean[Vars.content.getBy(ContentType.effect_UNUSED).size];
+        super.init();
+    }
+
+    @Override
+    public boolean[] powderFilters() {
+        return powderFilter;
+    }
+
+    @Override
+    public float powderCapacity() {
+        return powderCapacity;
+    }
+
+    public class PowderCrafterBuild extends GenericCrafterBuild implements PowderBuildc {
         public PowderModule powders = new PowderModule();
 
         @Override
@@ -86,11 +90,6 @@ public class PowderCrafter extends GenericCrafter {
         }
 
         @Override
-        public float powderCapacity() {
-            return powderCapacity;
-        }
-
-        @Override
         public PowderModule powderModule() {
             return powders;
         }
@@ -98,11 +97,6 @@ public class PowderCrafter extends GenericCrafter {
         @Override
         public Building build() {
             return this;
-        }
-
-        @Override
-        public Bits filters() {
-            return powderFilters;
         }
     }
 }
