@@ -7,6 +7,7 @@ import dusted.graphics.*;
 import dusted.type.*;
 import dusted.world.blocks.defense.*;
 import dusted.world.blocks.defense.turrets.*;
+import dusted.world.blocks.distribution.*;
 import dusted.world.blocks.environment.*;
 import dusted.world.blocks.powder.*;
 import dusted.world.blocks.power.*;
@@ -43,6 +44,8 @@ public class DustedBlocks {
     //turrets
     rive, abrade, sunder, redox, bisect, scald, spume, coruscate, cauterize, evanesce,
     cocaineDuo,
+    //distribution
+    transferLink, transferTower,
     //powder distribution
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
@@ -143,6 +146,12 @@ public class DustedBlocks {
             volcanGravel.asFloor().decoration = this;
         }};
 
+        //endregion
+        //region distribution
+        transferLink = new TransferLink("transfer-link") {{
+            requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 3));
+            squareSprite = false;
+        }};
         //endregion
         //region powder
         chute = new Chute("chute") {{

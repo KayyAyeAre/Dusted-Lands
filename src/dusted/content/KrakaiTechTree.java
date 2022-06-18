@@ -10,12 +10,14 @@ public class KrakaiTechTree {
 
     public static void load() {
         DustedPlanets.krakai.techTree = nodeRoot("krakai", coreAbate, () -> {
-            node(chute, () -> {
-                node(powderJunction, () -> {
-                    node(powderRouter, () -> {
-                        node(bridgeChute);
-                        node(denseChute, () -> {
-                            node(armoredChute);
+            node(transferLink, () -> {
+                node(chute, () -> {
+                    node(powderJunction, () -> {
+                        node(powderRouter, () -> {
+                            node(bridgeChute);
+                            node(denseChute, () -> {
+                                node(armoredChute);
+                            });
                         });
                     });
                 });
