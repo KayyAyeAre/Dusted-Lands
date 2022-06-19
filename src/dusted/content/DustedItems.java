@@ -4,7 +4,7 @@ import arc.graphics.*;
 import mindustry.type.*;
 
 public class DustedItems {
-    public static Item plastel, arsenic, pyresin, volMembrane, telonate;
+    public static Item plastel, arsenic, pyresin, volMembrane, ascneta, telonate;
 
     public static void load() {
         plastel = new Item("plastel", Color.valueOf("e9e49f")) {{
