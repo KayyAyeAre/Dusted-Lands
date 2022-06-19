@@ -20,6 +20,8 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 
+import static mindustry.Vars.tilesize;
+
 public class TransferLink extends Block {
     public float transferTime = 2f;
     public float linkRange = 60f;
@@ -84,6 +86,11 @@ public class TransferLink extends Block {
     @Override
     public void changePlacementPath(Seq<Point2> points, int rotation) {
         Placement.calculateNodes(points, this, rotation, (point, other) -> overlaps(Vars.world.tile(point.x, point.y), Vars.world.tile(other.x, other.y)));
+    }
+
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid) {
+        Drawf.circles(x * tilesize + offset, y * tilesize + offset, linkRange * tilesize);
     }
 
     @Override
@@ -302,9 +309,9 @@ public class TransferLink extends Block {
 
             Drawf.circles(x, y, linkRange);
             links.each(i -> {
-                Block linkedBlock = Vars.world.build(i).block;
+                Building link = Vars.world.build(i);
                 Point2 p = Point2.unpack(i);
-                Drawf.square(p.x * Vars.tilesize, p.y * Vars.tilesize, linkedBlock.size * Vars.tilesize / 2f + 1f, Pal.place);
+                Drawf.square(link.x, link.y, link.block.size * Vars.tilesize / 2f + 1f, Pal.place);
             });
         }
 

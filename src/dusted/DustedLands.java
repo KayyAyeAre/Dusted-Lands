@@ -25,6 +25,6 @@ public class DustedLands extends Mod {
         DustedWeathers.load();
         //DustedPlanets.load();
         //DustedSectorPresets.load();
-        KrakaiTechTree.load();
+        //KrakaiTechTree.load();
     }
 }
