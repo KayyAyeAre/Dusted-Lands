@@ -152,6 +152,15 @@ public class DustedBlocks {
             requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 3));
             squareSprite = false;
         }};
+
+        transferTower = new TransferLink("transfer-tower") {{
+            requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 10, Items.graphite, 7, Items.silicon, 5));
+            squareSprite = false;
+            size = 2;
+            linkRange = 160f;
+            maxLinks = 10;
+            itemCapacity = 20;
+        }};
         //endregion
         //region powder
         chute = new Chute("chute") {{
@@ -261,7 +270,7 @@ public class DustedBlocks {
             requirements(Category.crafting, ItemStack.with(Items.graphite, 80, DustedItems.plastel, 60));
             hasPower = true;
             size = 2;
-            drawer = new DrawPowderRotator();
+            drawer = new DrawMulti(new DrawDefault(), new DrawPowderRotator());
             outputPowder = new PowderStack(DustedPowders.titaniumPowder, 1f);
             craftTime = 10f;
             consumePower(2f);

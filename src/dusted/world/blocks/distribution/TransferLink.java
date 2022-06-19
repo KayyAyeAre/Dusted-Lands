@@ -100,9 +100,9 @@ public class TransferLink extends Block {
     @Override
     public void load() {
         super.load();
-        arrowRegion = Core.atlas.find(name + "-arrow");
-        laserRegion = Core.atlas.find(name + "-laser");
-        laserEndRegion = Core.atlas.find(name + "-laser-end");
+        arrowRegion = Core.atlas.find("dusted-lands-link-arrow");
+        laserRegion = Core.atlas.find("dusted-lands-link-laser");
+        laserEndRegion = Core.atlas.find("dusted-lands-link-laser-end");
     }
 
     @Override
@@ -282,7 +282,9 @@ public class TransferLink extends Block {
 
             links.each(i -> {
                 Point2 pos = Point2.unpack(i);
-                if (linkValid(this, Vars.world.build(i), false)) drawLink(x, y, pos.x * Vars.tilesize, pos.y * Vars.tilesize, block.size, Vars.world.build(i).block.size, time);
+                Building link = Vars.world.build(i);
+
+                if (linkValid(this, link, false)) drawLink(x, y, link.x, link.y, block.size, link.block.size, time);
             });
 
             Draw.reset();
