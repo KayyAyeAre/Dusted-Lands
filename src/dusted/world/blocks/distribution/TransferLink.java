@@ -2,7 +2,6 @@ package dusted.world.blocks.distribution;
 
 import arc.*;
 import arc.func.*;
-import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
@@ -10,6 +9,7 @@ import arc.struct.*;
 import arc.util.*;
 import arc.util.io.*;
 import mindustry.*;
+import mindustry.core.*;
 import mindustry.entities.*;
 import mindustry.entities.units.*;
 import mindustry.game.*;
@@ -21,11 +21,11 @@ import mindustry.world.*;
 import mindustry.world.meta.*;
 
 public class TransferLink extends Block {
-    public float transferTime = 4f;
+    public float transferTime = 2f;
     public float linkRange = 60f;
+    public int maxLinks = 5;
     public float arrowSpacing = 10f, arrowSpeed = 0.5f;
-    public Color laserColor = Color.valueOf("eea692");
-    public TextureRegion arrowRegion;
+    public TextureRegion laserRegion, laserEndRegion, arrowRegion;
 
     public TransferLink(String name) {
         super(name);
@@ -101,6 +101,8 @@ public class TransferLink extends Block {
     public void load() {
         super.load();
         arrowRegion = Core.atlas.find(name + "-arrow");
+        laserRegion = Core.atlas.find(name + "-laser");
+        laserEndRegion = Core.atlas.find(name + "-laser-end");
     }
 
     @Override
@@ -124,26 +126,36 @@ public class TransferLink extends Block {
     }
 
     public boolean linkValid(Building entity, Building other) {
-        return other instanceof TransferLinkBuild && other.team == entity.team && overlaps(entity.tile, other.tile);
+        return linkValid(entity, other, true);
     }
 
-    public void drawLink(float x1, float y1, float x2, float y2, float progress) {
-        Lines.stroke(4f);
-        Draw.color(laserColor);
-        Lines.line(x1, y1, x2, y2);
-        Lines.stroke(2f);
-        Draw.color();
-        Lines.line(x1, y1, x2, y2);
+    public boolean linkValid(Building entity, Building other, boolean checkMaxLinks) {
+        return (((TransferLinkBuild) entity).links.size < maxLinks || !checkMaxLinks) && other instanceof TransferLinkBuild && other.team == entity.team && overlaps(entity.tile, other.tile);
+    }
 
-        float dst = Mathf.dst(x1, y1, x2, y2);
+    public void drawLink(float x1, float y1, float x2, float y2, float size1, float size2, float progress) {
+        float angle = Angles.angle(x1, y1, x2, y2);
+        float ox = Mathf.cosDeg(angle), oy = Mathf.sinDeg(angle);
+        float l1 = size1 * Vars.tilesize / 2f - 1.5f, l2 = size2 * Vars.tilesize / 2f - 1.5f;
+        float scl = 8f * 0.5f * Draw.scl;
+
+        float dx1 = x1 + ox * l1, dy1 = y1 + oy * l1, dx2 = x2 - ox * l2, dy2 = y2 - oy * l2;
+
+        Draw.alpha(Renderer.laserOpacity);
+        Draw.z(Layer.power);
+        Draw.rect(laserEndRegion, dx1, dy1);
+        Draw.rect(laserEndRegion, dx2, dy2);
+        Lines.stroke(laserRegion.height * Draw.scl);
+        Lines.line(laserRegion, dx1 + ox * scl, dy1 + oy * scl, dx2 - ox * scl, dy2 - oy * scl, false);
+
+        float dst = Mathf.dst(dx1, dy1, dx2, dy2);
         float arot = Angles.angle(x1, y1, x2, y2);
         int arrows = (int) (dst / arrowSpacing);
 
-        Draw.color(laserColor);
         for (int a = 0; a < arrows; a++) {
             Draw.rect(arrowRegion,
-                    x1 + Angles.trnsx(arot, Vars.tilesize / 2f + a * arrowSpacing + progress),
-                    y1 + Angles.trnsy(arot, Vars.tilesize / 2f + a * arrowSpacing + progress),
+                    dx1 + Angles.trnsx(arot, Vars.tilesize / 2f + a * arrowSpacing + progress),
+                    dy1 + Angles.trnsy(arot, Vars.tilesize / 2f + a * arrowSpacing + progress),
                     arot);
         }
     }
@@ -163,10 +175,9 @@ public class TransferLink extends Block {
         public float transferCounter;
         public float time;
 
-        //breaks shit
         @Override
-        public boolean canPickup() {
-            return false;
+        public void pickedUp() {
+            links.clear();
         }
 
         @Override
@@ -201,17 +212,23 @@ public class TransferLink extends Block {
         }
 
         public void validate() {
-            if (!links.isEmpty()) {
-                int iterations = 0;
+            if (links.size > 0) {
+                cur = cur % links.size;
+            } else {
+                cur = 0;
+            }
 
-                while (!linkValid(this, Vars.world.build(cur)) && iterations <= links.size) {
-                    iterations++;
-                    if (!pending.contains(links.get(cur))) links.removeValue(cur);
-                    incrementCurrent();
+            int iterations = 0;
+
+            while (!links.isEmpty() && !linkValid(this, Vars.world.build(links.get(cur)), false) && iterations <= links.size) {
+                iterations++;
+                if (!pending.contains(links.get(cur))) {
+                    links.removeValue(links.get(cur));
                 }
+                incrementCurrent();
             }
             pending.each(i -> {
-                if (linkValid(this, Vars.world.build(i))) pending.removeValue(i);
+                if (linkValid(this, Vars.world.build(i), false)) pending.removeValue(i);
             });
         }
 
@@ -263,11 +280,9 @@ public class TransferLink extends Block {
         public void draw() {
             super.draw();
 
-            Draw.z(Layer.blockUnder);
             links.each(i -> {
                 Point2 pos = Point2.unpack(i);
-
-                drawLink(x, y, pos.x * Vars.tilesize, pos.y * Vars.tilesize, time);
+                if (linkValid(this, Vars.world.build(i), false)) drawLink(x, y, pos.x * Vars.tilesize, pos.y * Vars.tilesize, block.size, Vars.world.build(i).block.size, time);
             });
 
             Draw.reset();
