@@ -9,6 +9,7 @@ import mindustry.entities.*;
 import mindustry.graphics.*;
 
 import static arc.graphics.g2d.Draw.*;
+import static arc.graphics.g2d.Lines.stroke;
 import static arc.math.Angles.*;
 
 public class DustedFx {
@@ -58,7 +59,7 @@ public class DustedFx {
         });
     }),
 
-    bisectShoot = new Effect(40f, e -> {
+    splitShot = new Effect(40f, e -> {
         color(DustedPal.cavnenYellow, DustedPal.cavnenYellowBack, e.fin());
 
         randLenVectors(e.id, 7, 18f * e.fin(), e.rotation, 40f, (x, y) -> {
@@ -97,7 +98,7 @@ public class DustedFx {
         Fill.rect(e.x, e.y, 0.2f + e.fout() * 1.2f, 0.2f + e.fout() * 1.2f, e.rotation);
     }),
 
-    shootQuartz = new Effect(16, e -> {
+    shootQuartz = new Effect(16f, e -> {
         color(DustedPal.lightQuartz, DustedPal.darkQuartz, e.fin());
         float w = 1.4f + 6 * e.fout();
         Drawf.tri(e.x, e.y, w, 18f * e.fout(), e.rotation);
@@ -117,7 +118,7 @@ public class DustedFx {
         });
     }),
 
-    hitCavnen = new Effect(30f, e -> {
+    hitCavnen = new Effect(15f, e -> {
         color(DustedPal.cavnenYellow, DustedPal.cavnenYellowBack, e.fin());
 
         e.scaled(10f, s -> {
@@ -144,6 +145,23 @@ public class DustedFx {
 
         randLenVectors(e.id, 4, 1f + e.fin() * 15f, e.rotation, 40f, (x, y) -> {
             Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fout() * 3 + 2.6f);
+        });
+    }),
+
+    hitPinkLaser =  new Effect(10f, e -> {
+        color(Color.white, DustedPal.pinkHeal, e.fin());
+        stroke(0.6f + e.fout());
+        Lines.circle(e.x, e.y, e.fin() * 4f);
+
+        randLenVectors(e.id, 5, 1f + e.finpow() * 6f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, 0.5f + e.fout());
+        });
+    }),
+
+    //jkdfhgkjshrgiushdjkfckvhiu
+    high = new Effect(20f, e -> {
+        randLenVectors(e.id, 2, 4f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y + e.finpow(), e.fout() * 2f);
         });
     });
 }

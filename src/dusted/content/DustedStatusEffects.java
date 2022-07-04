@@ -6,7 +6,7 @@ import mindustry.content.*;
 import mindustry.type.*;
 
 public class DustedStatusEffects {
-    public static StatusEffect deteriorating;
+    public static StatusEffect deteriorating, high;
 
     public static void load() {
         //sprite by sh1p :D
@@ -20,6 +20,17 @@ public class DustedStatusEffects {
                     unit.damagePierce(transitionDamage);
                 });
             });
+        }};
+
+        //why do i do these sorts of things
+        high = new StatusEffect("high") {{
+            color = Color.white;
+            damage = 0.1f;
+            speedMultiplier = 1.2f;
+            reloadMultiplier = 1.4f;
+            healthMultiplier = 0.6f;
+
+            effect = DustedFx.high;
         }};
     }
 }

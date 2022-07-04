@@ -1,9 +1,10 @@
-package dusted.world;
+package dusted.game;
 
 import arc.*;
 import arc.math.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.Timer.*;
 import dusted.content.*;
 import mindustry.*;
 import mindustry.content.*;
@@ -15,11 +16,11 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.world.*;
 
-//TODO
 public class VolcanoSpawner {
-    private static Seq<Tile> volcanoes = new Seq<>();
+    public static Seq<Tile> volcanoes = new Seq<>();
     public static int eruptionWave;
     public static BulletType volcanoBullet;
+    public static Seq<Task> tasks = new Seq<>();
 
     public static void load() {
         volcanoBullet = new BasicBulletType(4f, 70f, "circle-bullet") {
@@ -45,6 +46,8 @@ public class VolcanoSpawner {
 
         Events.run(WorldLoadEvent.class, () -> {
             volcanoes.clear();
+            tasks.each(Task::cancel);
+            tasks.clear();
             for (Tile tile : Vars.world.tiles) {
                 if (tile.overlay() == DustedBlocks.volcanoZone) volcanoes.add(tile);
             }
@@ -67,7 +70,7 @@ public class VolcanoSpawner {
         volcanoes.each(t -> {
             bullets(t);
             for (int r = 0; r < 16; r++) {
-                Time.run(r * 100f + Mathf.random(-60f, 70f), () -> bullets(t));
+                tasks.add(Time.runTask(r * 100f + Mathf.random(-60f, 70f), () -> bullets(t)));
             }
         });
     }

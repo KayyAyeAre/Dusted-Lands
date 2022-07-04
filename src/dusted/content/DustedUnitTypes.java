@@ -1,6 +1,8 @@
 package dusted.content;
 
 import arc.graphics.*;
+import arc.math.*;
+import arc.util.*;
 import dusted.ai.types.*;
 import dusted.entities.abilities.*;
 import dusted.entities.bullet.*;
@@ -11,14 +13,16 @@ import mindustry.content.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.type.weapons.*;
+import mindustry.world.meta.*;
 
 public class DustedUnitTypes {
     public static UnitType
     carom, recur, saltate, staccato, recrudesce,
 
-    revoke, negate, preclude, abrogate, repudiate,
+    sob, wail, snivel, sorrow, lament,
 
     quail, seism, quaver, temblor, convulse,
 
@@ -64,6 +68,8 @@ public class DustedUnitTypes {
                     hitEffect = despawnEffect = DustedFx.hitCavnen;
                 }};
             }});
+
+            abilities.add(new DecayShieldAbility(40f));
         }};
 
         recede = new DustedUnitType("recede") {{
@@ -97,6 +103,8 @@ public class DustedUnitTypes {
                     maxRange = 120f;
                 }};
             }});
+
+            abilities.add(new DecayShieldAbility(60f));
         }};
 
         atrophy = new UnitType("atrophy") {{
@@ -321,6 +329,54 @@ public class DustedUnitTypes {
             }});
         }};
 
+        sob = new DustedUnitType("sob") {{
+            constructor = UnitEntity::create;
+            controller = u -> new RepairAI();
+
+            accel = 0.1f;
+            drag = 0.05f;
+            speed = 3f;
+            flying = true;
+            lowAltitude = true;
+            rotateSpeed = 8f;
+            engineSize = 3.5f;
+            engineOffset = 3f;
+
+            weapons.add(new Weapon("dusted-lands-orb-heal-mount") {{
+                x = 3f;
+                y = -2f;
+                reload = 12f;
+                shootSound = Sounds.lasershoot;
+
+                bullet = new BasicBulletType(4f, 6f, "circle-bullet") {{
+                    lifetime = 30f;
+                    drag = 0.03f;
+                    healPercent = 4f;
+                    collidesTeam = true;
+                    frontColor = Color.white;
+                    backColor = healColor = DustedPal.pinkHeal;
+                    smokeEffect = hitEffect = despawnEffect = DustedFx.hitPinkLaser;
+                }};
+            }});
+
+            abilities.add(new DecayShieldAbility(80f));
+        }};
+
+        wail = new DustedUnitType("wail") {{
+            constructor = UnitEntity::create;
+            aiController = DefenderAI::new;
+            accel = 0.2f;
+            drag = 0.1f;
+            speed = 2.4f;
+            flying = true;
+            hitSize = 8f;
+            rotateSpeed = 6f;
+            engineOffset = 3f;
+            engineSize = 4f;
+
+            abilities.add(new DecayShieldAbility(160f));
+        }};
+
         pique = new DustedUnitType("pique") {{
             constructor = MechUnit::create;
             aiController = OrbsAI::new;
@@ -406,62 +462,55 @@ public class DustedUnitTypes {
             hitSize = 12f;
             rotateSpeed = 4f;
             armor = 7f;
-            constructor = MechUnit::create;
+            groundLayer = Layer.legUnit - 1f;
+            hovering = true;
+            constructor = LegsUnit::create;
             aiController = OrbsAI::new;
 
-            weapons.addAll(
-                    new Weapon("dusted-lands-decay-launcher") {{
-                        x = 6f;
-                        y = 2f;
-                        top = false;
-                        recoil = 5f;
-                        reload = 110f;
-                        shake = 1.6f;
-                        shootSound = Sounds.shootBig;
+            legCount = 4;
+            legLength = 18f;
+            legForwardScl = 0.5f;
+            legBaseOffset = 2f;
+            legStraightness = 0.5f;
+            legLengthScl = 0.7f;
+            legMaxLength = 1.3f;
 
-                        bullet = new RocketBulletType(2.6f, 26f) {{
-                            width = height = 18f;
-                            splashDamage = 16f;
-                            splashDamageRadius = 20f;
-                            lifetime = 80f;
+            weapons.add(new Weapon("") {{
+                x = 0f;
+                y = 1f;
+                mirror = false;
+                reload = 110f;
+                shootSound = Sounds.artillery;
+
+                bullet = new RocketBulletType(2.6f, 26f) {{
+                        width = height = 18f;
+                        splashDamage = 16f;
+                        splashDamageRadius = 20f;
+                        lifetime = 80f;
+                        frontColor = DustedPal.cavnenYellow;
+                        backColor = trailColor = DustedPal.cavnenYellowBack;
+                        trailLength = 18;
+                        trailWidth = 4f;
+                        status = DustedStatusEffects.deteriorating;
+                        statusDuration = 12 * 60f;
+                        shootSound = Sounds.explosion;
+                        hitEffect = despawnEffect = DustedFx.hitCavnen;
+
+                        shoot = new ShootSpread(3, 20f);
+
+                        rocketBulletType = new BasicBulletType(2f, 8f) {{
+                            width = height = 12f;
+                            splashDamage = 14f;
+                            splashDamageRadius = 14f;
+                            lifetime = 40f;
                             frontColor = DustedPal.cavnenYellow;
-                            backColor = trailColor = DustedPal.cavnenYellowBack;
-                            trailLength = 18;
-                            trailWidth = 4f;
+                            backColor = DustedPal.cavnenYellowBack;
                             status = DustedStatusEffects.deteriorating;
-                            statusDuration = 12 * 60f;
-                            rockets = 3;
-                            rocketSpread = 20f;
-                            shootSound = Sounds.explosion;
+                            statusDuration = 4 * 60f;
                             hitEffect = despawnEffect = DustedFx.hitCavnen;
-
-                            rocketBulletType = new BasicBulletType(2f, 8f) {{
-                                width = height = 12f;
-                                splashDamage = 14f;
-                                splashDamageRadius = 14f;
-                                lifetime = 40f;
-                                frontColor = DustedPal.cavnenYellow;
-                                backColor = DustedPal.cavnenYellowBack;
-                                status = DustedStatusEffects.deteriorating;
-                                statusDuration = 4 * 60f;
-                                hitEffect = despawnEffect = DustedFx.hitCavnen;
-                            }};
                         }};
-                    }},
-                    new RepairBeamWeapon("dusted-lands-animus-repair-weapon") {{
-                        x = 0f;
-                        y = -6f;
-                        shootY = 5f;
-                        beamWidth = 0.8f;
-                        laserColor = DustedPal.cavnenYellow;
-                        mirror = false;
-                        repairSpeed = 1f;
-
-                        bullet = new BulletType() {{
-                            maxRange = 140f;
-                        }};
-                    }}
-            );
+                    }};
+            }});
 
             abilities.add(new RevolvingOrbAbility() {{
                 damage = 40f;

@@ -9,8 +9,9 @@ public class DustedPal {
     darkQuartz = Color.valueOf("d5acc6"),
     lightQuartz = Color.valueOf("ffe8ee"),
 
-    darkCavnen = Color.valueOf("6d726b"),
-    darkerCavnen = Color.valueOf("4d5048"),
+    darkerWarmMetal = Color.valueOf("3a3130"),
+    pinkHeal = Color.valueOf("ffd2f8"),
+    cavnen = Color.valueOf("6d726b"),
     cavnenYellow = Color.valueOf("fff0a1"),
     cavnenYellowBack = Color.valueOf("d5ad7f");
 }

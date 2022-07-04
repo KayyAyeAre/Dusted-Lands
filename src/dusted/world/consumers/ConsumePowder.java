@@ -28,7 +28,7 @@ public class ConsumePowder extends ConsumePowderBase {
 
     @Override
     public void build(Building build, Table table) {
-        table.add(new ReqImage(powder.uiIcon, () -> build instanceof PowderBuildc pow && pow.powderModule().get(powder) >= 0)).size(iconMed).top().left();
+        table.add(new ReqImage(powder.uiIcon, () -> build instanceof PowderBuildc pow && pow.powderModule().get(powder) > 0)).size(iconMed).top().left();
     }
 
     @Override

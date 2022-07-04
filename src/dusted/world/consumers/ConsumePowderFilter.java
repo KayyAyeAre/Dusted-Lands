@@ -22,11 +22,13 @@ public class ConsumePowderFilter extends ConsumePowderBase {
         this.filter = filter;
     }
 
-    public ConsumePowderFilter() {}
+    public ConsumePowderFilter() {
+    }
 
     @Override
     public void apply(Block block) {
-        if (block instanceof PowderBlockc pow) Vars.content.<Powder>getBy(ContentType.effect_UNUSED).each(filter, p -> pow.powderFilters()[p.id] = true);
+        if (block instanceof PowderBlockc pow)
+            Vars.content.<Powder>getBy(ContentType.effect_UNUSED).each(filter, p -> pow.powderFilters()[p.id] = true);
     }
 
     public @Nullable Powder getConsumed(Building build) {
@@ -54,6 +56,12 @@ public class ConsumePowderFilter extends ConsumePowderBase {
                 build instanceof PowderBuildc entity && entity.powderModule().current() == powder && entity.powderModule().get(powder) > 0)));
 
         table.add(image).size(8 * 4);
+    }
+
+    @Override
+    public float efficiency(Building build) {
+        Powder powder = getConsumed(build);
+        return powder != null ? Math.min(((PowderBuildc) build).powderModule().get(powder) / (amount * build.edelta()), 1f) : 0f;
     }
 
     @Override

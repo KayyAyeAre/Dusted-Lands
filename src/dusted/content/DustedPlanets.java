@@ -2,6 +2,7 @@ package dusted.content;
 
 import arc.graphics.*;
 import dusted.maps.planet.*;
+import dusted.world.meta.*;
 import mindustry.content.*;
 import mindustry.graphics.g3d.*;
 import mindustry.type.*;
@@ -19,7 +20,7 @@ public class DustedPlanets {
             atmosphereRadIn = 0.02f;
             atmosphereRadOut = 0.3f;
             startSector = 269;
-            defaultEnv = Env.scorching | Env.terrestrial | Env.oxygen;
+            defaultEnv = Env.scorching | Env.terrestrial | Env.oxygen | DustedEnv.decay;
         }};
     }
 }

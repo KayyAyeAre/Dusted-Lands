@@ -14,7 +14,7 @@ public class DustedUnitType extends UnitType {
         super(name);
 
         //just some preset stuff
-        outlineColor = mechLegColor = DustedPal.darkerCavnen;
+        outlineColor = mechLegColor = DustedPal.darkerWarmMetal;
         envEnabled = Env.scorching | Env.terrestrial;
         envDisabled = Env.none;
     }
@@ -31,7 +31,6 @@ public class DustedUnitType extends UnitType {
 
         for (Weapon weapon : weapons) {
             if (!weapon.name.isEmpty()) {
-                Log.info(weapon.name);
                 Pixmap over = base.crop();
                 Pixmap weaponRegion = packer.get(weapon.name).crop();
                 Pixmap weaponOutlineRegion = weapon.top ? weaponRegion.copy() : packer.get(weapon.name + "-outline").crop();

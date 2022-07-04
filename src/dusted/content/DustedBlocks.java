@@ -22,6 +22,7 @@ import mindustry.gen.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.defense.*;
+import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.storage.*;
@@ -29,20 +30,21 @@ import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
+// TODO add requirements to blocks, make sure everything functions in campaign
 public class DustedBlocks {
     public static Block
     //environment
     orePlastel, oreArsenic, pyreolDeposit, volcanicSlag, volcanoZone,
-    cavnenSediment, cavnenDusting, volcanGravel, latite, scoria, stradrock, scorchedStradrock,
-    cavnenWall, volcanWall, scoriaWall, latiteWall, stradrockWall,
+    cavnenSediment, cavnenDusting, volstone, latite, scoria, stradrock, scorchedStradrock,
+    cavnenWall, volstoneWall, scoriaWall, latiteWall, stradrockWall,
     //decor
     scoriaBoulder, latiteBoulder, stradrockBoulder,
-    volcanBoulder, cavnenBoulder, volSprout, volTree, weepingShrub, weepingBlossom, charredTree,
+    volstoneBoulder, cavnenBoulder, volSprout, volTree, weepingShrub, weepingBlossom, charredTree,
     //defense
     plastelWall, plastelWallLarge,
     stasisProjector,
     //turrets
-    rive, abrade, sunder, redox, bisect, scald, spume, coruscate, cauterize, evanesce,
+    abrade, sunder, bisect, scald, spume, coruscate, cauterize, evanesce,
     cocaineDuo,
     //distribution
     transferLink, transferTower,
@@ -52,7 +54,7 @@ public class DustedBlocks {
     //power
     powerElectrode, pressureBurner,
     //crafters
-    titaniumMill, quartzExtractor, graphiteCompactor, siliconForge, pyresinCondenser, cafraegenRadiator, telonateForge,
+    quartzExtractor, graphiteCompactor, siliconForge, pyresinCondenser, catalygenRadiator, telonateForge,
     //production
     pneumaticFunnel, rotaryFunnel, blastFunnel,
     //cores
@@ -88,7 +90,7 @@ public class DustedBlocks {
             attributes.set(Attribute.water, -0.65f);
         }};
 
-        volcanGravel = new Floor("volcan-gravel");
+        volstone = new Floor("volstone");
 
         scoria = new Floor("scoria");
 
@@ -103,9 +105,7 @@ public class DustedBlocks {
             cavnenDusting.asFloor().wall = this;
         }};
 
-        volcanWall = new StaticWall("volcan-wall") {{
-            volcanGravel.asFloor().wall = this;
-        }};
+        volstoneWall = new StaticWall("volstone-wall");
 
         scoriaWall = new StaticWall("scoria-wall");
 
@@ -141,9 +141,9 @@ public class DustedBlocks {
             cavnenSediment.asFloor().decoration = cavnenDusting.asFloor().decoration = this;
         }};
 
-        volcanBoulder = new Prop("volcan-boulder") {{
+        volstoneBoulder = new Prop("volstone-boulder") {{
             variants = 2;
-            volcanGravel.asFloor().decoration = this;
+            volstone.asFloor().decoration = this;
         }};
 
         //endregion
@@ -169,7 +169,7 @@ public class DustedBlocks {
         }};
 
         denseChute = new Chute("dense-chute") {{
-            requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 1, DustedItems.arsenic, 2, Items.titanium, 2));
+            requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 1, DustedItems.arsenic, 2, Items.graphite, 2));
             powderPressure = 1.03f;
             powderCapacity = 16f;
             health = 100;
@@ -187,24 +187,24 @@ public class DustedBlocks {
         }};
 
         powderJunction = new PowderJunction("powder-junction") {{
-            requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 3, Items.copper, 2));
+            requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 3, DustedItems.arsenic, 2));
         }};
 
         bridgeChute = new PowderBridge("bridge-chute") {{
-            requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 8, Items.copper, 4));
+            requirements(Category.distribution, ItemStack.with(DustedItems.plastel, 8, DustedItems.arsenic, 4));
             range = 4;
             hasPower = false;
         }};
 
         pneumaticFunnel = new Funnel("pneumatic-funnel") {{
-            requirements(Category.production, ItemStack.with(Items.copper, 20, DustedItems.plastel, 10));
+            requirements(Category.production, ItemStack.with(DustedItems.plastel, 10));
             funnelAmount = 7f / 60f;
             powderCapacity = 20f;
             squareSprite = false;
         }};
 
         rotaryFunnel = new Funnel("rotary-funnel") {{
-            requirements(Category.production, ItemStack.with(Items.graphite, 50, Items.copper, 40, DustedItems.plastel, 20));
+            requirements(Category.production, ItemStack.with(Items.graphite, 40, DustedItems.plastel, 20));
             size = 2;
             hasPower = true;
             powderCapacity = 40f;
@@ -213,7 +213,7 @@ public class DustedBlocks {
         }};
 
         blastFunnel = new Funnel("blast-funnel") {{
-            requirements(Category.production, ItemStack.with(Items.titanium, 90, Items.graphite, 60, DustedItems.plastel, 50, Items.copper, 60));
+            requirements(Category.production, ItemStack.with(Items.silicon, 60, DustedItems.pyresin, 50, Items.graphite, 50));
             size = 3;
             funnelAmount = 0.4f;
             hasPower = true;
@@ -242,7 +242,7 @@ public class DustedBlocks {
         }};
 
         //endregion
-        //region crafters
+        //region production
         graphiteCompactor = new PowderCrafter("graphite-compactor") {{
             requirements(Category.crafting, ItemStack.with(Items.copper, 70, DustedItems.plastel, 50));
             size = 2;
@@ -264,17 +264,6 @@ public class DustedBlocks {
             craftTime = 12f;
             consumePower(1f);
             consumeItem(Items.sand, 3);
-        }};
-
-        titaniumMill = new PowderCrafter("titanium-mill") {{
-            requirements(Category.crafting, ItemStack.with(Items.graphite, 80, DustedItems.plastel, 60));
-            hasPower = true;
-            size = 2;
-            drawer = new DrawMulti(new DrawDefault(), new DrawPowderRotator());
-            outputPowder = new PowderStack(DustedPowders.titaniumPowder, 1f);
-            craftTime = 10f;
-            consumePower(2f);
-            consumeItem(Items.titanium, 2);
         }};
 
         siliconForge = new PowderCrafter("silicon-forge") {{
@@ -305,12 +294,12 @@ public class DustedBlocks {
             consume(new ConsumePowder(DustedPowders.pyreol, 0.1f));
         }};
 
-        cafraegenRadiator = new PowderCrafter("cafraegen-radiator") {{
+        catalygenRadiator = new PowderCrafter("catalygen-radiator") {{
             requirements(Category.crafting, ItemStack.with());
             hasPower = true;
             hasItems = true;
             size = 3;
-            outputPowder = new PowderStack(DustedPowders.cafraegen, 1f);
+            outputPowder = new PowderStack(DustedPowders.catalygen, 1f);
             craftTime = 15f;
             drawer = new DrawMulti(new DrawDefault(), new DrawFlame(Color.valueOf("9ef4ef")) {{
                 flameRadius = 6f;
@@ -341,31 +330,7 @@ public class DustedBlocks {
         }};
         //endregion
         //region turrets
-        rive = new PowderTurret("rive") {{
-            requirements(Category.turret, ItemStack.with());
-            health = 240;
-            reload = 25f;
-            rotateSpeed = 12f;
-            recoil = 3f;
-
-            ammo(
-                    DustedPowders.cavnenDust, new BasicBulletType(4f, 10f) {{
-                        width = 6f;
-                        height = 12f;
-                        shrinkX = 0.3f;
-                        shrinkY = 0.1f;
-                        lifetime = 40f;
-                        pierce = true;
-                        trailChance = 0.2f;
-                        frontColor = DustedPal.cavnenYellow;
-                        backColor = trailColor = DustedPal.cavnenYellowBack;
-                    }}
-            );
-
-            coolant = consumeCoolant(0.1f);
-        }};
-
-        abrade = new PowderTurret("abrade") {{
+        abrade = new ItemTurret("abrade") {{
             requirements(Category.turret, ItemStack.with());
             size = 2;
             health = 240 * size * size;
@@ -377,7 +342,7 @@ public class DustedBlocks {
             rotateSpeed = 18f;
 
             ammo(
-                    DustedPowders.cavnenDust, new ShrapnelBulletType() {{
+                    DustedItems.plastel, new ShrapnelBulletType() {{
                         collidesGround = false;
                         hitEffect = Fx.hitBulletSmall;
                         smokeEffect = Fx.shootSmallSmoke;
@@ -411,7 +376,7 @@ public class DustedBlocks {
                         hitSize = 8f;
                         lifetime = 40f;
                         drawSize = 100f;
-                        shootEffect = DustedFx.bisectShoot;
+                        shootEffect = DustedFx.splitShot;
                         collidesAir = false;
                         length = 100f;
                         ammoMultiplier = 1f;
@@ -479,19 +444,7 @@ public class DustedBlocks {
             loopSound = Sounds.spray;
             shootSound = Sounds.none;
 
-            ammo(
-                    DustedPowders.titaniumPowder, new BulletType(3.25f, 6f) {{
-                        hitSize = 8f;
-                        lifetime = 18f;
-                        pierce = true;
-                        shootEffect = DustedFx.shootTitaniumSpray;
-                        hitEffect = DustedFx.hitTitaniumSpray;
-                        despawnEffect = Fx.none;
-                        status = StatusEffects.burning;
-                        statusDuration = 60f * 3;
-                        hittable = false;
-                    }}
-            );
+            //TODO ammo
 
             coolant = consumeCoolant(0.1f);
         }};
@@ -518,8 +471,10 @@ public class DustedBlocks {
                         status = StatusEffects.burning;
                         shootEffect = DustedFx.shootQuartz;
                         statusDuration = 16 * 60f;
-                        rockets = 3;
-                        rocketSpread = 30f;
+                        hitEffect = despawnEffect = DustedFx.hitQuartz;
+
+                        shoot = new ShootSpread(3, 30f);
+
                         shootSound = Sounds.explosion;
 
                         rocketBulletType = new BasicBulletType(1.6f, 16f) {{
@@ -552,7 +507,6 @@ public class DustedBlocks {
 
             ammo(
                     DustedPowders.quartzDust, new RocketBulletType(3.8f, 50f) {{
-                        rockets = 5;
                         width = height = 14f;
                         frontColor = DustedPal.lightQuartz;
                         backColor = trailColor = DustedPal.darkQuartz;
@@ -564,7 +518,9 @@ public class DustedBlocks {
                         splashDamageRadius = 14f;
                         status = StatusEffects.burning;
                         statusDuration = 10 * 60f;
-                        rocketSpread = 15f;
+                        hitEffect = despawnEffect = DustedFx.hitQuartz;
+
+                        shoot = new ShootSpread(5, 15f);
 
                         rocketBulletType = new BulletType(4f, 20f) {{
                             hitSize = 8f;

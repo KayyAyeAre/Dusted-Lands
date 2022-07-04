@@ -12,6 +12,7 @@ public class Powder extends UnlockableContent {
     public Color color;
     public float temperature;
     public float flammability;
+    //TODO currently useless
     public float density;
     public StatusEffect effect = StatusEffects.none;
 

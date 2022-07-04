@@ -2,38 +2,62 @@ package dusted.entities.bullet;
 
 import arc.audio.*;
 import arc.math.*;
+import arc.util.*;
+import mindustry.entities.*;
 import mindustry.entities.bullet.*;
+import mindustry.entities.pattern.*;
 import mindustry.gen.*;
 
-//TODO add shootpattern to this
 public class RocketBulletType extends BasicBulletType {
     public float rocketReload = 10f;
-    public int rockets = 1;
-    public float rocketSpread;
     public BulletType rocketBulletType;
+    public ShootPattern shoot = new ShootPattern();
     public Sound shootSound = Sounds.none;
-    public boolean invert = true;
+
+    {
+        pierce = true;
+    }
 
     public RocketBulletType(float speed, float damage) {
         super(speed, damage);
-        pierce = true;
     }
 
     public RocketBulletType(float speed, float damage, String sprite) {
         super(speed, damage, sprite);
-        pierce = true;
-    };
+    }
+
+    @Override
+    public void init() {
+        super.init();
+
+        rocketBulletType.keepVelocity = false;
+    }
 
     @Override
     public void update(Bullet b) {
         super.update(b);
+        if (b.data == null) b.data = 0;
+
         if (b.timer(3, rocketReload)) {
-            for (int i = 0; i < rockets; i++) {
-                float angle = (i - (int) (rockets / 2f)) * rocketSpread;
-                rocketBulletType.create(b, b.x, b.y, b.rotation() + (invert ? 180 : 0) + angle);
-                rocketBulletType.shootEffect.at(b.x, b.y, b.rotation() + (invert ? 180 : 0) + angle);
-                shootSound.at(b.x, b.y, Mathf.random(0.9f, 1.1f));
-            }
+            shoot.shoot((int) b.data, (xOffset, yOffset, angle, delay, mover) -> {
+                if (delay > 0) {
+                    Time.run(delay, () -> shoot(b, xOffset, yOffset, angle, mover));
+                } else {
+                    shoot(b, xOffset, yOffset, angle, mover);
+                }
+
+                b.data = ((int) b.data) + 1;
+            });
         }
+    }
+
+    public void shoot(Bullet owner, float xOffset, float yOffset, float angleOffset, Mover mover) {
+        float bx = owner.x + Angles.trnsx(owner.rotation(), xOffset, yOffset);
+        float by = owner.y + Angles.trnsy(owner.rotation(), xOffset, yOffset);
+        float rot = owner.rotation() + 180f + angleOffset;
+
+        rocketBulletType.create(owner, owner.team, bx, by, rot, 1f, 1f, mover);
+        rocketBulletType.shootEffect.at(bx, by, rot);
+        shootSound.at(bx, by, Mathf.random(0.9f, 1.1f));
     }
 }

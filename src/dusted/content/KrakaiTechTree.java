@@ -60,24 +60,21 @@ public class KrakaiTechTree {
                 node(quartzExtractor, () -> {
                     node(siliconForge);
                     node(pyresinCondenser);
-                    node(cafraegenRadiator);
+                    node(catalygenRadiator);
                 });
-                node(titaniumMill);
             });
 
             node(plastelWall, () -> {
                 node(plastelWallLarge);
             });
 
-            node(rive, () -> {
-                node(abrade, () -> {
-                    node(bisect);
-                    node(spume);
-                });
-                node(scald, () -> {
-                    node(coruscate, () -> {
-                        node(cauterize);
-                    });
+            node(abrade, () -> {
+                node(bisect);
+                node(spume);
+            });
+            node(scald, () -> {
+                node(coruscate, () -> {
+                    node(cauterize);
                 });
             });
 
@@ -85,23 +82,27 @@ public class KrakaiTechTree {
                 nodeProduce(DustedItems.arsenic, () -> {
                     nodeProduce(Items.graphite, () -> {
                         nodeProduce(Items.titanium, () -> {
-                            nodeProduce(DustedItems.pyresin, () -> {});
+                            nodeProduce(DustedItems.pyresin, () -> {
+                            });
                             nodeProduce(Items.thorium, () -> {
-                                nodeProduce(DustedItems.telonate, () -> {});
+                                nodeProduce(DustedItems.telonate, () -> {
+                                });
                             });
                         });
                     });
                 });
 
-                nodeProduce(Items.sand, () -> {});
+                nodeProduce(Items.sand, () -> {
+                });
 
                 nodeProduce(DustedPowders.cavnenDust, () -> {
                     nodeProduce(DustedPowders.quartzDust, () -> {
-                        nodeProduce(DustedPowders.cafraegen, () -> {});
+                        nodeProduce(DustedPowders.catalygen, () -> {
+                        });
                     });
 
-                    nodeProduce(DustedPowders.pyreol, () -> {});
-                    nodeProduce(DustedPowders.titaniumPowder, () -> {});
+                    nodeProduce(DustedPowders.pyreol, () -> {
+                    });
                 });
             });
 

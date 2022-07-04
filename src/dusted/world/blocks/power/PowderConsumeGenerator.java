@@ -43,7 +43,7 @@ public class PowderConsumeGenerator extends ConsumeGenerator implements PowderBl
 
         @Override
         public void updateEfficiencyMultiplier() {
-            float m = filterPowder.efficiency(this);
+            float m = filterPowder.efficiencyMultiplier(this);
             if (m > 0) efficiencyMultiplier = m;
         }
 
