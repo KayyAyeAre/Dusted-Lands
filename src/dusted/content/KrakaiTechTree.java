@@ -30,13 +30,11 @@ public class KrakaiTechTree {
             });
 
             node(powerElectrode, () -> {
-                node(pressureBurner, () -> {
-                    node(stasisProjector);
-                });
+                node(pressureBurner);
             });
 
             node(cavnenTerraConstructor, () -> {
-                node(quail);
+                node(seism);
                 node(pique, () -> {
                     node(rancor, () -> {
                         node(animus);
@@ -56,29 +54,26 @@ public class KrakaiTechTree {
                 });
             });
 
-            node(graphiteCompactor, () -> {
-                node(quartzExtractor, () -> {
-                    node(siliconForge);
-                    node(pyresinCondenser);
-                    node(catalygenRadiator);
+            node(quartzExtractor, () -> {
+                node(siliconForge, () -> {
+                    node(metaglassFurnace);
                 });
+                node(pyresinCondenser);
             });
 
-            node(plastelWall, () -> {
-                node(plastelWallLarge);
+            node(zirconWall, () -> {
+                node(zirconWallLarge);
             });
 
             node(abrade, () -> {
                 node(bisect);
-                node(spume);
             });
             node(scald, () -> {
                 node(coruscate, () -> {
-                    node(cauterize);
                 });
             });
 
-            nodeProduce(DustedItems.plastel, () -> {
+            nodeProduce(DustedItems.zircon, () -> {
                 nodeProduce(DustedItems.arsenic, () -> {
                     nodeProduce(Items.graphite, () -> {
                         nodeProduce(Items.titanium, () -> {
@@ -97,8 +92,6 @@ public class KrakaiTechTree {
 
                 nodeProduce(DustedPowders.cavnenDust, () -> {
                     nodeProduce(DustedPowders.quartzDust, () -> {
-                        nodeProduce(DustedPowders.catalygen, () -> {
-                        });
                     });
 
                     nodeProduce(DustedPowders.pyreol, () -> {

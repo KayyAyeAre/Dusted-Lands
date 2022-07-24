@@ -33,7 +33,9 @@ public class DustedLands extends Mod {
             });
         });
 
-        //TODO environment renderer for decay
+        Vars.renderer.addEnvRenderer(DustedEnv.volcanic, () -> {
+
+        });
     }
 
     @Override

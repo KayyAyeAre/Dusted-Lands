@@ -8,6 +8,7 @@ import mindustry.entities.*;
 import mindustry.entities.abilities.*;
 import mindustry.gen.*;
 
+//TODO this could just be a weapon
 public class QuakeAbility extends Ability {
     public float quakeDamage = 60f;
     public float quakeSpacing = 20f;

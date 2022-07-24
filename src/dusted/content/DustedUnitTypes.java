@@ -1,7 +1,6 @@
 package dusted.content;
 
 import arc.graphics.*;
-import arc.math.*;
 import arc.util.*;
 import dusted.ai.types.*;
 import dusted.entities.abilities.*;
@@ -16,15 +15,14 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.type.weapons.*;
-import mindustry.world.meta.*;
 
 public class DustedUnitTypes {
     public static UnitType
-    carom, recur, saltate, staccato, recrudesce,
+            carom, recur, saltate, staccato, recrudesce,
 
     sob, wail, snivel, sorrow, lament,
 
-    quail, seism, quaver, temblor, convulse,
+    seism, tremor, quaver, temblor, convulse,
 
     pique, rancor, animus, enmity, acrimony,
 
@@ -374,7 +372,7 @@ public class DustedUnitTypes {
             engineOffset = 3f;
             engineSize = 4f;
 
-            abilities.add(new DecayShieldAbility(160f));
+            abilities.add(new DecayShieldAbility(120f));
         }};
 
         pique = new DustedUnitType("pique") {{
@@ -483,33 +481,33 @@ public class DustedUnitTypes {
                 shootSound = Sounds.artillery;
 
                 bullet = new RocketBulletType(2.6f, 26f) {{
-                        width = height = 18f;
-                        splashDamage = 16f;
-                        splashDamageRadius = 20f;
-                        lifetime = 80f;
+                    width = height = 18f;
+                    splashDamage = 16f;
+                    splashDamageRadius = 20f;
+                    lifetime = 80f;
+                    frontColor = DustedPal.cavnenYellow;
+                    backColor = trailColor = DustedPal.cavnenYellowBack;
+                    trailLength = 18;
+                    trailWidth = 4f;
+                    status = DustedStatusEffects.deteriorating;
+                    statusDuration = 12 * 60f;
+                    shootSound = Sounds.explosion;
+                    hitEffect = despawnEffect = DustedFx.hitCavnen;
+
+                    shoot = new ShootSpread(3, 20f);
+
+                    rocketBulletType = new BasicBulletType(2f, 8f) {{
+                        width = height = 12f;
+                        splashDamage = 14f;
+                        splashDamageRadius = 14f;
+                        lifetime = 40f;
                         frontColor = DustedPal.cavnenYellow;
-                        backColor = trailColor = DustedPal.cavnenYellowBack;
-                        trailLength = 18;
-                        trailWidth = 4f;
+                        backColor = DustedPal.cavnenYellowBack;
                         status = DustedStatusEffects.deteriorating;
-                        statusDuration = 12 * 60f;
-                        shootSound = Sounds.explosion;
+                        statusDuration = 4 * 60f;
                         hitEffect = despawnEffect = DustedFx.hitCavnen;
-
-                        shoot = new ShootSpread(3, 20f);
-
-                        rocketBulletType = new BasicBulletType(2f, 8f) {{
-                            width = height = 12f;
-                            splashDamage = 14f;
-                            splashDamageRadius = 14f;
-                            lifetime = 40f;
-                            frontColor = DustedPal.cavnenYellow;
-                            backColor = DustedPal.cavnenYellowBack;
-                            status = DustedStatusEffects.deteriorating;
-                            statusDuration = 4 * 60f;
-                            hitEffect = despawnEffect = DustedFx.hitCavnen;
-                        }};
                     }};
+                }};
             }});
 
             abilities.add(new RevolvingOrbAbility() {{
@@ -523,7 +521,7 @@ public class DustedUnitTypes {
             }});
         }};
 
-        quail = new DustedUnitType("quail") {{
+        seism = new DustedUnitType("seism") {{
             constructor = MechUnit::create;
             aiController = QuakeAI::new;
             speed = 0.6f;

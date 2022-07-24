@@ -20,7 +20,7 @@ public class DustedPlanets {
             atmosphereRadIn = 0.02f;
             atmosphereRadOut = 0.3f;
             startSector = 269;
-            defaultEnv = Env.scorching | Env.terrestrial | Env.oxygen | DustedEnv.decay;
+            defaultEnv = DustedEnv.volcanic | Env.terrestrial | Env.oxygen | DustedEnv.decay;
         }};
     }
 }

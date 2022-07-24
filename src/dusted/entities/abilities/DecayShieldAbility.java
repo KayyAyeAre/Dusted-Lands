@@ -1,6 +1,5 @@
 package dusted.entities.abilities;
 
-import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.util.*;
 import dusted.*;
@@ -30,7 +29,7 @@ public class DecayShieldAbility extends Ability {
     @Override
     public void update(Unit unit) {
         if (!added) {
-            DustedLands.decay.shields.add(shield = new DecayShield(() -> Tmp.v1.set(unit), () -> unit.team, radius));
+            DustedLands.decay.shields.add(shield = new DecayShield(() -> Tmp.v1.set(unit), () -> unit.team, () -> radius));
             added = true;
         }
     }

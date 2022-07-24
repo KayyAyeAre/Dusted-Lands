@@ -25,17 +25,24 @@ public class Decay implements ApplicationListener {
         });
     }
 
+    public void debug() {
+        shields.each(s -> {
+            Log.info("distance: @, radius: @", Vars.player.unit().dst(s.pos.get()), s.radius.get());
+        });
+    }
+
     @Override
     public void update() {
         if (Vars.state.isPlaying() && Vars.state.rules.hasEnv(DustedEnv.decay)) {
             Groups.unit.each(u -> {
-                if (!shields.contains(s -> u.team == s.team.get() && u.dst(s.pos.get()) < s.radius)) {
+                if (!shields.contains(s -> u.team == s.team.get() && u.dst(s.pos.get()) < s.radius.get())) {
                     u.damagePierce(decayDamage, false);
                 }
             });
 
             Vars.indexer.allBuildings(Vars.world.width() * 4, Vars.world.height() * 4, Math.max(Vars.world.width() * 4, Vars.world.height() * 4), b -> {
-                if (!shields.contains(s -> b.team == s.team.get() && b.dst(s.pos.get()) < s.radius) && b.health > b.maxHealth * calculateDamage(b.block)) {
+                //TODO broken?
+                if (!shields.contains(s -> b.team == s.team.get() && b.dst(s.pos.get()) < s.radius.get() + (b.hitSize() / 2f)) && b.health > b.maxHealth * calculateDamage(b.block)) {
                     b.damagePierce(Math.min(decayDamage, (1f - calculateDamage(b.block)) * b.maxHealth + b.maxHealth - b.health), false);
                 }
             });
@@ -47,18 +54,18 @@ public class Decay implements ApplicationListener {
 
         for (ItemStack stack : block.requirements) {
             total += stack.amount;
-            if (stack.item == DustedItems.plastel) percentage += stack.amount;
+            if (stack.item == DustedItems.zircon) percentage += stack.amount;
         }
 
         return percentage / total;
     }
 
     public static class DecayShield {
-        public float radius;
+        public Floatp radius;
         public Prov<Vec2> pos;
         public Prov<Team> team;
 
-        public DecayShield(Prov<Vec2> pos, Prov<Team> team, float radius) {
+        public DecayShield(Prov<Vec2> pos, Prov<Team> team, Floatp radius) {
             this.pos = pos;
             this.team = team;
             this.radius = radius;

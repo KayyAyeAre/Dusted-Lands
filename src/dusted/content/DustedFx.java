@@ -14,7 +14,7 @@ import static arc.math.Angles.*;
 
 public class DustedFx {
     public static Effect
-            powderLeak = new Effect(46f, 20f, e -> {
+    powderLeak = new Effect(46f, 20f, e -> {
         if (!(e.data instanceof Powder powder)) return;
         Draw.z(Mathf.lerpDelta(Layer.block - 0.001f, Layer.blockUnder, e.finpow()));
         color(powder.color, Color.gray, e.finpow() / 2f);

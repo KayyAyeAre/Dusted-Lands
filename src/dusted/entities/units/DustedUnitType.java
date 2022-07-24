@@ -19,6 +19,7 @@ public class DustedUnitType extends UnitType {
         envDisabled = Env.none;
     }
 
+    //TODO this whole thing probably wont be needed
     @Override
     public void createIcons(MultiPacker packer) {
         super.createIcons(packer);
@@ -67,5 +68,6 @@ public class DustedUnitType extends UnitType {
         }
 
         packer.add(PageType.main, name + "-preview", base);
+        packer.add(PageType.main, name + "-full", base);
     }
 }
