@@ -26,7 +26,6 @@ import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.power.*;
-import mindustry.world.blocks.storage.*;
 import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
@@ -58,7 +57,7 @@ public class DustedBlocks {
     quartzExtractor, metaglassFurnace, siliconForge, pyresinCondenser, telonateForge,
     //production
     thermalExcavator,
-    pneumaticFunnel, rotaryFunnel, blastFunnel,
+    pneumaticFunnel, rotaryFunnel,
     //cores
     coreAbate, coreDissent, coreDecadence,
     //units
@@ -271,16 +270,7 @@ public class DustedBlocks {
             hasPower = true;
             powderCapacity = 40f;
             consumePower(0.4f);
-            squareSprite = false;
-        }};
-
-        blastFunnel = new Funnel("blast-funnel") {{
-            requirements(Category.production, ItemStack.with(Items.silicon, 60, DustedItems.pyresin, 50, Items.graphite, 50));
-            size = 3;
-            funnelAmount = 0.4f;
-            hasPower = true;
-            powderCapacity = 80f;
-            consumePower(1.6f);
+            extractEffect = DustedFx.funnelExtract;
             squareSprite = false;
         }};
 

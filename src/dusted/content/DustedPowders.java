@@ -22,7 +22,7 @@ public class DustedPowders {
             temperature = 0.7f;
         }};
 
-        cocaine = new Powder("cocaine", Color.white) {{
+        cocaine = new Powder("cocaine", Color.valueOf("e6e6e6")) {{
             effect = DustedStatusEffects.high;
         }};
     }

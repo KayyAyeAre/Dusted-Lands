@@ -2,11 +2,9 @@ package dusted.world.interfaces;
 
 import arc.math.*;
 import arc.math.geom.*;
-import arc.struct.*;
 import arc.util.*;
 import dusted.content.*;
 import dusted.type.*;
-import dusted.world.blocks.powder.*;
 import dusted.world.modules.*;
 import mindustry.*;
 import mindustry.entities.*;
@@ -32,7 +30,7 @@ public interface PowderBuildc extends BuildAccessor {
         return ((PowderBlockc) build().block).powderFilters()[powder.id];
     }
 
-    default void handlePowder(Powder powder, float amount) {
+    default void handlePowder(Building source, Powder powder, float amount) {
         powderModule().add(powder, amount);
     }
 
@@ -61,7 +59,7 @@ public interface PowderBuildc extends BuildAccessor {
     default void transferPowder(PowderBuildc next, float amount, Powder powder) {
         float flow = Math.min(((PowderBlockc) next.build().block).powderCapacity() - next.powderModule().get(powder), amount);
         if (next.acceptPowder(build(), powder)) {
-            next.handlePowder(powder, flow);
+            next.handlePowder(build(), powder, flow);
             powderModule().remove(powder, flow);
         }
     }
@@ -76,7 +74,7 @@ public interface PowderBuildc extends BuildAccessor {
                 flow = Math.min(flow, ((PowderBlockc) build().block).powderCapacity() - next.powderModule().get(powder));
 
                 if (flow > 0f && ofract <= fract && next.acceptPowder(build(), powder)) {
-                    next.handlePowder(powder, flow);
+                    next.handlePowder(build(), powder, flow);
                     powderModule().remove(powder, flow);
                     return flow;
                 }
@@ -89,17 +87,25 @@ public interface PowderBuildc extends BuildAccessor {
     default float movePowderForward(boolean leaks, Powder powder) {
         Tile next = build().tile.nearby(build().rotation);
 
-        if (next.build != null) {
+        if (next == null) {
+            return 0f;
+        } else if (next.build != null) {
             return movePowder(next.build, powder);
-        } else if (leaks && !next.block().solid) {
-            float leakAmount = powderModule().get(powder) / 1.5f;
-            if (Mathf.chanceDelta(0.2f * leakAmount)) DustedFx.powderLeak.at((build().tile.worldx() + next.worldx()) / 2, (build().tile.worldy() + next.worldy()) / 2, build().rotdeg(), powder);
-            Units.nearby(Tmp.r1.set(Geometry.d4x(build().rotation) * 8 + build().x, Geometry.d4y(build().rotation) * 8 + build().y, 8, 8), u -> {
-                if (u.isGrounded()) u.apply(powder.effect, leakAmount * 60);
-            });
-            powderModule().remove(powder, leakAmount);
-        }
+        } else {
+            if (leaks && !next.block().solid) {
+                float leakAmount = powderModule().get(powder) / 1.5f;
+                if (Mathf.chanceDelta(0.2f * leakAmount))
+                    DustedFx.powderLeak.at((build().tile.worldx() + next.worldx()) / 2, (build().tile.worldy() + next.worldy()) / 2, build().rotdeg(), powder);
+                Units.nearby(Tmp.r1.set(Geometry.d4x(build().rotation) * 8 + build().x, Geometry.d4y(build().rotation) * 8 + build().y, 8, 8), u -> {
+                    if (u.isGrounded()) u.apply(powder.effect, leakAmount * 60);
+                });
+                powderModule().remove(powder, leakAmount);
 
-        return 0;
+                //used for clump movement
+                return leakAmount;
+            }
+
+            return 0f;
+        }
     }
 }

@@ -8,6 +8,8 @@ import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import arc.util.*;
+import arc.util.pooling.*;
+import arc.util.pooling.Pool.*;
 import dusted.content.*;
 import dusted.type.*;
 import dusted.world.interfaces.*;
@@ -73,9 +75,33 @@ public class Chute extends PowderBlock implements Autotiler {
         Placement.calculateBridges(plans, (ItemBridge) DustedBlocks.bridgeChute);
     }
 
+    public static class ClumpData implements Poolable {
+        public float size, progress, offset, srcRot, randColor;
+        public float moveSpeed = 0.2f;
+
+        public ClumpData set(float size, float progress, float offset, float srcRot, float randColor) {
+            this.size = size;
+            this.progress = progress;
+            this.offset = offset;
+            this.srcRot = srcRot;
+            this.randColor = randColor;
+
+            return this;
+        }
+
+        @Override
+        public void reset() {
+            size = 0f;
+            progress = 0f;
+            offset = 0f;
+        }
+    }
+
     public class ChuteBuild extends PowderBuild implements ChainedBuilding {
         public float smoothPowder;
         public int blendbits, xscl = 1, yscl = 1, blending;
+        public Seq<ClumpData> clumps = new Seq<>();
+        public boolean moveClump;
 
         @Override
         public void draw() {
@@ -99,10 +125,31 @@ public class Chute extends PowderBlock implements Autotiler {
         }
 
         protected void drawAt(float x, float y, int bits, float rotation, SliceMode slice) {
+            float z = Draw.z();
+            Draw.z(z- 0.002f);
+
             Draw.color(bottomColor);
             Draw.rect(sliced(bottomRegions[bits], slice), x, y, rotation);
             Draw.color(powders.current().color, smoothPowder);
             Draw.rect(sliced(bottomRegions[bits], slice), x, y, rotation);
+            Draw.z(z - 0.001f);
+
+            clumps.each(c -> {
+                Draw.color(Tmp.c1.set(powders.current().color).mul(c.randColor), smoothPowder);
+                float offsetX = Mathf.lerp(
+                        Angles.trnsx(c.srcRot + 180f, hitSize() / 2f) + Angles.trnsx(c.srcRot, c.progress * hitSize(), c.offset),
+                        Angles.trnsx(rotdeg() + 180f, hitSize() / 2f) + Angles.trnsx(rotdeg(), c.progress * hitSize(), c.offset),
+                        c.progress
+                );
+                float offsetY = Mathf.lerp(
+                        Angles.trnsy(c.srcRot + 180f, hitSize() / 2f) + Angles.trnsy(c.srcRot, c.progress * hitSize(), c.offset),
+                        Angles.trnsy(rotdeg() + 180f, hitSize() / 2f) + Angles.trnsy(rotdeg(), c.progress * hitSize(), c.offset),
+                        c.progress
+                );
+
+                Fill.circle(x + offsetX, y + offsetY, c.size);
+            });
+            Draw.z(z);
 
             Draw.color();
             Draw.rect(sliced(topRegions[bits], slice), x, y, rotation);
@@ -111,6 +158,15 @@ public class Chute extends PowderBlock implements Autotiler {
         @Override
         public boolean acceptPowder(Building source, Powder powder) {
             return (powders.current() == powder || powders.currentAmount() < 0.2f) && (tile == null || (source.relativeTo(tile.x, tile.y) + 2) % 4 != rotation);
+        }
+
+        @Override
+        public void handlePowder(Building source, Powder powder, float amount) {
+            super.handlePowder(source, powder, amount);
+
+            if (moveClump && !(source instanceof ChuteBuild) && Mathf.chanceDelta((powders.currentAmount() / powderCapacity) * 0.3f)) {
+                clumps.add(Pools.obtain(ClumpData.class, ClumpData::new).set(Mathf.random(0.5f, 1.5f), 0f, Mathf.random(-2f, 2f), source.angleTo(this), Mathf.random(1.1f, 1.3f)));
+            }
         }
 
         @Override
@@ -128,8 +184,24 @@ public class Chute extends PowderBlock implements Autotiler {
         public void updateTile() {
             smoothPowder = Mathf.lerpDelta(smoothPowder, powders.currentAmount() / powderCapacity, 0.05f);
 
+            clumps.each(c -> {
+                c.moveSpeed = Mathf.lerpDelta(c.moveSpeed, moveClump ? 0.2f : 0f, 0.2f);
+                c.progress += Time.delta * c.moveSpeed;
+                if (c.progress > 1f) {
+                    c.progress %= 1f;
+                    clumps.remove(c);
+                    if (front() instanceof ChuteBuild chute) {
+                        c.srcRot = rotdeg();
+                        chute.clumps.add(c);
+                    } else {
+                        Pools.free(c);
+                    }
+                }
+            });
+
             if (powders.total() > 0.001f && timer(timerFlow, 1)) {
-                movePowderForward(leaks, powders.current());
+                float flow = movePowderForward(leaks, powders.current());
+                moveClump = flow > 0f && (!(front() instanceof ChuteBuild chute) || chute.clumps.size < 5);
             }
         }
 

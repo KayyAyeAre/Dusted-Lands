@@ -12,6 +12,7 @@ import mindustry.gen.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.meta.*;
 
+//TODO change crafting
 public class PowderCrafter extends GenericCrafter implements PowderBlockc {
     public boolean[] powderFilter = {};
     public float powderCapacity = 20f;
@@ -65,7 +66,7 @@ public class PowderCrafter extends GenericCrafter implements PowderBlockc {
         public void craft() {
             super.craft();
             if (outputPowder != null) {
-                handlePowder(outputPowder.powder, outputPowder.amount);
+                handlePowder(this, outputPowder.powder, outputPowder.amount);
             }
         }
 

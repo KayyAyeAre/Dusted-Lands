@@ -3,6 +3,7 @@ package dusted.content;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
+import arc.util.*;
 import dusted.graphics.*;
 import dusted.type.*;
 import mindustry.entities.*;
@@ -13,15 +14,42 @@ import static arc.graphics.g2d.Lines.stroke;
 import static arc.math.Angles.*;
 
 public class DustedFx {
+    public static final Rand rand = new Rand();
+
     public static Effect
     powderLeak = new Effect(46f, 20f, e -> {
         if (!(e.data instanceof Powder powder)) return;
         Draw.z(Mathf.lerpDelta(Layer.block - 0.001f, Layer.blockUnder, e.finpow()));
-        color(powder.color, Color.gray, e.finpow() / 2f);
+        rand.setSeed(e.id);
 
         randLenVectors(e.id, 10, e.finpow() * 10f, e.rotation, 22f, (x, y) -> {
+            color(Tmp.c1.set(powder.color).mul(rand.random(1f, 1.1f)), Tmp.c2.set(powder.color).mul(rand.random(0.4f, 0.6f)), e.finpow() / 2f);
             Fill.circle(e.x + x, e.y + y, 0.1f + e.fout() * 2f);
         });
+    }),
+
+    funnelExtractSmall = new Effect(30f, e -> {
+        if (!(e.data instanceof Powder powder)) return;
+        Draw.z(Layer.blockOver);
+        color(powder.color);
+
+        for (int i = 0; i < 4; i++) {
+            randLenVectors(e.id, 6, e.finpow() * 4f, 45f + i * 90f, 10f, (x, y) -> {
+                Fill.circle(e.x + x + Angles.trnsx(Mathf.angle(x, y), 3f), e.y + y + Angles.trnsy(Mathf.angle(x, y), 3f), e.fout() * 1.2f);
+            });
+        }
+    }),
+
+    funnelExtract = new Effect(35f, e -> {
+        if (!(e.data instanceof Powder powder)) return;
+        Draw.z(Layer.blockOver);
+        color(powder.color);
+
+        for (int i = 0; i < 4; i++) {
+            randLenVectors(e.id, 8, e.finpow() * 6f, 45f + i * 90f, 15f, (x, y) -> {
+                Fill.circle(e.x + x + Angles.trnsx(Mathf.angle(x, y), 6f), e.y + y + Angles.trnsy(Mathf.angle(x, y), 6f), e.fout() * 2f);
+            });
+        }
     }),
 
     bounce = new Effect(40f, 120f, e -> {
@@ -32,7 +60,7 @@ public class DustedFx {
         float height = distance / 10f;
 
         for (int i : Mathf.signs) {
-            Draw.color(DustedPal.cavnenYellow);
+            color(DustedPal.cavnenYellow);
             Drawf.tri(e.x, e.y, distance + 22f, e.foutpow() * (distance / 16f), e.rotation + 90 * i);
 
             Fill.tri(tx + Angles.trnsx(e.rotation + 140f * i, e.foutpow() * width), ty + Angles.trnsy(e.rotation + 140f * i, e.foutpow() * width), tx + Angles.trnsx(e.rotation, e.foutpow() * height), ty + Angles.trnsy(e.rotation, e.foutpow() * height), tx - Angles.trnsx(e.rotation, e.foutpow() * height), ty - Angles.trnsy(e.rotation, e.foutpow() * height));

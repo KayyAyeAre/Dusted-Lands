@@ -1,5 +1,6 @@
 package dusted.world.modules;
 
+import arc.util.*;
 import arc.util.io.*;
 import dusted.type.*;
 import mindustry.*;
@@ -61,20 +62,24 @@ public class PowderModule extends BlockModule {
         }
     }
 
+    //TODO broken
     @Override
     public void read(Reads read) {
         Arrays.fill(powders, 0);
         total = 0f;
         int count = read.s();
 
+        Log.info("read start");
         for (int i = 0; i < count; i++) {
             int id = read.s();
             float amount = read.f();
             powders[id] = amount;
-            if (amount > 0) {
+            if (amount > 0f) {
                 current = Vars.content.getByID(ContentType.effect_UNUSED, id);
+                Log.info("set current to @ with @ contained", current, amount);
             }
             this.total += amount;
         }
+        Log.info("read end");
     }
 }

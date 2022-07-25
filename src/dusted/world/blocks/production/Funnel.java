@@ -3,9 +3,11 @@ package dusted.world.blocks.production;
 import arc.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
+import dusted.content.*;
 import dusted.type.*;
 import dusted.world.blocks.environment.*;
 import dusted.world.blocks.powder.*;
+import mindustry.entities.*;
 import mindustry.game.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
@@ -15,6 +17,8 @@ import static mindustry.Vars.*;
 public class Funnel extends PowderBlock {
     public float funnelAmount = 0.2f;
     public TextureRegion powderRegion;
+    public float effectInterval = 120f;
+    public Effect extractEffect = DustedFx.funnelExtractSmall;
 
     public Funnel(String name) {
         super(name);
@@ -81,6 +85,7 @@ public class Funnel extends PowderBlock {
     public class FunnelBuild extends PowderBuild {
         public float amount;
         public Powder powderDrop;
+        public float effectTime;
 
         @Override
         public void draw() {
@@ -115,6 +120,12 @@ public class Funnel extends PowderBlock {
             if (canConsume() && powderDrop != null) {
                 float add = Math.min(powderCapacity - powders.total(), amount * funnelAmount * edelta());
                 powders.add(powderDrop, add);
+
+                effectTime += delta();
+                if (effectTime > effectInterval) {
+                    effectTime = 0;
+                    extractEffect.at(x, y, 0f, powderDrop);
+                }
             }
 
             dumpPowder(powders.current());

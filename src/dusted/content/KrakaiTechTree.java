@@ -24,9 +24,7 @@ public class KrakaiTechTree {
             });
 
             node(pneumaticFunnel, () -> {
-                node(rotaryFunnel, () -> {
-                    node(blastFunnel);
-                });
+                node(rotaryFunnel);
             });
 
             node(powerElectrode, () -> {

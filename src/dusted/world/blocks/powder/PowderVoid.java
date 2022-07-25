@@ -18,7 +18,7 @@ public class PowderVoid extends PowderBlock {
         }
 
         @Override
-        public void handlePowder(Powder powder, float amount) {
+        public void handlePowder(Building source, Powder powder, float amount) {
         }
     }
 }
