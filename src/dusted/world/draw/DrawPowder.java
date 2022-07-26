@@ -1,29 +1,25 @@
 package dusted.world.draw;
 
-import arc.*;
 import arc.graphics.g2d.*;
-import dusted.world.blocks.production.*;
-import dusted.world.blocks.production.PowderCrafter.*;
+import dusted.type.*;
 import dusted.world.interfaces.*;
 import mindustry.gen.*;
-import mindustry.world.*;
 import mindustry.world.draw.*;
 
 public class DrawPowder extends DrawBlock {
-    public TextureRegion powderRegion;
+    public Powder drawPowder;
+    public float padding;
 
-    @Override
-    public void draw(Building build) {
-        if (build instanceof PowderCrafterBuild pbuild) {
-            Draw.color(((PowderCrafter) pbuild.block).outputPowder.powder.color);
-            Draw.alpha(pbuild.powders.get(((PowderCrafter) pbuild.block).outputPowder.powder) / ((PowderBlockc) build.block).powderCapacity());
-            Draw.rect(powderRegion, build.x, build.y);
-            Draw.color();
-        }
+    public DrawPowder(Powder drawPowder, float padding) {
+        this.drawPowder = drawPowder;
+        this.padding = padding;
     }
 
     @Override
-    public void load(Block block) {
-        powderRegion = Core.atlas.find(block.name + "-powder");
+    public void draw(Building build) {
+        if (!(build instanceof PowderBuildc pbuild)) return;
+        Draw.color(drawPowder.color, pbuild.powderModule().currentAmount() / ((PowderBlockc) build.block).powderCapacity());
+        Fill.rect(build.x, build.y, build.hitSize() - padding * 2f, build.hitSize() - padding * 2f);
+        Draw.color();
     }
 }

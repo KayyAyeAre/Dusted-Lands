@@ -20,7 +20,7 @@ import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.meta.*;
 
-import static mindustry.Vars.tilesize;
+import static mindustry.Vars.*;
 
 public class TransferLink extends Block {
     public float transferTime = 2f;
@@ -90,7 +90,7 @@ public class TransferLink extends Block {
 
     @Override
     public void drawPlace(int x, int y, int rotation, boolean valid) {
-        Drawf.circles(x * tilesize + offset, y * tilesize + offset, linkRange * tilesize);
+        Drawf.circles(x * tilesize + offset, y * tilesize + offset, linkRange);
     }
 
     @Override
@@ -148,6 +148,7 @@ public class TransferLink extends Block {
 
         float dx1 = x1 + ox * l1, dy1 = y1 + oy * l1, dx2 = x2 - ox * l2, dy2 = y2 - oy * l2;
 
+        //TODO maybe just Drawf.laser
         Draw.alpha(Renderer.laserOpacity);
         Draw.z(Layer.power);
         Draw.rect(laserEndRegion, dx1, dy1);
@@ -160,14 +161,17 @@ public class TransferLink extends Block {
         int arrows = (int) (dst / arrowSpacing);
 
         for (int a = 0; a < arrows; a++) {
+            float aprogress = a * arrowSpacing + progress;
+            Draw.alpha(Mathf.slope(aprogress / dst));
             Draw.rect(arrowRegion,
-                    dx1 + Angles.trnsx(arot, Vars.tilesize / 2f + a * arrowSpacing + progress),
-                    dy1 + Angles.trnsy(arot, Vars.tilesize / 2f + a * arrowSpacing + progress),
+                    dx1 + Angles.trnsx(arot, Vars.tilesize / 2f + aprogress),
+                    dy1 + Angles.trnsy(arot, Vars.tilesize / 2f + aprogress),
                     arot);
         }
     }
 
-    public class LinkData {
+    //like normal int, but tells the block that the config shouldnt be invalidated
+    public static class LinkData {
         public int pos;
 
         public LinkData(int pos) {
@@ -288,7 +292,6 @@ public class TransferLink extends Block {
             super.draw();
 
             links.each(i -> {
-                Point2 pos = Point2.unpack(i);
                 Building link = Vars.world.build(i);
 
                 if (linkValid(this, link, false)) drawLink(x, y, link.x, link.y, block.size, link.block.size, time);
@@ -310,7 +313,6 @@ public class TransferLink extends Block {
             Drawf.circles(x, y, linkRange);
             links.each(i -> {
                 Building link = Vars.world.build(i);
-                Point2 p = Point2.unpack(i);
                 Drawf.square(link.x, link.y, link.block.size * Vars.tilesize / 2f + 1f, Pal.place);
             });
         }

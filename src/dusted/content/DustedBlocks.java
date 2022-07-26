@@ -42,7 +42,7 @@ public class DustedBlocks {
     volstoneBoulder, cavnenBoulder, volSprout, volTree, weepingShrub, weepingBlossom, charredTree,
     //defense
     zirconWall, zirconWallLarge,
-    stasisProjector, decaySuppressor,
+    decaySuppressor,
     //turrets, TODO needs reworking
     abrade, sunder, bisect, scald, coruscate, evanesce,
     cocaineDuo,
@@ -51,7 +51,7 @@ public class DustedBlocks {
     //powder distribution
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
-    //power
+    //power TODO rework this as well
     powerElectrode, pressureBurner,
     //crafters
     quartzExtractor, metaglassFurnace, siliconForge, pyresinCondenser, telonateForge,
@@ -155,7 +155,7 @@ public class DustedBlocks {
             hasPower = true;
             size = 2;
 
-            drawer = new DrawMulti(new DrawDefault(), new DrawPowder());
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPowder(DustedPowders.quartzDust, 1f), new DrawDefault());
             outputPowder = new PowderStack(DustedPowders.quartzDust, 1f);
             craftTime = 12f;
             consumePower(1f);
@@ -165,11 +165,12 @@ public class DustedBlocks {
         siliconForge = new PowderCrafter("silicon-forge") {{
             requirements(Category.crafting, ItemStack.with(Items.titanium, 130, DustedItems.zircon, 80, Items.graphite, 50));
             size = 3;
+            squareSprite = false;
 
             outputItem = new ItemStack(Items.silicon, 3);
             craftTime = 90f;
             craftEffect = Fx.smeltsmoke;
-            drawer = new DrawMulti(new DrawDefault(), new DrawFlame(Color.valueOf("ffef99")));
+            drawer = new DrawMulti(new DrawDefault(), new DrawSpinFlame());
             ambientSound = Sounds.smelter;
             ambientSoundVolume = 0.08f;
 
@@ -190,7 +191,7 @@ public class DustedBlocks {
             ambientSound = Sounds.smelter;
             ambientSoundVolume = 0.09f;
 
-            consumePower(0.8f);
+            consumePower(1f);
             consume(new ConsumePowder(DustedPowders.quartzDust, 0.05f));
             consumeItem(DustedItems.platinum, 2);
         }};
@@ -200,10 +201,19 @@ public class DustedBlocks {
             hasPower = true;
             size = 3;
 
-            drawer = new DrawMulti(new DrawDefault(), new DrawPowderRotator());
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawPowder(DustedPowders.pyreol, 2f),
+                    new DrawRegion("-rotator") {{
+                        spinSprite = true;
+                        rotateSpeed = -2f;
+                    }},
+                    new DrawDefault(),
+                    new DrawRegion("-top")
+            );
             outputItem = new ItemStack(DustedItems.pyresin, 2);
             craftTime = 50f;
-            consumePower(1f);
+            consumePower(1.5f);
             consume(new ConsumePowder(DustedPowders.pyreol, 0.1f));
         }};
         //endregion
@@ -252,6 +262,8 @@ public class DustedBlocks {
 
         bridgeChute = new PowderBridge("bridge-chute") {{
             requirements(Category.distribution, ItemStack.with(DustedItems.zircon, 8, DustedItems.arsenic, 4));
+            fadeIn = moveArrows = false;
+            arrowSpacing = 6f;
             range = 4;
             hasPower = false;
         }};

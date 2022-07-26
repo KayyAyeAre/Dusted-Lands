@@ -25,7 +25,7 @@ import mindustry.world.blocks.distribution.*;
 public class Chute extends PowderBlock implements Autotiler {
     public final int timerFlow = timers++;
     public boolean leaks = true;
-    public Color bottomColor = Color.valueOf("565656");
+    public Color bottomColor = Color.valueOf("3d3839");
     public TextureRegion[] topRegions = new TextureRegion[5], bottomRegions = new TextureRegion[5];
 
     public Chute(String name) {
@@ -53,6 +53,20 @@ public class Chute extends PowderBlock implements Autotiler {
     @Override
     public TextureRegion[] icons() {
         return new TextureRegion[]{Core.atlas.find("dusted-lands-chute-bottom"), topRegions[0]};
+    }
+
+    @Override
+    public void drawPlanRegion(BuildPlan plan, Eachable<BuildPlan> list) {
+        int[] bits = getTiling(plan, list);
+        if (bits != null) {
+            Draw.scl(bits[1], bits[2]);
+            Draw.color(bottomColor);
+            Draw.alpha(0.5f);
+            Draw.rect(bottomRegions[bits[0]], plan.drawx(), plan.drawy(), plan.rotation * 90f);
+            Draw.color();
+            Draw.rect(topRegions[bits[0]], plan.drawx(), plan.drawy(), plan.rotation * 90f);
+            Draw.scl();
+        }
     }
 
     @Override
@@ -94,6 +108,9 @@ public class Chute extends PowderBlock implements Autotiler {
             size = 0f;
             progress = 0f;
             offset = 0f;
+            srcRot = 0f;
+            randColor = 0f;
+            moveSpeed = 0.2f;
         }
     }
 
@@ -190,7 +207,11 @@ public class Chute extends PowderBlock implements Autotiler {
                 if (c.progress > 1f) {
                     c.progress %= 1f;
                     clumps.remove(c);
-                    if (front() instanceof ChuteBuild chute) {
+
+                    Building next = front();
+                    if (front() instanceof PowderBuildc pbuild) next = pbuild.getPowderDestination(this, powders.current());
+
+                    if (next instanceof ChuteBuild chute) {
                         c.srcRot = rotdeg();
                         chute.clumps.add(c);
                     } else {
