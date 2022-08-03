@@ -438,6 +438,7 @@ public class DustedBlocks {
             coolant = consumeCoolant(0.1f);
         }};
 
+        //TODO change weapon maybe
         coruscate = new PowderTurret("coruscate") {{
             requirements(Category.turret, ItemStack.with());
             size = 3;
