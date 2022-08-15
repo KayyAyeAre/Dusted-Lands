@@ -1,7 +1,7 @@
 name: "dusted-lands"
 main: "dusted.DustedLands"
 version: 0.22
-minGameVersion: 136
+minGameVersion: 137
 java: true
 
 displayName: "Dusted Lands"

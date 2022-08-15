@@ -27,7 +27,6 @@ public class PowderTurret extends Turret implements PowderBlockc {
 
     public PowderTurret(String name) {
         super(name);
-        outlinedIcon = 1;
     }
 
     @Override

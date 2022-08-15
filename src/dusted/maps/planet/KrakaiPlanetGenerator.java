@@ -15,6 +15,7 @@ import mindustry.world.*;
 
 import static mindustry.Vars.*;
 
+//TODO also redo this
 public class KrakaiPlanetGenerator extends PlanetGenerator {
     int seed = 64;
     BaseGenerator basegen = new BaseGenerator();

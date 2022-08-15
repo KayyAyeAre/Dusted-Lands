@@ -10,6 +10,10 @@ public class DrawPowder extends DrawBlock {
     public Powder drawPowder;
     public float padding;
 
+    public DrawPowder(Powder drawPowder) {
+        this.drawPowder = drawPowder;
+    }
+
     public DrawPowder(Powder drawPowder, float padding) {
         this.drawPowder = drawPowder;
         this.padding = padding;

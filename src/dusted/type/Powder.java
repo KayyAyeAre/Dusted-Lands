@@ -8,12 +8,12 @@ import mindustry.ctype.*;
 import mindustry.type.*;
 import mindustry.world.meta.*;
 
+//TODO maybe dust clouds or something
 public class Powder extends UnlockableContent {
     public Color color;
     public float temperature;
     public float flammability;
-    //TODO currently useless
-    public float density;
+    public float explosiveness;
     public StatusEffect effect = StatusEffects.none;
 
     public Powder(String name, Color color) {
@@ -33,7 +33,7 @@ public class Powder extends UnlockableContent {
     public void setStats() {
         stats.addPercent(Stat.temperature, temperature);
         stats.addPercent(Stat.flammability, flammability);
-        stats.addPercent(DustedStats.density, density);
+        stats.addPercent(Stat.explosiveness, explosiveness);
     }
 
     @Override

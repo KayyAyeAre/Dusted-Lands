@@ -18,16 +18,11 @@ import mindustry.type.weapons.*;
 
 public class DustedUnitTypes {
     public static UnitType
-            carom, recur, saltate, staccato, recrudesce,
-
+    carom, recur, saltate, staccato, recrudesce,
     sob, wail, snivel, sorrow, lament,
-
     seism, tremor, quaver, temblor, convulse,
-
     pique, rancor, animus, enmity, acrimony,
-
     protei, hynobii, sirenid, pleurodel, dicamptodon,
-
     erode, recede, atrophy;
 
     public static void load() {

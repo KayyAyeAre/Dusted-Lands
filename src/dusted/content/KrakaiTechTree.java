@@ -7,7 +7,6 @@ import static dusted.content.DustedUnitTypes.*;
 import static mindustry.content.TechTree.*;
 
 public class KrakaiTechTree {
-
     public static void load() {
         DustedPlanets.krakai.techTree = nodeRoot("krakai", coreAbate, () -> {
             node(transferLink, () -> {
@@ -28,7 +27,6 @@ public class KrakaiTechTree {
             });
 
             node(powerElectrode, () -> {
-                node(pressureBurner);
             });
 
             node(cavnenTerraConstructor, () -> {
@@ -88,11 +86,9 @@ public class KrakaiTechTree {
                 nodeProduce(Items.sand, () -> {
                 });
 
-                nodeProduce(DustedPowders.cavnenDust, () -> {
-                    nodeProduce(DustedPowders.quartzDust, () -> {
-                    });
-
+                nodeProduce(DustedPowders.quartzDust, () -> {
                     nodeProduce(DustedPowders.pyreol, () -> {
+                        nodeProduce(DustedPowders.sulfur, () -> {});
                     });
                 });
             });

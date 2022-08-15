@@ -10,14 +10,15 @@ import dusted.world.blocks.defense.turrets.*;
 import dusted.world.blocks.distribution.*;
 import dusted.world.blocks.environment.*;
 import dusted.world.blocks.powder.*;
-import dusted.world.blocks.power.*;
 import dusted.world.blocks.production.*;
 import dusted.world.blocks.storage.*;
 import dusted.world.blocks.units.*;
 import dusted.world.consumers.*;
 import dusted.world.draw.*;
+import dusted.world.meta.*;
 import mindustry.content.*;
 import mindustry.entities.bullet.*;
+import mindustry.entities.part.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
 import mindustry.type.*;
@@ -30,11 +31,10 @@ import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
-// TODO add requirements to blocks, resprite most stuff, make sure everything functions in campaign
 public class DustedBlocks {
     public static Block
-    //environment
-    orePlastel, oreArsenic, pyreol, volcanoZone,
+    //environment, TODO maybe resprite these?
+    orePlastel, oreArsenic, pyreol, sulfur, volcanoZone,
     cavnenSediment, cavnenDusting, volstone, latite, scoria, stradrock, scorchedStradrock,
     cavnenWall, volstoneWall, scoriaWall, latiteWall, stradrockWall,
     //decor
@@ -44,7 +44,7 @@ public class DustedBlocks {
     zirconWall, zirconWallLarge,
     decaySuppressor,
     //turrets, TODO needs reworking
-    abrade, sunder, bisect, scald, coruscate, evanesce,
+    abrade, sunder, bisect, scald, coruscate, strike, evanesce,
     cocaineDuo,
     //distribution
     transferLink, transferTower,
@@ -52,11 +52,10 @@ public class DustedBlocks {
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
     //power TODO rework this as well
-    powerElectrode, pressureBurner,
+    powerElectrode,
     //crafters
-    quartzExtractor, metaglassFurnace, siliconForge, pyresinCondenser, telonateForge,
+    quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, pyresinCondenser, telonateForge,
     //production
-    thermalExcavator,
     pneumaticFunnel, rotaryFunnel,
     //cores
     coreAbate, coreDissent, coreDecadence,
@@ -80,13 +79,17 @@ public class DustedBlocks {
             attributes.set(Attribute.water, -0.7f);
         }};
 
+        sulfur = new PowderFloor("sulfur-deposit") {{
+            powderDrop = DustedPowders.sulfur;
+            attributes.set(Attribute.water, -0.5f);
+        }};
+
         cavnenSediment = new Floor("cavnen-sediment") {{
             attributes.set(Attribute.oil, 1.2f);
             attributes.set(Attribute.water, -0.6f);
         }};
 
         cavnenDusting = new PowderFloor("cavnen-dusting") {{
-            powderDrop = DustedPowders.cavnenDust;
             attributes.set(Attribute.oil, 0.9f);
             attributes.set(Attribute.water, -0.65f);
         }};
@@ -106,14 +109,21 @@ public class DustedBlocks {
             cavnenDusting.asFloor().wall = this;
         }};
 
-        volstoneWall = new StaticWall("volstone-wall");
+        volstoneWall = new StaticWall("volstone-wall") {{
+            attributes.set(DustedAttribute.rock, 1f);
+        }};
 
-        scoriaWall = new StaticWall("scoria-wall");
+        scoriaWall = new StaticWall("scoria-wall") {{
+            attributes.set(DustedAttribute.rock, 1f);
+        }};
 
-        latiteWall = new StaticWall("latite-wall");
+        latiteWall = new StaticWall("latite-wall") {{
+            attributes.set(DustedAttribute.rock, 1f);
+        }};
 
         stradrockWall = new StaticWall("stradrock-wall") {{
             scorchedStradrock.asFloor().wall = this;
+            attributes.set(DustedAttribute.rock, 1f);
         }};
 
         scoriaBoulder = new Prop("scoria-boulder") {{
@@ -149,13 +159,12 @@ public class DustedBlocks {
 
         //endregion
         //region crafters
-
         quartzExtractor = new PowderCrafter("quartz-extractor") {{
             requirements(Category.crafting, ItemStack.with(Items.titanium, 100, DustedItems.zircon, 60, Items.copper, 50));
             hasPower = true;
             size = 2;
 
-            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPowder(DustedPowders.quartzDust, 1f), new DrawDefault());
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPowder(DustedPowders.quartzDust), new DrawDefault());
             outputPowder = new PowderStack(DustedPowders.quartzDust, 1f);
             craftTime = 12f;
             consumePower(1f);
@@ -194,6 +203,25 @@ public class DustedBlocks {
             consumePower(1f);
             consume(new ConsumePowder(DustedPowders.quartzDust, 0.05f));
             consumeItem(DustedItems.platinum, 2);
+        }};
+
+        rockwoolExtruder = new DrawerWallCrafter("rockwool-extruder") {{
+            requirements(Category.crafting, ItemStack.with());
+            rotateDraw = false;
+            size = 3;
+
+            attribute = DustedAttribute.rock;
+            output = DustedItems.rockwool;
+            drillTime = 120f;
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawLiquidTile(Liquids.slag),
+                    new DrawDefault(),
+                    new DrawSideExtractor()
+            );
+
+            consumePower(0.8f);
+            consumeLiquid(Liquids.slag, 0.1f);
         }};
 
         pyresinCondenser = new PowderCrafter("pyresin-condenser") {{
@@ -285,11 +313,6 @@ public class DustedBlocks {
             extractEffect = DustedFx.funnelExtract;
             squareSprite = false;
         }};
-
-        thermalExcavator = new Excavator("thermal-excavator") {{
-            requirements(Category.production, ItemStack.with());
-            size = 2;
-        }};
         //endregion
         //region power
         powerElectrode = new PowerNode("power-electrode") {{
@@ -298,18 +321,6 @@ public class DustedBlocks {
             laserRange = 3.5f;
             laserColor2 = DustedPal.lightTitanium;
         }};
-
-        pressureBurner = new PowderConsumeGenerator("pressure-burner") {{
-            requirements(Category.power, ItemStack.with());
-            powerProduction = 1.5f;
-            size = 2;
-            ambientSound = Sounds.smelter;
-            ambientSoundVolume = 0.03f;
-            drawer = new DrawMulti(new DrawDefault(), new DrawWarmupRegion());
-
-            consume(new ConsumePowderFlammable(0.2f, 0.2f));
-        }};
-
         //endregion
         //region defense
         zirconWall = new Wall("zircon-wall") {{
@@ -363,7 +374,7 @@ public class DustedBlocks {
             coolant = consumeCoolant(0.1f);
         }};
 
-        bisect = new PowderTurret("bisect") {{
+        bisect = new PowerTurret("bisect") {{
             requirements(Category.turret, ItemStack.with());
             size = 2;
             health = 220 * size * size;
@@ -376,17 +387,15 @@ public class DustedBlocks {
             outlineColor = DustedPal.darkerWarmMetal;
             drawer = new DrawTurret("decayed-");
 
-            ammo(
-                    DustedPowders.cavnenDust, new SplittingLaserBulletType(90f) {{
-                        hitSize = 8f;
-                        lifetime = 40f;
-                        drawSize = 100f;
-                        shootEffect = DustedFx.splitShot;
-                        collidesAir = false;
-                        length = 100f;
-                        ammoMultiplier = 1f;
-                    }}
-            );
+            shootType = new SplittingLaserBulletType(90f) {{
+                hitSize = 8f;
+                lifetime = 40f;
+                drawSize = 100f;
+                shootEffect = DustedFx.splitShot;
+                collidesAir = false;
+                length = 100f;
+                ammoMultiplier = 1f;
+            }};
 
             coolant = consumeCoolant(0.1f);
         }};
@@ -448,7 +457,41 @@ public class DustedBlocks {
             shootSound = Sounds.artillery;
             range = 3f * 70f;
             outlineColor = DustedPal.darkerWarmMetal;
-            drawer = new DrawTurret("decayed-");
+            shootWarmupSpeed = 0.15f;
+            cooldownTime = 140f;
+
+            drawer = new DrawTurret("decayed-") {{
+                parts.add(
+                        new RegionPart("-blade") {{
+                            progress = PartProgress.recoil;
+                            mirror = true;
+                            under = true;
+                            x = 3.5f;
+                            y = 4.75f;
+                            moveX = 2f;
+                            moveY = -1f;
+                            moveRot = -20f;
+                        }},
+                        new RegionPart("-blade-glow") {{
+                            progress = PartProgress.recoil;
+                            mirror = true;
+                            under = true;
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("ff3b62");
+                            drawRegion = false;
+                            x = 3.5f;
+                            y = 4.75f;
+                            moveX = 2f;
+                            moveY = -1f;
+                            moveRot = -20f;
+                        }},
+                        new RegionPart("-glow") {{
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("ff3b62");
+                            drawRegion = false;
+                        }}
+                );
+            }};
 
             ammo(
                     DustedPowders.quartzDust, new RocketBulletType(3f, 36f) {{
@@ -486,6 +529,62 @@ public class DustedBlocks {
             );
 
             coolant = consumeCoolant(0.1f);
+        }};
+
+        strike = new ItemPowderTurret("strike") {{
+            requirements(Category.turret, ItemStack.with());
+            size = 3;
+            outlineColor = DustedPal.darkerWarmMetal;
+            rotateSpeed = 1f;
+            reload = 6f;
+            recoilTime = 30f;
+            cooldownTime = 40f;
+            recoil = 2f;
+            shootSound = Sounds.bang;
+            shootEffect = DustedFx.shootLaunch;
+            shootWarmupSpeed = 0.05f;
+            minWarmup = 0.8f;
+            range = 240f;
+            shootY = 10f;
+
+            drawer = new DrawTurret("decayed-") {{
+                parts.add(
+                        new RegionPart("-blade") {{
+                            progress = PartProgress.warmup;
+                            mirror = true;
+                            under = true;
+                            moveX = 7f;
+                            moveRot = -40f;
+                            moves.add(new PartMove(PartProgress.warmup, 5f, 2f, -5f));
+                        }},
+                        new RegionPart("-blade") {{
+                            progress = PartProgress.warmup;
+                            mirror = true;
+                            under = true;
+                            moveX = 6f;
+                            moveY = -4f;
+                            moveRot = -60f;
+                            moves.add(new PartMove(PartProgress.warmup, 4f, -2f, -4f));
+                        }},
+                        new RegionPart("-glow") {{
+                            heatProgress = PartProgress.recoil;
+                            heatColor = Color.valueOf("1013e0");
+                            drawRegion = false;
+                        }}
+                );
+            }};
+
+            ammo(
+                    //TODO this is probably unbalanced
+                    Items.graphite, new InstantBulletType() {{
+                        damage = 18f;
+                        splashDamage = 10f;
+                        splashDamageRadius = 4f;
+                        hitEffect = despawnEffect = DustedFx.hitLaunch;
+                    }}
+            );
+
+            consume(new ConsumePowder(DustedPowders.sulfur, 0.2f));
         }};
         //endregion
         //region units

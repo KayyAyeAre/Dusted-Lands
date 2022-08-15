@@ -10,10 +10,13 @@ import dusted.graphics.*;
 import dusted.input.*;
 import dusted.world.meta.*;
 import mindustry.*;
+import mindustry.entities.*;
 import mindustry.game.EventType.*;
 import mindustry.graphics.*;
 import mindustry.mod.*;
 import mindustry.type.*;
+import mindustry.world.blocks.defense.turrets.*;
+import mindustry.world.draw.*;
 
 //TODO rework the entire campaign; remove titanium powder
 public class DustedLands extends Mod {
