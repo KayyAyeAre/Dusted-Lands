@@ -4,9 +4,11 @@ import arc.graphics.*;
 import dusted.type.*;
 
 public class DustedPowders {
+    //TODO i need more powders
     public static Powder quartzDust, pyreol, sulfur, cocaine;
 
     public static void load() {
+        //TODO maybe rename this to silica
         quartzDust = new Powder("quartz-dust", Color.valueOf("ffe8ee")) {{
             temperature = 0.5f;
         }};

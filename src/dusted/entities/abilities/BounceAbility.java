@@ -54,7 +54,7 @@ public class BounceAbility extends Ability {
     }
 
     public void bounce(Unit unit, Position target) {
-        if (entityBounceDelay > 0 || entityBounceCooldown > 0 || steps > 0) return;
+        if (entityBounceDelay > 0 || entityBounceCooldown > 0 || steps > 0 || target == null) return;
         targetpos.set(target);
         steps = bounces;
     }

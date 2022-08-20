@@ -1,7 +1,6 @@
 package dusted.content;
 
 import arc.graphics.*;
-import arc.util.*;
 import dusted.ai.types.*;
 import dusted.entities.abilities.*;
 import dusted.entities.bullet.*;
@@ -56,8 +55,8 @@ public class DustedUnitTypes {
                     trailLength = 16;
                     status = DustedStatusEffects.deteriorating;
                     statusDuration = 6 * 60f;
-                    frontColor = DustedPal.cavnenYellow;
-                    backColor = trailColor = DustedPal.cavnenYellowBack;
+                    frontColor = DustedPal.decayingYellow;
+                    backColor = trailColor = DustedPal.decayingYellowBack;
                     hitEffect = despawnEffect = DustedFx.hitCavnen;
                 }};
             }});
@@ -88,7 +87,7 @@ public class DustedUnitTypes {
                 y = -2f;
                 shootY = 2.5f;
                 beamWidth = 0.6f;
-                laserColor = DustedPal.cavnenYellow;
+                laserColor = DustedPal.decayingYellow;
                 mirror = false;
                 repairSpeed = 0.7f;
 
@@ -145,7 +144,7 @@ public class DustedUnitTypes {
                     length = 50f;
                     sideWidth = 0.8f;
                     sideLength = 52f;
-                    colors = new Color[]{DustedPal.cavnenYellowBack, DustedPal.cavnenYellow, Color.white};
+                    colors = new Color[]{DustedPal.decayingYellowBack, DustedPal.decayingYellow, Color.white};
                 }};
             }});
 
@@ -184,8 +183,8 @@ public class DustedUnitTypes {
                     splashDamageRadius = 18f;
                     splashDamage = 14f;
                     lifetime = 40f;
-                    frontColor = DustedPal.cavnenYellow;
-                    backColor = DustedPal.cavnenYellowBack;
+                    frontColor = DustedPal.decayingYellow;
+                    backColor = DustedPal.decayingYellowBack;
                     shootEffect = Fx.shootHealYellow;
                     hitEffect = despawnEffect = DustedFx.hitCavnen;
 
@@ -199,9 +198,9 @@ public class DustedUnitTypes {
                         splashDamageRadius = 16f;
                         splashDamage = 12f;
                         hitEffect = despawnEffect = DustedFx.hitCavnen;
-                        frontColor = DustedPal.cavnenYellow;
-                        backColor = DustedPal.cavnenYellowBack;
-                        trailColor = DustedPal.cavnenYellow;
+                        frontColor = DustedPal.decayingYellow;
+                        backColor = DustedPal.decayingYellowBack;
+                        trailColor = DustedPal.decayingYellow;
                         trailLength = 6;
                         trailWidth = 3f;
                     }};
@@ -253,8 +252,8 @@ public class DustedUnitTypes {
                             weaveMag = 1f;
                             homingPower = 0.08f;
                             homingRange = 80f;
-                            frontColor = DustedPal.cavnenYellow;
-                            backColor = DustedPal.cavnenYellowBack;
+                            frontColor = DustedPal.decayingYellow;
+                            backColor = DustedPal.decayingYellowBack;
                             hitEffect = despawnEffect = DustedFx.hitCavnen;
 
                             rocketBulletType = new BasicBulletType(1f, 44f, "circle-bullet") {{
@@ -263,8 +262,8 @@ public class DustedUnitTypes {
                                 shrinkX = shrinkY = 0.3f;
                                 pierce = true;
                                 lifetime = 140f;
-                                frontColor = DustedPal.cavnenYellow;
-                                backColor = DustedPal.cavnenYellowBack;
+                                frontColor = DustedPal.decayingYellow;
+                                backColor = DustedPal.decayingYellowBack;
                                 status = DustedStatusEffects.deteriorating;
                                 statusDuration = 4 * 60f;
                                 hitEffect = despawnEffect = DustedFx.hitCavnen;
@@ -286,8 +285,8 @@ public class DustedUnitTypes {
                             trailLength = 18;
                             status = DustedStatusEffects.deteriorating;
                             statusDuration = 8 * 60f;
-                            frontColor = DustedPal.cavnenYellow;
-                            backColor = trailColor = DustedPal.cavnenYellowBack;
+                            frontColor = DustedPal.decayingYellow;
+                            backColor = trailColor = DustedPal.decayingYellowBack;
                             hitEffect = despawnEffect = DustedFx.hitCavnen;
                         }};
                     }},
@@ -306,8 +305,8 @@ public class DustedUnitTypes {
                             trailLength = 18;
                             status = DustedStatusEffects.deteriorating;
                             statusDuration = 8 * 60f;
-                            frontColor = DustedPal.cavnenYellow;
-                            backColor = trailColor = DustedPal.cavnenYellowBack;
+                            frontColor = DustedPal.decayingYellow;
+                            backColor = trailColor = DustedPal.decayingYellowBack;
                             hitEffect = despawnEffect = DustedFx.hitCavnen;
                         }};
                     }}
@@ -392,8 +391,8 @@ public class DustedUnitTypes {
                     shrinkX = shrinkY = 0.4f;
                     drag = 0.04f;
                     lifetime = 50f;
-                    frontColor = DustedPal.cavnenYellow;
-                    backColor = DustedPal.cavnenYellowBack;
+                    frontColor = DustedPal.decayingYellow;
+                    backColor = DustedPal.decayingYellowBack;
                     hitEffect = despawnEffect = DustedFx.hitCavnen;
                     status = DustedStatusEffects.deteriorating;
                     statusDuration = 4 * 60f;
@@ -433,8 +432,8 @@ public class DustedUnitTypes {
                     serrations = 8;
                     shootEffect = DustedFx.shootCavnenShrapnel;
                     smokeEffect = Fx.shootSmallSmoke;
-                    fromColor = DustedPal.cavnenYellow;
-                    toColor = DustedPal.cavnenYellowBack;
+                    fromColor = DustedPal.decayingYellow;
+                    toColor = DustedPal.decayingYellowBack;
                 }};
             }});
 
@@ -480,8 +479,8 @@ public class DustedUnitTypes {
                     splashDamage = 16f;
                     splashDamageRadius = 20f;
                     lifetime = 80f;
-                    frontColor = DustedPal.cavnenYellow;
-                    backColor = trailColor = DustedPal.cavnenYellowBack;
+                    frontColor = DustedPal.decayingYellow;
+                    backColor = trailColor = DustedPal.decayingYellowBack;
                     trailLength = 18;
                     trailWidth = 4f;
                     status = DustedStatusEffects.deteriorating;
@@ -496,8 +495,8 @@ public class DustedUnitTypes {
                         splashDamage = 14f;
                         splashDamageRadius = 14f;
                         lifetime = 40f;
-                        frontColor = DustedPal.cavnenYellow;
-                        backColor = DustedPal.cavnenYellowBack;
+                        frontColor = DustedPal.decayingYellow;
+                        backColor = DustedPal.decayingYellowBack;
                         status = DustedStatusEffects.deteriorating;
                         statusDuration = 4 * 60f;
                         hitEffect = despawnEffect = DustedFx.hitCavnen;

@@ -10,6 +10,9 @@ import mindustry.gen.*;
 
 public class RocketBulletType extends BasicBulletType {
     public float rocketReload = 10f;
+    public float rocketDelay;
+    public float inaccuracy;
+    public float rocketAngle = 180f;
     public BulletType rocketBulletType;
     public ShootPattern shoot = new ShootPattern();
     public Sound shootSound = Sounds.none;
@@ -38,7 +41,11 @@ public class RocketBulletType extends BasicBulletType {
         super.update(b);
         if (b.data == null) b.data = 0;
 
-        if (b.timer(3, rocketReload)) {
+        if (b.time > rocketDelay) b.fdata -= Time.delta;
+
+        if (b.fdata < 0) {
+            b.fdata = rocketReload;
+
             shoot.shoot((int) b.data, (xOffset, yOffset, angle, delay, mover) -> {
                 if (delay > 0) {
                     Time.run(delay, () -> shoot(b, xOffset, yOffset, angle, mover));
@@ -54,10 +61,10 @@ public class RocketBulletType extends BasicBulletType {
     public void shoot(Bullet owner, float xOffset, float yOffset, float angleOffset, Mover mover) {
         float bx = owner.x + Angles.trnsx(owner.rotation(), xOffset, yOffset);
         float by = owner.y + Angles.trnsy(owner.rotation(), xOffset, yOffset);
-        float rot = owner.rotation() + 180f + angleOffset;
+        float rot = owner.rotation() + rocketAngle + angleOffset + Mathf.range(inaccuracy);
 
         rocketBulletType.create(owner, owner.team, bx, by, rot, 1f, 1f, mover);
-        rocketBulletType.shootEffect.at(bx, by, rot);
+        rocketBulletType.shootEffect.at(bx, by, rot, rocketBulletType.hitColor);
         shootSound.at(bx, by, Mathf.random(0.9f, 1.1f));
     }
 }

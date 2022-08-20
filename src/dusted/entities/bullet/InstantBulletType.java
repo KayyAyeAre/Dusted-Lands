@@ -13,6 +13,10 @@ import mindustry.gen.*;
 public class InstantBulletType extends BulletType {
     public float distance = 240f;
 
+    public InstantBulletType() {
+        speed = 0f;
+    }
+
     @Override
     public void init(Bullet b) {
         Seq<Unit> units = new Seq<>();

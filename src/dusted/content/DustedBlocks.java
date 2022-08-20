@@ -34,7 +34,7 @@ import mindustry.world.meta.*;
 public class DustedBlocks {
     public static Block
     //environment, TODO maybe resprite these?
-    orePlastel, oreArsenic, pyreol, sulfur, volcanoZone,
+    orePlastel, oreArsenic, oreAntimony, oreClaridum, pyreol, sulfur, volcanoZone,
     cavnenSediment, cavnenDusting, volstone, latite, scoria, stradrock, scorchedStradrock,
     cavnenWall, volstoneWall, scoriaWall, latiteWall, stradrockWall,
     //decor
@@ -43,8 +43,8 @@ public class DustedBlocks {
     //defense
     zirconWall, zirconWallLarge,
     decaySuppressor,
-    //turrets, TODO needs reworking
-    abrade, sunder, bisect, scald, coruscate, strike, evanesce,
+    //turrets, TODO balancing?
+    abrade, sunder, bisect, scald, coruscate, strike, blight,
     cocaineDuo,
     //distribution
     transferLink, transferTower,
@@ -73,6 +73,8 @@ public class DustedBlocks {
         orePlastel = new OreBlock(DustedItems.zircon);
 
         oreArsenic = new OreBlock(DustedItems.arsenic);
+
+        oreAntimony = new OreBlock(DustedItems.antimony);
 
         pyreol = new PowderFloor("pyreol-deposit") {{
             powderDrop = DustedPowders.pyreol;
@@ -319,7 +321,6 @@ public class DustedBlocks {
             requirements(Category.power, ItemStack.with(Items.graphite, 3, DustedItems.zircon, 1));
             maxNodes = 5;
             laserRange = 3.5f;
-            laserColor2 = DustedPal.lightTitanium;
         }};
         //endregion
         //region defense
@@ -344,8 +345,7 @@ public class DustedBlocks {
         abrade = new ItemTurret("abrade") {{
             requirements(Category.turret, ItemStack.with());
             size = 2;
-            health = 240 * size * size;
-            targetGround = false;
+            scaledHealth = 240f;
             reload = 12f;
             recoil = 4f;
             range = 75f;
@@ -356,16 +356,15 @@ public class DustedBlocks {
 
             ammo(
                     DustedItems.zircon, new ShrapnelBulletType() {{
-                        collidesGround = false;
                         hitEffect = Fx.hitBulletSmall;
                         smokeEffect = Fx.shootSmallSmoke;
                         shootEffect = DustedFx.shootCavnenShrapnel;
                         status = DustedStatusEffects.deteriorating;
                         statusDuration = 8 * 60f;
-                        fromColor = DustedPal.cavnenYellow;
-                        toColor = DustedPal.cavnenYellowBack;
+                        fromColor = DustedPal.decayingYellow;
+                        toColor = DustedPal.decayingYellowBack;
                         length = 75f;
-                        damage = 15f;
+                        damage = 12f;
                         width = 16f;
                         serrations = 0;
                     }}
@@ -374,10 +373,48 @@ public class DustedBlocks {
             coolant = consumeCoolant(0.1f);
         }};
 
+        sunder = new ItemTurret("sunder") {{
+            requirements(Category.turret, ItemStack.with());
+            size = 2;
+            scaledHealth = 220f;
+            reload = 80f;
+            range = 280f;
+
+            outlineColor = DustedPal.darkerWarmMetal;
+            drawer = new DrawTurret("decayed-");
+
+            ammo(
+                    DustedItems.arsenic, new RocketBulletType(3.5f, 18f) {{
+                        lifetime = 80f;
+                        width = 18f;
+                        height = 22f;
+                        splashDamage = 12f;
+                        splashDamageRadius = 16f;
+                        frontColor = Color.white;
+                        backColor = hitColor = Color.valueOf("ff708e");
+                        hitEffect = despawnEffect = Fx.hitSquaresColor;
+
+                        rocketBulletType = new BasicBulletType(2f, 12f, "mine-bullet") {{
+                            lifetime = 65f;
+                            width = height = 12f;
+                            shrinkX = shrinkY = 0.3f;
+                            drag = 0.06f;
+                            splashDamage = 20f;
+                            splashDamageRadius = 24f;
+                            frontColor = Color.white;
+                            backColor = hitColor = Color.valueOf("ff708e");
+                            shootEffect = Fx.hitBulletColor;
+                            hitEffect = despawnEffect = Fx.hitSquaresColor;
+                        }};
+                    }}
+            );
+        }};
+
+        //TODO redo this entirely maybe
         bisect = new PowerTurret("bisect") {{
             requirements(Category.turret, ItemStack.with());
             size = 2;
-            health = 220 * size * size;
+            scaledHealth = 220f;
             targetAir = false;
             reload = 70f;
             recoil = 1f;
@@ -403,7 +440,7 @@ public class DustedBlocks {
         scald = new PowderTurret("scald") {{
             requirements(Category.turret, ItemStack.with());
             size = 2;
-            health = 260 * size * size;
+            scaledHealth = 260f;
             reload = 80f;
             recoil = 3f;
             range = 100f;
@@ -422,9 +459,9 @@ public class DustedBlocks {
                         status = StatusEffects.burning;
                         statusDuration = 8 * 60f;
                         frontColor = DustedPal.lightQuartz;
-                        backColor = DustedPal.darkQuartz;
-                        shootEffect = DustedFx.shootQuartz;
-                        hitEffect = DustedFx.hitQuartz;
+                        backColor = hitColor = DustedPal.darkQuartz;
+                        shootEffect = DustedFx.shootPowder;
+                        hitEffect = DustedFx.hitPowder;
                         lifetime = 30f;
                         makeFire = true;
 
@@ -435,9 +472,9 @@ public class DustedBlocks {
                             splashDamageRadius = 18f;
                             splashDamage = 16f;
                             makeFire = true;
-                            hitEffect = DustedFx.hitQuartz;
+                            hitEffect = DustedFx.hitPowder;
                             frontColor = DustedPal.lightQuartz;
-                            backColor = DustedPal.darkQuartz;
+                            backColor = hitColor = DustedPal.darkQuartz;
                             status = StatusEffects.burning;
                             statusDuration = 6 * 60f;
                         }};
@@ -451,7 +488,7 @@ public class DustedBlocks {
         coruscate = new PowderTurret("coruscate") {{
             requirements(Category.turret, ItemStack.with());
             size = 3;
-            health = 280 * size * size;
+            scaledHealth = 280f;
             reload = 110f;
             recoil = 5f;
             shootSound = Sounds.artillery;
@@ -500,13 +537,13 @@ public class DustedBlocks {
                         splashDamageRadius = 22f;
                         lifetime = 70f;
                         frontColor = DustedPal.lightQuartz;
-                        backColor = trailColor = DustedPal.darkQuartz;
+                        backColor = hitColor = trailColor = DustedPal.darkQuartz;
                         trailLength = 16;
                         trailWidth = 4f;
                         status = StatusEffects.burning;
-                        shootEffect = DustedFx.shootQuartz;
+                        shootEffect = DustedFx.shootPowder;
                         statusDuration = 16 * 60f;
-                        hitEffect = despawnEffect = DustedFx.hitQuartz;
+                        hitEffect = despawnEffect = DustedFx.hitPowder;
 
                         shoot = new ShootSpread(3, 30f);
 
@@ -518,9 +555,9 @@ public class DustedBlocks {
                             splashDamageRadius = 18f;
                             lifetime = 30f;
                             frontColor = DustedPal.lightQuartz;
-                            backColor = DustedPal.darkQuartz;
-                            shootEffect = DustedFx.shootQuartz;
-                            hitEffect = despawnEffect = DustedFx.hitQuartz;
+                            backColor = hitColor = DustedPal.darkQuartz;
+                            shootEffect = DustedFx.shootPowder;
+                            hitEffect = despawnEffect = DustedFx.hitPowder;
                             makeFire = true;
                             status = StatusEffects.burning;
                             statusDuration = 3 * 60f;
@@ -534,6 +571,7 @@ public class DustedBlocks {
         strike = new ItemPowderTurret("strike") {{
             requirements(Category.turret, ItemStack.with());
             size = 3;
+            scaledHealth = 240f;
             outlineColor = DustedPal.darkerWarmMetal;
             rotateSpeed = 1f;
             reload = 6f;
@@ -546,6 +584,7 @@ public class DustedBlocks {
             minWarmup = 0.8f;
             range = 240f;
             shootY = 10f;
+
 
             drawer = new DrawTurret("decayed-") {{
                 parts.add(
@@ -585,6 +624,116 @@ public class DustedBlocks {
             );
 
             consume(new ConsumePowder(DustedPowders.sulfur, 0.2f));
+        }};
+
+        blight = new PowderTurret("blight") {{
+            requirements(Category.turret, ItemStack.with());
+            size = 4;
+            reload = 190f;
+            scaledHealth = 260f;
+            range = 340f;
+            //TODO maybe change to a more firework-like sound?
+            shootSound = Sounds.artillery;
+            outlineColor = DustedPal.darkerWarmMetal;
+            drawer = new DrawTurret("decayed-") {{
+                parts.addAll(
+                        new RegionPart("-blade") {{
+                            mirror = true;
+                            under = true;
+                            x = 8f;
+                            y = 3f;
+                            moveX = 7f;
+                            moveY = 4f;
+                            moveRot = 50f;
+                            moves.add(new PartMove(PartProgress.recoil, 0f, -1f, -40f));
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("ff3b62");
+                        }},
+                        new RegionPart("-blade") {{
+                            mirror = true;
+                            under = true;
+                            x = 8f;
+                            y = 3f;
+                            moveX = 9f;
+                            moveY = -2f;
+                            moveRot = 20f;
+                            moves.add(new PartMove(PartProgress.recoil, 0f, -1f, -40f));
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("ff3b62");
+                        }},
+                        new RegionPart("-blade") {{
+                            mirror = true;
+                            under = true;
+                            x = 8f;
+                            y = 3f;
+                            moveX = 6f;
+                            moveY = -7f;
+                            moveRot = -30f;
+                            moves.add(new PartMove(PartProgress.recoil, 0f, -1f, -40f));
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("ff3b62");
+                        }},
+                        new RegionPart("-side") {{
+                            x = 7.25f;
+                            y = -1f;
+                            mirror = true;
+                            under = true;
+                            moveX = 0.5f;
+                            moveY = 2.5f;
+                            heatProgress = PartProgress.recoil;
+                            heatColor = Color.valueOf("ff3b62");
+                        }},
+                        new RegionPart("-barrel") {{
+                            under = true;
+                            progress = PartProgress.recoil;
+                            moveY = -3f;
+                            heatProgress = PartProgress.recoil;
+                            heatColor = Color.valueOf("ff3b62");
+                        }}
+                );
+            }};
+
+            ammo(
+                    DustedPowders.pyreol, new RocketBulletType(7f, 45f, "circle-bullet") {
+                        {
+                            lifetime = 240f;
+                            drag = 0.02f;
+                            width = height = 18f;
+                            shrinkX = shrinkY = 0.25f;
+                            ammoMultiplier = 1f;
+                            pierce = true;
+                            frontColor = DustedPal.lightPyreol;
+                            backColor = trailColor = hitColor = DustedPal.darkPyreol;
+                            shootEffect = DustedFx.shootPowder;
+                            hitEffect = despawnEffect = DustedFx.hitPowder;
+                            trailWidth = 9f;
+                            trailInterp = i -> 1f - shrinkX * i;
+                            trailLength = 22;
+
+                            rocketReload = 5f;
+                            rocketDelay = 50f;
+                            inaccuracy = 180f;
+                            shootSound = Sounds.missile;
+
+                            rocketBulletType = new BasicBulletType(3f, 30f) {{
+                                width = 12f;
+                                height = 18f;
+                                lifetime = 40f;
+                                frontColor = DustedPal.lightPyreol;
+                                backColor = trailColor = hitColor = DustedPal.darkPyreol;
+                                shootEffect = DustedFx.shootPowder;
+                                hitEffect = despawnEffect = DustedFx.hitPowder;
+                                trailWidth = 3f;
+                                trailLength = 8;
+                            }};
+                        }
+
+                        @Override
+                        public void removed(Bullet b) {
+                            //doesn't do anything, only overriden so that it doesn't draw trail fade
+                        }
+                    }
+            );
         }};
         //endregion
         //region units

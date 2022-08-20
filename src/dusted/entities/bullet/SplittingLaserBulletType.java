@@ -20,7 +20,7 @@ import static mindustry.Vars.*;
 public class SplittingLaserBulletType extends BulletType {
     public float length;
     public float splitSpread = 80f;
-    public Color fromColor = DustedPal.cavnenYellow, toColor = DustedPal.cavnenYellowBack;
+    public Color fromColor = DustedPal.decayingYellow, toColor = DustedPal.decayingYellowBack;
 
     public SplittingLaserBulletType(float damage) {
         this.damage = damage;

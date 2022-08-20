@@ -4,7 +4,7 @@ import arc.graphics.*;
 import mindustry.type.*;
 
 public class DustedItems {
-    public static Item zircon, arsenic, platinum, rockwool, pyresin, telonate;
+    public static Item zircon, arsenic, antimony, platinum, rockwool, pyresin, telonate;
 
     public static void load() {
         zircon = new Item("zircon", Color.valueOf("fff2aa")) {{
@@ -16,11 +16,13 @@ public class DustedItems {
             alwaysUnlocked = true;
         }};
 
+        antimony = new Item("antimony");
+
         platinum = new Item("platinum", Color.valueOf("c0c7ff")) {{
             hardness = 3;
         }};
 
-        rockwool = new Item("rockwool");
+        rockwool = new Item("rockwool", Color.valueOf("85889b"));
 
         pyresin = new Item("pyresin", Color.valueOf("e997b1")) {{
             flammability = 0.2f;
@@ -28,6 +30,7 @@ public class DustedItems {
             cost = 1.1f;
         }};
 
+        //TODO resprite
         telonate = new Item("telonate", Color.valueOf("9b77bc")) {{
             charge = 0.3f;
             radioactivity = 0.2f;
