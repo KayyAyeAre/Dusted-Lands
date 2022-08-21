@@ -18,7 +18,6 @@ import mindustry.type.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.draw.*;
 
-//TODO rework the entire campaign; remove titanium powder
 public class DustedLands extends Mod {
     public static DustedInputHandler inputHandler;
     public static Decay decay;

@@ -8,6 +8,7 @@ import dusted.entities.units.*;
 import dusted.graphics.*;
 import mindustry.ai.types.*;
 import mindustry.content.*;
+import mindustry.entities.abilities.*;
 import mindustry.entities.bullet.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
@@ -333,6 +334,7 @@ public class DustedUnitTypes {
             rotateSpeed = 8f;
             engineSize = 3.5f;
             engineOffset = 3f;
+            healColor = DustedPal.pinkHeal;
 
             weapons.add(new Weapon("dusted-lands-orb-heal-mount") {{
                 x = 3f;
@@ -357,16 +359,26 @@ public class DustedUnitTypes {
         wail = new DustedUnitType("wail") {{
             constructor = UnitEntity::create;
             aiController = DefenderAI::new;
+            health = 340f;
             accel = 0.2f;
             drag = 0.1f;
             speed = 2.4f;
             flying = true;
+            armor = 4f;
             hitSize = 8f;
             rotateSpeed = 6f;
             engineOffset = 3f;
             engineSize = 4f;
+            healColor = DustedPal.pinkHeal;
 
-            abilities.add(new DecayShieldAbility(120f));
+            abilities.add(
+                    new DecayShieldAbility(120f),
+                    new RepairFieldAbility(10f, 8f * 60f, 0f) {{
+                        activeEffect = DustedFx.pinkHealWaveDynamic;
+                        healEffect = DustedFx.pinkHeal;
+                    }},
+                    new AttractorAbility(0.05f, 20f * 8f)
+            );
         }};
 
         pique = new DustedUnitType("pique") {{

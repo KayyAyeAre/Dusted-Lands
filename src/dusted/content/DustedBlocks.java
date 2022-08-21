@@ -31,10 +31,11 @@ import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
+//TODO balancing, campaign stuff
 public class DustedBlocks {
     public static Block
-    //environment, TODO maybe resprite these?
-    orePlastel, oreArsenic, oreAntimony, oreClaridum, pyreol, sulfur, volcanoZone,
+    //environment, TODO resprite this
+    orePlastel, oreArsenic, oreAntimony, pyreol, sulfur, volcanoZone,
     cavnenSediment, cavnenDusting, volstone, latite, scoria, stradrock, scorchedStradrock,
     cavnenWall, volstoneWall, scoriaWall, latiteWall, stradrockWall,
     //decor
@@ -585,7 +586,6 @@ public class DustedBlocks {
             range = 240f;
             shootY = 10f;
 
-
             drawer = new DrawTurret("decayed-") {{
                 parts.add(
                         new RegionPart("-blade") {{
@@ -619,6 +619,8 @@ public class DustedBlocks {
                         damage = 18f;
                         splashDamage = 10f;
                         splashDamageRadius = 4f;
+                        status = StatusEffects.blasted;
+                        statusDuration = 4 * 60f;
                         hitEffect = despawnEffect = DustedFx.hitLaunch;
                     }}
             );
@@ -632,6 +634,7 @@ public class DustedBlocks {
             reload = 190f;
             scaledHealth = 260f;
             range = 340f;
+            shootY = 6f;
             //TODO maybe change to a more firework-like sound?
             shootSound = Sounds.artillery;
             outlineColor = DustedPal.darkerWarmMetal;
@@ -704,11 +707,13 @@ public class DustedBlocks {
                             pierce = true;
                             frontColor = DustedPal.lightPyreol;
                             backColor = trailColor = hitColor = DustedPal.darkPyreol;
-                            shootEffect = DustedFx.shootPowder;
+                            shootEffect = DustedFx.shootPowderSquares;
                             hitEffect = despawnEffect = DustedFx.hitPowder;
                             trailWidth = 9f;
                             trailInterp = i -> 1f - shrinkX * i;
                             trailLength = 22;
+                            status = DustedStatusEffects.blazing;
+                            statusDuration = 6 * 60f;
 
                             rocketReload = 5f;
                             rocketDelay = 50f;

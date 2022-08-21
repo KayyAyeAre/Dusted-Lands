@@ -22,6 +22,7 @@ public class AuraBulletType extends BasicBulletType {
         super.update(b);
 
         Units.nearbyEnemies(b.team, b.x, b.y, auraRadius, u -> {
+            if (!u.hittable()) return;
             u.damageContinuous(auraDamage);
             if (Mathf.chance(auraEffectChance)) auraEffect.at(u);
         });

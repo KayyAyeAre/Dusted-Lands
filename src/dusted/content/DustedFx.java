@@ -33,6 +33,19 @@ public class DustedFx {
         Lines.dashCircle(e.x, e.y, e.rotation * e.fout(Interp.pow2));
     }),
 
+    blazing = new Effect(40f, e -> {
+        color(DustedPal.lightPyreol, DustedPal.darkPyreol, e.fin());
+
+        randLenVectors(e.id, 5, 3f + e.fin() * 9f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 2f);
+        });
+        float w = 1f + e.fout() * 3f;
+        randLenVectors(e.id, 3, 5f, (x, y) -> {
+            Drawf.tri(e.x, e.y, w, 4f * e.fout(), Mathf.angle(x, y));
+            Drawf.tri(e.x, e.y, w, 2f * e.fout(), Mathf.angle(x, y) + 180f);
+        });
+    }),
+
     funnelExtractSmall = new Effect(30f, e -> {
         if (!(e.data instanceof Powder powder)) return;
         Draw.z(Layer.blockOver);
@@ -145,6 +158,13 @@ public class DustedFx {
         Drawf.tri(e.x, e.y, w, 6f * e.fout(), e.rotation + 180f);
     }),
 
+    shootPowderSquares = new Effect(20f, e -> {
+        color(Color.white, e.color, e.fin());
+        randLenVectors(e.id, 8, e.finpow() * 14f, e.rotation, 25f, (x, y) -> {
+            Fill.rect(e.x + x, e.y + y, e.foutpow() * 6f, e.foutpow() * 6f, Mathf.angle(x, y) + e.fin() * 60f);
+        });
+    }),
+
     hitPowder = new Effect(30f, e -> {
         color(Color.white, e.color, e.fin());
 
@@ -179,6 +199,19 @@ public class DustedFx {
         randLenVectors(e.id, 5, 1f + e.finpow() * 6f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, 0.5f + e.fout());
         });
+    }),
+
+    //kinda lazy lmao
+    pinkHeal = new Effect(11, e -> {
+        color(DustedPal.pinkHeal);
+        stroke(e.fout() * 2f);
+        Lines.circle(e.x, e.y, 2f + e.finpow() * 7f);
+    }),
+
+    pinkHealWaveDynamic = new Effect(22f, e -> {
+        color(DustedPal.pinkHeal);
+        stroke(e.fout() * 2f);
+        Lines.circle(e.x, e.y, 4f + e.finpow() * e.rotation);
     }),
 
     //jkdfhgkjshrgiushdjkfckvhiu
