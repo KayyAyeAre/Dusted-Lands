@@ -16,7 +16,9 @@ public class DustedItems {
             alwaysUnlocked = true;
         }};
 
-        antimony = new Item("antimony");
+        antimony = new Item("antimony", Color.valueOf("f1b093")) {{
+            hardness = 2;
+        }};
 
         platinum = new Item("platinum", Color.valueOf("c0c7ff")) {{
             hardness = 3;

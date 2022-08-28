@@ -16,11 +16,24 @@ public class DustedPlanets {
             alwaysUnlocked = true;
             generator = new KrakaiPlanetGenerator();
             meshLoader = () -> new HexMesh(this, 6);
+            cloudMeshLoader = () -> new MultiMesh(
+                    new HexSkyMesh(this, 29, 0.56f, 0.16f, 5, Color.valueOf("ffd1ba").a(0.75f), 2, 0.55f, 1f, 0.35f),
+                    new HexSkyMesh(this, 4, 0.2f, 0.18f, 5, Color.valueOf("ffdbc2").a(0.75f), 2, 0.55f, 1.2f, 0.5f)
+            );
+            landCloudColor = Color.valueOf("ffdbc2");
             atmosphereColor = Color.valueOf("a38772");
             atmosphereRadIn = 0.02f;
             atmosphereRadOut = 0.3f;
             startSector = 269;
-            defaultEnv = DustedEnv.volcanic | Env.terrestrial | Env.oxygen | DustedEnv.decay;
+            defaultCore = DustedBlocks.coreAbate;
+            defaultEnv = DustedEnv.volcanic | Env.terrestrial | Env.oxygen;
+
+            ruleSetter = r -> {
+                r.attributes.set(Attribute.heat, 1.2f);
+                r.attributes.set(DustedAttribute.decay, 0.5f);
+            };
+
+            unlockedOnLand.add(DustedBlocks.coreAbate);
         }};
     }
 }

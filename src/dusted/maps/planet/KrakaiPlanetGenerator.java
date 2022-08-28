@@ -15,31 +15,17 @@ import mindustry.world.*;
 
 import static mindustry.Vars.*;
 
-//TODO also redo this
 public class KrakaiPlanetGenerator extends PlanetGenerator {
-    int seed = 64;
-    BaseGenerator basegen = new BaseGenerator();
     float scl = 6f;
-    float waterOffset = 0.06f;
+    BaseGenerator basegen = new BaseGenerator();
 
-    //long as fuck
-    Block[][] arr = {
-            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.cavnenSediment, Blocks.darksand, DustedBlocks.cavnenSediment, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting},
-            {DustedBlocks.latite, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.hotrock, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.latite, DustedBlocks.latite, Blocks.darksand, Blocks.darksand, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment},
-            {DustedBlocks.latite, DustedBlocks.cavnenDusting, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenDusting, Blocks.hotrock, Blocks.basalt, DustedBlocks.cavnenDusting, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, Blocks.darksand, Blocks.darksand, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, Blocks.darksand, Blocks.darksand, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment},
-            {DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.basalt, DustedBlocks.cavnenDusting, Blocks.hotrock, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, Blocks.darksand, Blocks.darksand, DustedBlocks.cavnenSediment, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenDusting, Blocks.darksand, DustedBlocks.cavnenDusting},
-            {DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.basalt, Blocks.basalt, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, Blocks.darksand, Blocks.darksand, Blocks.darksand, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenDusting, Blocks.darksand, DustedBlocks.pyreol},
-            {DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenSediment, Blocks.basalt, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.hotrock, Blocks.basalt, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting},
-            {DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, DustedBlocks.volstone, DustedBlocks.cavnenSediment, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, DustedBlocks.cavnenDusting, DustedBlocks.cavnenSediment},
-            {DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.slag, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.pyreol, DustedBlocks.pyreol, DustedBlocks.scoria, Blocks.slag, Blocks.slag, Blocks.slag},
-            {DustedBlocks.volstone, DustedBlocks.pyreol, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone},
-            {Blocks.slag, Blocks.slag, Blocks.slag, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.slag, Blocks.slag, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.darksand, Blocks.darksand, Blocks.darksand, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.stradrock},
-            {DustedBlocks.scoria, DustedBlocks.scoria, Blocks.slag, Blocks.slag, Blocks.slag, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.darksand, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.pyreol, DustedBlocks.pyreol, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.scoria, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, Blocks.slag, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.darksand, Blocks.darksand},
-            {Blocks.darksand, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.stradrock, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.slag, Blocks.slag, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenDusting, DustedBlocks.stradrock, Blocks.darksand, Blocks.darksand},
-            {Blocks.darksand, Blocks.darksand, DustedBlocks.cavnenDusting, Blocks.hotrock, Blocks.hotrock, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, Blocks.darksand, Blocks.darksand, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.darksand, Blocks.hotrock, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.darksand},
-            {DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.basalt, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.cavnenDusting, Blocks.darksand, Blocks.darksand, Blocks.darksand, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.basalt, Blocks.basalt, Blocks.hotrock, Blocks.hotrock, Blocks.basalt, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting},
-            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.darksand, Blocks.darksand, DustedBlocks.cavnenSediment, DustedBlocks.cavnenSediment, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.cavnenDusting, DustedBlocks.latite, DustedBlocks.cavnenDusting},
-            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, DustedBlocks.cavnenDusting, Blocks.darksand, Blocks.darksand, Blocks.darksand, Blocks.darksand, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite}
+    Block[][] terrain = {
+            {DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.basalt, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite},
+            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.volstone, Blocks.basalt, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.latite, DustedBlocks.latite},
+            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone},
+            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.basalt, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone},
+            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite},
+            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite}
     };
 
     @Override
@@ -49,7 +35,21 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
     @Override
     public float getHeight(Vec3 position) {
-        return Math.max(rawHeight(position), 0.3f);
+        return Mathf.pow(rawHeight(position), 2f);
+    }
+
+    public float rawHeight(Vec3 position) {
+        position = Tmp.v33.set(position).scl(scl);
+        return Simplex.noise3d(seed, 5, 0.4, 0.4, position.x, position.y, position.z);
+    }
+
+    public float genHeight(Vec3 position) {
+        position = Tmp.v33.set(position).scl(scl);
+        return Simplex.noise3d(seed, 7, 0.6, 1.2, position.x, position.y, position.z);
+    }
+
+    public float decay(Vec3 position) {
+        return (Math.abs(position.y) * 0.3f) + Simplex.noise3d(seed, 6, 0.5, 0.3, position.x + 20f, position.y + 20f, position.z + 20f);
     }
 
     @Override
@@ -58,32 +58,29 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         return Tmp.c1.set(block.mapColor).a(1f - block.albedo);
     }
 
-    float rawHeight(Vec3 position) {
-        position = Tmp.v33.set(position).scl(scl);
-        return (Mathf.pow(Simplex.noise3d(seed, 3, 0.4, 0.4, position.x, position.y, position.z), 2.3f) + waterOffset) / (1f + waterOffset);
-    }
-
     Block getBlock(Vec3 position) {
-        float height = rawHeight(position);
-        Tmp.v31.set(position);
-        position = Tmp.v33.set(position).scl(scl);
-        float rad = scl;
-        float temp = Mathf.clamp(Math.abs(position.y * 2f) / (rad));
-        float tnoise = Simplex.noise3d(seed, 9, 0.7, 1f / 4f, position.x, position.y + 999f, position.z);
-        temp = Mathf.lerp(temp, tnoise, 0.5f);
-        height *= 1.2f;
-        height = Mathf.clamp(height);
+        float height = Mathf.clamp(genHeight(position) * 1.1f);
 
-        return arr[Mathf.clamp((int) (temp * arr.length), 0, arr[0].length - 1)][Mathf.clamp((int) (height * arr[0].length), 0, arr[0].length - 1)];
+        Block result = terrain[Mathf.clamp(Mathf.round(((position.y + 1f) / 2f) * (terrain.length - 1)), 0, terrain.length - 1)][Mathf.clamp((int) (height * terrain[0].length), 0, terrain[0].length - 1)];
+
+        if (height < 0.6f && Simplex.noise3d(seed, 12, 0.3, 0.9, position.x + 100f, position.y + 100f, position.z + 100f) < 0.3f + position.dst(0f, 0f, 0f) / scl) result = Blocks.slag;
+
+        //decayed blocks
+        if (decay(position) > 0.9f) {
+            if (!(result == DustedBlocks.volstone || result == DustedBlocks.volTerracotta || result == Blocks.slag)) {
+                result = Simplex.noise3d(seed, 9, 0.4, 0.5, position.x + 20f, position.y + 20f, position.z + 20f) < 0.6f ? DustedBlocks.cavnenSediment : DustedBlocks.cavnenDusting;
+            }
+        }
+
+        return result;
     }
 
     @Override
-    public void genTile(Vec3 position, TileGen tile) {
+    protected void genTile(Vec3 position, TileGen tile) {
         tile.floor = getBlock(position);
-        tile.block = tile.floor.asFloor().wall;
-        if (tile.block == Blocks.air && tile.floor == Blocks.slag) tile.block = DustedBlocks.volstoneWall;
+        tile.block = tile.floor == Blocks.slag ? Blocks.duneWall : tile.floor.asFloor().wall;
 
-        if (Ridged.noise3d(seed, position.x, position.y, position.z, 3, 22) > 0.32) {
+        if (Ridged.noise3d(seed, position.x, position.y, position.z, 3, 12) > 0.22) {
             tile.block = Blocks.air;
         }
     }
@@ -104,6 +101,9 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
     @Override
     protected void generate() {
+        //:<
+        Blocks.slag.asFloor().wall = Blocks.duneWall;
+
         class Room {
             final int x, y, radius;
             final ObjectSet<Room> connected = new ObjectSet<>();
@@ -191,14 +191,14 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         inverseFloodFill(tiles.getn(spawn.x, spawn.y));
 
-        Seq<Block> ores = Seq.with(DustedBlocks.orePlastel, DustedBlocks.oreArsenic);
+        Seq<Block> ores = Seq.with(DustedBlocks.oreZircon, DustedBlocks.oreArsenic);
         float poles = Math.abs(sector.tile.v.y);
         float nmag = 0.5f;
         float scl = 1f;
         float addscl = 1.3f;
 
         if (Simplex.noise3d(seed, 2, 0.5, scl, sector.tile.v.x + 2, sector.tile.v.y, sector.tile.v.z) * nmag + poles > 0.7f * addscl) {
-            ores.add(Blocks.oreThorium);
+            ores.add(DustedBlocks.oreAntimony);
         }
         FloatSeq frequencies = new FloatSeq();
         for (int i = 0; i < ores.size; i++) {
@@ -222,7 +222,6 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         trimDark();
         median(2);
-        tech();
 
         pass((x, y) -> {
             if (floor == DustedBlocks.stradrock) {
@@ -260,7 +259,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             }
 
             if (decorate && rand.chance(0.01) && floor.asFloor().hasSurface() && block == Blocks.air) {
-                block = floor == DustedBlocks.volstone ? DustedBlocks.volSprout : floor.asFloor().decoration;
+                block = floor == DustedBlocks.volstone && rand.chance(0.4) ? DustedBlocks.volSprout : floor.asFloor().decoration;
             }
         });
 
@@ -286,6 +285,9 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         //TODO change enemies
         state.rules.spawns = Waves.generate(difficulty, new Rand(), state.rules.attackMode);
+
+        //rollback
+        Blocks.slag.asFloor().wall = Blocks.yellowStoneWall;
     }
 
     @Override

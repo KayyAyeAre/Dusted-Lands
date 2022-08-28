@@ -35,8 +35,8 @@ import mindustry.world.meta.*;
 public class DustedBlocks {
     public static Block
     //environment, TODO resprite this
-    orePlastel, oreArsenic, oreAntimony, pyreol, sulfur, volcanoZone,
-    cavnenSediment, cavnenDusting, volstone, latite, scoria, stradrock, scorchedStradrock,
+    oreZircon, oreArsenic, oreAntimony, pyreol, sulfur, volcanoZone,
+    cavnenSediment, cavnenDusting, volstone, volTerracotta, latite, scoria, stradrock, scorchedStradrock,
     cavnenWall, volstoneWall, scoriaWall, latiteWall, stradrockWall,
     //decor
     scoriaBoulder, latiteBoulder, stradrockBoulder,
@@ -55,7 +55,7 @@ public class DustedBlocks {
     //power TODO rework this as well
     powerElectrode,
     //crafters
-    quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, pyresinCondenser, telonateForge,
+    quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, pyresinCondenser,
     //production
     pneumaticFunnel, rotaryFunnel,
     //cores
@@ -71,7 +71,7 @@ public class DustedBlocks {
         //region environment
         volcanoZone = new VolcanoZone("volcano-zone");
 
-        orePlastel = new OreBlock(DustedItems.zircon);
+        oreZircon = new OreBlock(DustedItems.zircon);
 
         oreArsenic = new OreBlock(DustedItems.arsenic);
 
@@ -99,6 +99,8 @@ public class DustedBlocks {
 
         volstone = new Floor("volstone");
 
+        volTerracotta = new Floor("vol-terracotta");
+
         scoria = new Floor("scoria");
 
         latite = new Floor("latite");
@@ -113,7 +115,7 @@ public class DustedBlocks {
         }};
 
         volstoneWall = new StaticWall("volstone-wall") {{
-            attributes.set(DustedAttribute.rock, 1f);
+            attributes.set(DustedAttribute.rock, 0.8f);
         }};
 
         scoriaWall = new StaticWall("scoria-wall") {{
@@ -790,6 +792,7 @@ public class DustedBlocks {
         coreAbate = new ShieldedCoreBlock("core-abate") {{
             requirements(Category.effect, BuildVisibility.editorOnly, ItemStack.with());
             unitType = DustedUnitTypes.erode;
+            squareSprite = false;
             size = 3;
             health = 2500;
             itemCapacity = 2000;

@@ -4,7 +4,6 @@ import arc.*;
 import arc.func.*;
 import arc.math.geom.*;
 import arc.struct.*;
-import arc.util.*;
 import dusted.content.*;
 import dusted.world.meta.*;
 import mindustry.*;
@@ -16,24 +15,15 @@ import mindustry.world.*;
 
 public class Decay implements ApplicationListener {
     public Seq<DecayShield> shields = new Seq<>();
-    private float decayDamage;
-
     public Decay() {
-        Events.run(WorldLoadEvent.class, () -> {
-            shields.clear();
-            decayDamage = Vars.state.rules.tags.getFloat("decay-damage", 0.5f);
-        });
-    }
-
-    public void debug() {
-        shields.each(s -> {
-            Log.info("distance: @, radius: @", Vars.player.unit().dst(s.pos.get()), s.radius.get());
-        });
+        Events.run(WorldLoadEvent.class, shields::clear);
     }
 
     @Override
     public void update() {
-        if (Vars.state.isPlaying() && Vars.state.rules.hasEnv(DustedEnv.decay)) {
+        float decayDamage = Vars.state.rules.attributes.get(DustedAttribute.decay);
+
+        if (Vars.state.isPlaying() && !Vars.state.isEditor() && decayDamage > 0f) {
             Groups.unit.each(u -> {
                 if (!shields.contains(s -> u.team == s.team.get() && u.dst(s.pos.get()) < s.radius.get())) {
                     u.damagePierce(decayDamage, false);
@@ -41,7 +31,6 @@ public class Decay implements ApplicationListener {
             });
 
             Vars.indexer.allBuildings(Vars.world.width() * 4, Vars.world.height() * 4, Math.max(Vars.world.width() * 4, Vars.world.height() * 4), b -> {
-                //TODO broken?
                 if (!shields.contains(s -> b.team == s.team.get() && b.dst(s.pos.get()) < s.radius.get() + (b.hitSize() / 2f)) && b.health > b.maxHealth * calculateDamage(b.block)) {
                     b.damagePierce(Math.min(decayDamage, (1f - calculateDamage(b.block)) * b.maxHealth + b.maxHealth - b.health), false);
                 }
@@ -60,6 +49,7 @@ public class Decay implements ApplicationListener {
         return percentage / total;
     }
 
+    //TODO this could just be a bunch of fields that get updated instead of a bunch of providers
     public static class DecayShield {
         public Floatp radius;
         public Prov<Vec2> pos;
