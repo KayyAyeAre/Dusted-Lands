@@ -6,6 +6,7 @@ import dusted.entities.abilities.*;
 import dusted.entities.bullet.*;
 import dusted.entities.units.*;
 import dusted.graphics.*;
+import mindustry.ai.*;
 import mindustry.ai.types.*;
 import mindustry.content.*;
 import mindustry.entities.abilities.*;
@@ -18,11 +19,10 @@ import mindustry.type.weapons.*;
 
 public class DustedUnitTypes {
     public static UnitType
-    carom, recur, saltate, staccato, recrudesce,
-    sob, wail, snivel, sorrow, lament,
-    seism, tremor, quaver, temblor, convulse,
-    pique, rancor, animus, enmity, acrimony,
-    protei, hynobii, sirenid, pleurodel, dicamptodon,
+    carom, recur, saltate, staccato,
+    sob, wail,
+    annul,
+    pique, rancor, animus,
     erode, recede, atrophy;
 
     public static void load() {
@@ -102,6 +102,7 @@ public class DustedUnitTypes {
 
         atrophy = new UnitType("atrophy") {{
             constructor = UnitEntity::create;
+            hidden = true;
         }};
 
         carom = new DustedUnitType("carom") {{
@@ -324,7 +325,8 @@ public class DustedUnitTypes {
 
         sob = new DustedUnitType("sob") {{
             constructor = UnitEntity::create;
-            controller = u -> new RepairAI();
+            aiController = ShieldAI::new;
+            defaultCommand = UnitCommand.repairCommand;
 
             accel = 0.1f;
             drag = 0.05f;
@@ -358,7 +360,7 @@ public class DustedUnitTypes {
 
         wail = new DustedUnitType("wail") {{
             constructor = UnitEntity::create;
-            aiController = DefenderAI::new;
+            aiController = FlyingFollowAI::new;
             health = 340f;
             accel = 0.2f;
             drag = 0.1f;
@@ -527,15 +529,27 @@ public class DustedUnitTypes {
             }});
         }};
 
-        seism = new DustedUnitType("seism") {{
+        annul = new DustedUnitType("annul") {{
             constructor = MechUnit::create;
-            aiController = QuakeAI::new;
             speed = 0.6f;
             health = 120;
+            hitSize = 7f;
 
-            abilities.add(new QuakeAbility() {{
-                quakeSteps = 3;
-                quakes = 3;
+            weapons.add(new Weapon("dusted-lands-small-decay-launcher") {{
+                mirror = false;
+                x = 0f;
+                y = -3f;
+                reload = 45f;
+                recoil = 3f;
+                shootSound = Sounds.bang;
+
+                bullet = new InstantBulletType() {{
+                    damage = 17f;
+                    distance = 100f;
+                    shootEffect = DustedFx.shootLaunch;
+                    status = StatusEffects.blasted;
+                    hitEffect = despawnEffect = DustedFx.hitLaunch;
+                }};
             }});
         }};
     }

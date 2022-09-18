@@ -4,7 +4,10 @@ import arc.*;
 import arc.graphics.*;
 import arc.graphics.Texture.*;
 import arc.graphics.g2d.*;
+import arc.graphics.g2d.Font.*;
 import arc.math.*;
+import arc.math.geom.*;
+import arc.struct.*;
 import arc.util.*;
 import dusted.content.*;
 import dusted.game.*;
@@ -17,6 +20,7 @@ import mindustry.game.EventType.*;
 import mindustry.graphics.*;
 import mindustry.mod.*;
 import mindustry.type.*;
+import mindustry.ui.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.draw.*;
 
@@ -70,6 +74,11 @@ public class DustedLands extends Mod {
     }
 
     @Override
+    public void init() {
+        Vars.mods.locateMod("dusted-lands").meta.author += "\n\n[gray]Credits:[]\n[accent]Sh1penfire[], for the deteriorating status effect sprite";
+    }
+
+    @Override
     public void loadContent() {
         DustedStatusEffects.load();
         DustedItems.load();
@@ -77,7 +86,6 @@ public class DustedLands extends Mod {
         DustedUnitTypes.load();
         DustedBlocks.load();
         DustedLoadouts.load();
-        DustedWeathers.load();
         DustedPlanets.load();
         DustedSectorPresets.load();
         KrakaiTechTree.load();

@@ -18,6 +18,11 @@ public class InstantBulletType extends BulletType {
     }
 
     @Override
+    protected float calculateRange() {
+        return Math.max(distance, maxRange);
+    }
+
+    @Override
     public void init(Bullet b) {
         Seq<Unit> units = new Seq<>();
         Rect rect = new Rect(), hitrect = new Rect();

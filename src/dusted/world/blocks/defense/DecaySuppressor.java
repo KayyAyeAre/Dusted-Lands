@@ -28,6 +28,13 @@ public class DecaySuppressor extends Block {
     }
 
     @Override
+    public void init() {
+        super.init();
+
+        clipSize = Math.max(clipSize, radius * 2f);
+    }
+
+    @Override
     public void load() {
         super.load();
 
@@ -73,17 +80,18 @@ public class DecaySuppressor extends Block {
         }
 
         public void drawSuppressor() {
+            //TODO move this into the shield class instead?
             Draw.z(Layer.shields + 2.5f);
             Draw.color(team.color);
 
             if (Vars.renderer.animateShields) {
-                Fill.poly(x, y, 6, realRadius());
+                Fill.poly(x, y, 24, realRadius(), Time.time / 10f);
             } else {
                 Lines.stroke(1.5f);
                 Draw.alpha(0.09f);
-                Fill.poly(x, y, 6, realRadius());
+                Fill.poly(x, y, 24, realRadius(), Time.time / 10f);
                 Draw.alpha(1f);
-                Lines.poly(x, y, 6, realRadius());
+                Lines.poly(x, y, 24, realRadius(), Time.time / 10f);
             }
         }
 

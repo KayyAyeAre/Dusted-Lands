@@ -16,7 +16,7 @@ public class AttractorAbility extends Ability {
     @Override
     public void update(Unit unit) {
         Groups.bullet.intersect(unit.x - (range / 2f), unit.y - (range / 2f), range * 2f, range * 2f)
-                .filter(b -> b.dst(unit) <= range).each(b -> {
+                .filter(b -> b.team != unit.team && b.dst(unit) <= range).each(b -> {
                     b.vel.setAngle(Angles.moveToward(b.rotation(), b.angleTo(unit), strength * Time.delta * 50f));
                 });
     }

@@ -4,12 +4,15 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.util.*;
+import dusted.game.Decay.*;
 import dusted.graphics.*;
 import dusted.type.*;
+import mindustry.*;
 import mindustry.entities.*;
 import mindustry.graphics.*;
 
 import static arc.graphics.g2d.Draw.*;
+import static arc.graphics.g2d.Lines.lineAngle;
 import static arc.graphics.g2d.Lines.stroke;
 import static arc.math.Angles.*;
 
@@ -32,6 +35,34 @@ public class DustedFx {
         color(e.color);
         Lines.dashCircle(e.x, e.y, e.rotation * e.fout(Interp.pow2));
     }),
+
+    shieldFade = new Effect(60f, e -> {
+        if (!(e.data instanceof DecayShield shield)) return;
+        e.lifetime = shield.radius.get() * 0.8f;
+
+        Draw.z(Layer.shields + 2.5f);
+        Draw.color(shield.team.get().color);
+
+        if (Vars.renderer.animateShields) {
+            Fill.poly(e.x, e.y, 6, shield.radius.get() * e.foutpow());
+        } else {
+            Lines.stroke(1.5f);
+            Draw.alpha(0.09f);
+            Fill.poly(e.x, e.y, 6, shield.radius.get() * e.foutpow());
+            Draw.alpha(1f);
+            Lines.poly(e.x, e.y, 6, shield.radius.get() * e.foutpow());
+        }
+    }),
+
+    deteriorating = new Effect(25f, e -> {
+        color(DustedPal.decay, DustedPal.darkerDecay, e.fin());
+
+        randLenVectors(e.id, 3, e.finpow() * 6f + 2f, (x, y) -> {
+            randLenVectors(e.id, 4, e.finpow() * 2f, e.rotation, 15f, (ix, iy) -> {
+                Fill.circle(e.x + x + ix, e.y + y + iy, e.fout() * 2f);
+            });
+        });
+    }).layer(Layer.effect + 0.021f),
 
     blazing = new Effect(40f, e -> {
         color(DustedPal.lightPyreol, DustedPal.darkPyreol, e.fin());

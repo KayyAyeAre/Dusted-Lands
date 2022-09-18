@@ -1,94 +1,83 @@
 package dusted.content;
 
+import arc.struct.*;
 import mindustry.content.*;
+import mindustry.game.Objectives.*;
 
 import static dusted.content.DustedBlocks.*;
-import static dusted.content.DustedUnitTypes.*;
 import static mindustry.content.TechTree.*;
 
 public class KrakaiTechTree {
     public static void load() {
+        Objective tmpNever = new Research(Items.fissileMatter);
+
         DustedPlanets.krakai.techTree = nodeRoot("krakai", coreAbate, () -> {
             node(transferLink, () -> {
                 node(chute, () -> {
+
                     node(powderJunction, () -> {
-                        node(powderRouter, () -> {
-                            node(bridgeChute);
-                            node(denseChute, () -> {
-                                node(armoredChute);
-                            });
-                        });
-                    });
-                });
-            });
-
-            node(pneumaticFunnel, () -> {
-                node(rotaryFunnel);
-            });
-
-            node(powerElectrode, () -> {
-            });
-
-            node(cavnenTerraConstructor, () -> {
-                node(seism);
-                node(pique, () -> {
-                    node(rancor, () -> {
-                        node(animus);
-                    });
-                });
-
-                node(cavnenAerialConstructor, () -> {
-                    node(carom, () -> {
-                        node(recur, () -> {
-                            node(saltate);
+                        node(powderRouter);
+                        node(bridgeChute, () -> {
+                            node(armoredChute, Seq.with(tmpNever), () -> {});
                         });
                     });
                 });
 
-                node(binaryRestructurer, () -> {
-                    node(ternaryRestructurer);
-                });
+                node(transferTower, Seq.with(tmpNever), () -> {});
             });
 
-            node(quartzExtractor, () -> {
-                node(siliconForge, () -> {
-                    node(metaglassFurnace);
-                });
-                node(pyresinCondenser);
-            });
+            node(pressureDrill);
 
-            node(zirconWall, () -> {
-                node(zirconWallLarge);
+            node(magmaticGenerator, () -> {
+                node(decaySuppressor);
             });
 
             node(abrade, () -> {
-                node(bisect);
-            });
-            node(scald, () -> {
-                node(coruscate, () -> {
+                node(zirconWall, () -> {
+                    node(zirconWallLarge);
                 });
+
+                node(sunder, Seq.with(tmpNever), () -> {});
+                node(bisect, Seq.with(tmpNever), () -> {});
+                node(scald, Seq.with(tmpNever), () -> {
+                    node(coruscate, () -> {
+                        node(strike);
+                        node(blight);
+                    });
+                });
+            });
+
+            node(quartzExtractor, Seq.with(tmpNever), () -> {
+                node(metaglassFurnace, () -> {
+                    node(rockwoolExtruder);
+                });
+                node(siliconForge);
+            });
+
+            node(coreDissent, Seq.with(tmpNever), () -> {
+                node(coreDecadence);
             });
 
             nodeProduce(DustedItems.zircon, () -> {
                 nodeProduce(DustedItems.arsenic, () -> {
-                    nodeProduce(Items.graphite, () -> {
-                        nodeProduce(Items.titanium, () -> {
-                            nodeProduce(DustedItems.pyresin, () -> {
-                            });
-                            nodeProduce(Items.thorium, () -> {
-                                nodeProduce(DustedItems.telonate, () -> {
+                    nodeProduce(Items.sand, () -> {
+                        nodeProduce(Items.silicon, () -> {
+                            nodeProduce(DustedItems.antimony, () -> {
+                                nodeProduce(DustedItems.platinum, () -> {
+                                    nodeProduce(DustedItems.telonate, () -> {});
                                 });
                             });
                         });
-                    });
-                });
 
-                nodeProduce(Items.sand, () -> {
-                });
+                        nodeProduce(Items.metaglass, () -> {
+                            nodeProduce(Liquids.slag, () -> {});
+                            nodeProduce(DustedItems.rockwool, () -> {});
+                        });
 
-                nodeProduce(DustedPowders.quartzDust, () -> {
-                    nodeProduce(DustedPowders.pyreol, () -> {
-                        nodeProduce(DustedPowders.sulfur, () -> {});
+                        nodeProduce(DustedPowders.quartzDust, () -> {
+                            nodeProduce(DustedPowders.orchar, () -> {});
+                            nodeProduce(DustedPowders.sulfur, () -> {});
+                        });
                     });
                 });
             });

@@ -12,6 +12,7 @@ import mindustry.content.*;
 import mindustry.game.*;
 import mindustry.maps.generators.*;
 import mindustry.world.*;
+import mindustry.world.blocks.environment.*;
 
 import static mindustry.Vars.*;
 
@@ -191,6 +192,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         inverseFloodFill(tiles.getn(spawn.x, spawn.y));
 
+        //this sucks
         Seq<Block> ores = Seq.with(DustedBlocks.oreZircon, DustedBlocks.oreArsenic);
         float poles = Math.abs(sector.tile.v.y);
         float nmag = 0.5f;
@@ -222,6 +224,19 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         trimDark();
         median(2);
+
+        Floor[] powders = {DustedBlocks.orchar.asFloor(), DustedBlocks.sulfur.asFloor()};
+        pass((x, y) -> {
+            if (block instanceof StaticWall || floor == Blocks.slag) return;
+
+            for (int i = powders.length - 1; i >= 0; i--) {
+                Block entry = powders[i];
+                if (noise(x + 500f * i, y, 3, 0.6, 38) > 0.76f) {
+                    floor = entry;
+                    break;
+                }
+            }
+        });
 
         pass((x, y) -> {
             if (floor == DustedBlocks.stradrock) {
@@ -259,7 +274,9 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             }
 
             if (decorate && rand.chance(0.01) && floor.asFloor().hasSurface() && block == Blocks.air) {
-                block = floor == DustedBlocks.volstone && rand.chance(0.4) ? DustedBlocks.volSprout : floor.asFloor().decoration;
+                block = floor == DustedBlocks.volstone && rand.chance(0.4) ? DustedBlocks.volSprout :
+                        (floor == DustedBlocks.cavnenSediment || floor == DustedBlocks.cavnenDusting) && rand.chance(0.4) ? DustedBlocks.weepingShrub :
+                floor.asFloor().decoration;
             }
         });
 

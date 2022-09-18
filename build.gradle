@@ -29,8 +29,6 @@ dependencies {
     annotationProcessor "com.github.Anuken:jabel:0.6.0"
 }
 
-
-
 jar {
     archiveFileName = "${project.archivesBaseName}Desktop.jar"
     from {

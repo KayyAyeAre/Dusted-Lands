@@ -8,6 +8,8 @@ public class DustedPal {
     lightQuartz = Color.valueOf("ffe8ee"),
     darkPyreol = Color.valueOf("d889a2"),
     lightPyreol = Color.valueOf("fcdae8"),
+    decay = Color.valueOf("6d726b"),
+    darkerDecay = Color.valueOf("545b50"),
 
     darkerWarmMetal = Color.valueOf("3a3130"),
     pinkHeal = Color.valueOf("ffd2f8"),

@@ -8,7 +8,7 @@ import mindustry.ctype.*;
 import mindustry.type.*;
 import mindustry.world.meta.*;
 
-//TODO maybe dust clouds or something
+//TODO need something that'll make this not be liquid 2.0
 public class Powder extends UnlockableContent {
     public Color color;
     public float temperature;

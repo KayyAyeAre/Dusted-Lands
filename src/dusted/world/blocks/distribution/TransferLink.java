@@ -80,7 +80,7 @@ public class TransferLink extends Block {
     public void init() {
         super.init();
 
-        clipSize = Math.max(clipSize, linkRange);
+        clipSize = Math.max(clipSize, linkRange * 2f);
     }
 
     @Override

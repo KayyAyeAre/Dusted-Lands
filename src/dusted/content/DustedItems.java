@@ -1,10 +1,16 @@
 package dusted.content;
 
 import arc.graphics.*;
+import arc.struct.*;
 import mindustry.type.*;
 
+import static mindustry.content.Items.*;
+
 public class DustedItems {
-    public static Item zircon, arsenic, antimony, platinum, rockwool, pyresin, telonate;
+    public static Item zircon, arsenic, antimony, platinum, rockwool, telonate;
+
+    //TODO am i supposed to do this?
+    public static final Seq<Item> krakaiItems = new Seq<>();
 
     public static void load() {
         zircon = new Item("zircon", Color.valueOf("fff2aa")) {{
@@ -17,20 +23,14 @@ public class DustedItems {
         }};
 
         antimony = new Item("antimony", Color.valueOf("f1b093")) {{
-            hardness = 2;
+            hardness = 4;
         }};
 
         platinum = new Item("platinum", Color.valueOf("c0c7ff")) {{
-            hardness = 3;
+            hardness = 5;
         }};
 
         rockwool = new Item("rockwool", Color.valueOf("85889b"));
-
-        pyresin = new Item("pyresin", Color.valueOf("e997b1")) {{
-            flammability = 0.2f;
-            explosiveness = 0.1f;
-            cost = 1.1f;
-        }};
 
         //TODO resprite
         telonate = new Item("telonate", Color.valueOf("9b77bc")) {{
@@ -38,5 +38,9 @@ public class DustedItems {
             radioactivity = 0.2f;
             cost = 1.25f;
         }};
+
+        krakaiItems.addAll(
+                zircon, arsenic, antimony, silicon, metaglass, platinum, rockwool, telonate
+        );
     }
 }

@@ -2,6 +2,7 @@ package dusted.content;
 
 import arc.graphics.*;
 import arc.math.*;
+import dusted.graphics.*;
 import dusted.type.*;
 import mindustry.content.*;
 import mindustry.entities.*;
@@ -13,9 +14,10 @@ public class DustedStatusEffects {
     public static void load() {
         //sprite by sh1p :D
         deteriorating = new StatusEffect("deteriorating") {{
-            color = Color.valueOf("6d726b");
+            color = DustedPal.decay;
             damage = 0.26f;
             transitionDamage = 16f;
+            effect = DustedFx.deteriorating;
 
             init(() -> {
                 affinity(StatusEffects.burning, (unit, result, time) -> {

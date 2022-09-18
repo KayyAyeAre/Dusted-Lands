@@ -5,7 +5,7 @@ import dusted.type.*;
 
 public class DustedPowders {
     //TODO i need more powders
-    public static Powder quartzDust, pyreol, sulfur, cocaine;
+    public static Powder quartzDust, orchar, sulfur, cocaine;
 
     public static void load() {
         //TODO maybe rename this to silica
@@ -13,9 +13,9 @@ public class DustedPowders {
             temperature = 0.5f;
         }};
 
-        pyreol = new Powder("pyreol", Color.valueOf("ffa1ab")) {{
+        orchar = new Powder("orchar", Color.valueOf("7d3624")) {{
             flammability = 1f;
-            temperature = 0.7f;
+            temperature = 0.3f;
         }};
 
         sulfur = new Powder("sulfur", Color.valueOf("f7e89c")) {{

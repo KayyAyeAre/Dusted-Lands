@@ -25,6 +25,9 @@ public class Decay implements ApplicationListener {
 
         if (Vars.state.isPlaying() && !Vars.state.isEditor() && decayDamage > 0f) {
             Groups.unit.each(u -> {
+                //prevent wave units from dying before their shield unit can come shield them
+                if (u.team == Vars.state.rules.waveTeam && Vars.spawner.getSpawns().contains(t -> u.within(t.worldx(), t.worldy(), Vars.state.rules.dropZoneRadius))) return;
+
                 if (!shields.contains(s -> u.team == s.team.get() && u.dst(s.pos.get()) < s.radius.get())) {
                     u.damagePierce(decayDamage, false);
                 }

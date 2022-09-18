@@ -33,7 +33,13 @@ public class DustedPlanets {
                 r.attributes.set(DustedAttribute.decay, 0.5f);
             };
 
+            hiddenItems.addAll(Items.serpuloItems).addAll(Items.erekirItems).removeAll(DustedItems.krakaiItems);
+
             unlockedOnLand.add(DustedBlocks.coreAbate);
         }};
+
+        //i dont fucking know
+        Planets.serpulo.hiddenItems.addAll(DustedItems.krakaiItems).removeAll(Items.serpuloItems);
+        Planets.erekir.hiddenItems.addAll(DustedItems.krakaiItems).removeAll(Items.erekirOnlyItems);
     }
 }
