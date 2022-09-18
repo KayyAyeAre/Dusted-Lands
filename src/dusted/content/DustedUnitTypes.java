@@ -17,6 +17,8 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.type.weapons.*;
 
+import static mindustry.Vars.tilesize;
+
 public class DustedUnitTypes {
     public static UnitType
     carom, recur, saltate, staccato,
@@ -27,18 +29,21 @@ public class DustedUnitTypes {
 
     public static void load() {
         erode = new DustedUnitType("erode") {{
-            constructor = UnitEntity::create;
+            constructor = PayloadUnit::create;
+            coreUnitDock = true;
+            isEnemy = false;
             aiController = BuilderAI::new;
             flying = true;
             itemCapacity = 30;
             alwaysUnlocked = true;
             accel = 0.1f;
             drag = 0.05f;
-            speed = 3.2f;
+            speed = 4f;
             mineSpeed = 7f;
             mineTier = 1;
             buildSpeed = 0.6f;
             rotateSpeed = 12f;
+            payloadCapacity = 2f * 2f * tilesize * tilesize;
 
             weapons.add(new Weapon("dusted-lands-core-decay-weapon") {{
                 x = 3.1f;
@@ -47,15 +52,14 @@ public class DustedUnitTypes {
                 reload = 40f;
                 shootSound = Sounds.lasershoot;
 
-                bullet = new BasicBulletType(3f, 18f) {{
+                bullet = new BasicBulletType(3f, 10f) {{
                     width = 8f;
                     height = 12f;
                     lifetime = 40f;
                     buildingDamageMultiplier = 0.01f;
                     trailWidth = 2f;
                     trailLength = 16;
-                    status = DustedStatusEffects.deteriorating;
-                    statusDuration = 6 * 60f;
+                    healPercent = 5f;
                     frontColor = DustedPal.decayingYellow;
                     backColor = trailColor = DustedPal.decayingYellowBack;
                     hitEffect = despawnEffect = DustedFx.hitCavnen;

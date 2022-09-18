@@ -21,12 +21,12 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
     BaseGenerator basegen = new BaseGenerator();
 
     Block[][] terrain = {
-            {DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.basalt, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite},
-            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.volstone, Blocks.basalt, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.latite, DustedBlocks.latite},
-            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone},
-            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.basalt, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone},
-            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite},
-            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.basalt, Blocks.basalt, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite}
+            {DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite},
+            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.latite, DustedBlocks.latite},
+            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone},
+            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone},
+            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite},
+            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite}
     };
 
     @Override
@@ -68,7 +68,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         //decayed blocks
         if (decay(position) > 0.9f) {
-            if (!(result == DustedBlocks.volstone || result == DustedBlocks.volTerracotta || result == Blocks.slag)) {
+            if (!(result == DustedBlocks.volstone || result == Blocks.slag)) {
                 result = Simplex.noise3d(seed, 9, 0.4, 0.5, position.x + 20f, position.y + 20f, position.z + 20f) < 0.6f ? DustedBlocks.cavnenSediment : DustedBlocks.cavnenDusting;
             }
         }

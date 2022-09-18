@@ -28,7 +28,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.environment.*;
-import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
@@ -39,7 +38,7 @@ public class DustedBlocks {
     public static Block
     //environment
     oreZircon, oreArsenic, oreAntimony, orchar, sulfur, volcanoZone,
-    cavnenSediment, cavnenDusting, volstone, volTerracotta, latite, scoria, stradrock, scorchedStradrock,
+    cavnenSediment, cavnenDusting, volstone, latite, scoria, stradrock, scorchedStradrock,
     cavnenWall, volstoneWall, scoriaWall, latiteWall, stradrockWall,
     //decor
     scoriaBoulder, latiteBoulder, stradrockBoulder,
@@ -104,8 +103,6 @@ public class DustedBlocks {
         }};
 
         volstone = new Floor("volstone");
-
-        volTerracotta = new Floor("vol-terracotta");
 
         scoria = new Floor("scoria");
 
