@@ -11,6 +11,7 @@ import mindustry.ai.*;
 import mindustry.content.*;
 import mindustry.game.*;
 import mindustry.maps.generators.*;
+import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
 
@@ -18,7 +19,6 @@ import static mindustry.Vars.*;
 
 public class KrakaiPlanetGenerator extends PlanetGenerator {
     float scl = 6f;
-    BaseGenerator basegen = new BaseGenerator();
 
     Block[][] terrain = {
             {DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite},
@@ -32,6 +32,11 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
     @Override
     public Schematic getDefaultLoadout() {
         return DustedLoadouts.basicAbate;
+    }
+
+    @Override
+    public boolean allowLanding(Sector sector) {
+        return false;
     }
 
     @Override
@@ -225,19 +230,6 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         trimDark();
         median(2);
 
-        Floor[] powders = {DustedBlocks.orchar.asFloor(), DustedBlocks.sulfur.asFloor()};
-        pass((x, y) -> {
-            if (block instanceof StaticWall || floor == Blocks.slag) return;
-
-            for (int i = powders.length - 1; i >= 0; i--) {
-                Block entry = powders[i];
-                if (noise(x + 500f * i, y, 3, 0.6, 38) > 0.76f) {
-                    floor = entry;
-                    break;
-                }
-            }
-        });
-
         pass((x, y) -> {
             if (floor == DustedBlocks.stradrock) {
                 if (Math.abs(0.5f - noise(x - 30, y, 3, 0.8, 70)) > 0.02) {
@@ -287,12 +279,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             tiles.getn(espawn.x, espawn.y).setOverlay(Blocks.spawn);
         }
 
-        if (sector.hasEnemyBase()) {
-            basegen.generate(tiles, enemies.map(r -> tiles.getn(r.x, r.y)), tiles.get(spawn.x, spawn.y), state.rules.waveTeam, sector, difficulty);
-            state.rules.attackMode = sector.info.attack = true;
-        } else {
-            state.rules.winWave = sector.info.winWave = 10 + 5 * (int) Math.max(difficulty * 10, 1);
-        }
+        state.rules.winWave = sector.info.winWave = 10 + 5 * (int) Math.max(difficulty * 10, 1);
 
         float waveTimeDec = 0.4f;
 
@@ -305,12 +292,5 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         //rollback
         Blocks.slag.asFloor().wall = Blocks.yellowStoneWall;
-    }
-
-    @Override
-    public void postGenerate(Tiles tiles) {
-        if (sector.hasEnemyBase()) {
-            basegen.postGenerate();
-        }
     }
 }

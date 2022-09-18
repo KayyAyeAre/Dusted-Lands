@@ -17,11 +17,11 @@ public class DustedPlanets {
             generator = new KrakaiPlanetGenerator();
             meshLoader = () -> new HexMesh(this, 6);
             cloudMeshLoader = () -> new MultiMesh(
-                    new HexSkyMesh(this, 29, 0.56f, 0.16f, 5, Color.valueOf("ffd1ba").a(0.75f), 2, 0.55f, 1f, 0.35f),
-                    new HexSkyMesh(this, 4, 0.2f, 0.18f, 5, Color.valueOf("ffdbc2").a(0.75f), 2, 0.55f, 1.2f, 0.5f)
+                    new HexSkyMesh(this, 29, 0.56f, 0.16f, 5, Color.valueOf("fa9b5c").a(0.75f), 2, 0.55f, 1f, 0.35f),
+                    new HexSkyMesh(this, 4, 0.2f, 0.18f, 5, Color.valueOf("ffc89e").a(0.75f), 2, 0.55f, 1.2f, 0.5f)
             );
-            landCloudColor = Color.valueOf("ffdbc2");
-            atmosphereColor = Color.valueOf("a38772");
+            landCloudColor = Color.valueOf("fa9b5c");
+            atmosphereColor = Color.valueOf("fa9b5c");
             atmosphereRadIn = 0.02f;
             atmosphereRadOut = 0.3f;
             startSector = 269;

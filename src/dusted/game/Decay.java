@@ -5,6 +5,7 @@ import arc.func.*;
 import arc.math.geom.*;
 import arc.struct.*;
 import dusted.content.*;
+import dusted.world.blocks.storage.ShieldedCoreBlock.*;
 import dusted.world.meta.*;
 import mindustry.*;
 import mindustry.game.*;
@@ -34,7 +35,8 @@ public class Decay implements ApplicationListener {
             });
 
             Vars.indexer.allBuildings(Vars.world.width() * 4, Vars.world.height() * 4, Math.max(Vars.world.width() * 4, Vars.world.height() * 4), b -> {
-                if (!shields.contains(s -> b.team == s.team.get() && b.dst(s.pos.get()) < s.radius.get() + (b.hitSize() / 2f)) && b.health > b.maxHealth * calculateDamage(b.block)) {
+                //sure the cores already have shields but they still get decayed while launching for some reason
+                if (!(b instanceof ShieldedCoreBuild) && !shields.contains(s -> b.team == s.team.get() && b.dst(s.pos.get()) < s.radius.get() + (b.hitSize() / 2f)) && b.health > b.maxHealth * calculateDamage(b.block)) {
                     b.damagePierce(Math.min(decayDamage, (1f - calculateDamage(b.block)) * b.maxHealth + b.maxHealth - b.health), false);
                 }
             });
