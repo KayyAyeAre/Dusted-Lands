@@ -13,7 +13,6 @@ import mindustry.game.*;
 import mindustry.maps.generators.*;
 import mindustry.type.*;
 import mindustry.world.*;
-import mindustry.world.blocks.environment.*;
 
 import static mindustry.Vars.*;
 
@@ -23,8 +22,8 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
     Block[][] terrain = {
             {DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite},
             {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.latite, DustedBlocks.latite},
-            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone},
-            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone, DustedBlocks.volstone},
+            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, Blocks.hotrock, DustedBlocks.volstone, DustedBlocks.volstone},
+            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, Blocks.hotrock, DustedBlocks.volstone, DustedBlocks.volstone},
             {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite},
             {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite}
     };
