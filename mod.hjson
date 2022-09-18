@@ -1,6 +1,6 @@
 name: "dusted-lands"
 main: "dusted.DustedLands"
-version: 0.22
+version: 0.3
 minGameVersion: 137
 java: true
 

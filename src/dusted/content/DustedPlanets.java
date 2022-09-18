@@ -3,6 +3,7 @@ package dusted.content;
 import arc.graphics.*;
 import dusted.maps.planet.*;
 import dusted.world.meta.*;
+import mindustry.*;
 import mindustry.content.*;
 import mindustry.graphics.g3d.*;
 import mindustry.type.*;
@@ -33,7 +34,7 @@ public class DustedPlanets {
                 r.attributes.set(DustedAttribute.decay, 0.5f);
             };
 
-            hiddenItems.addAll(Items.serpuloItems).addAll(Items.erekirItems).removeAll(DustedItems.krakaiItems);
+            hiddenItems.addAll(Vars.content.items()).removeAll(DustedItems.krakaiItems);
 
             unlockedOnLand.add(DustedBlocks.coreAbate);
         }};

@@ -40,7 +40,7 @@ public class DustedItems {
         }};
 
         krakaiItems.addAll(
-                zircon, arsenic, antimony, silicon, metaglass, platinum, rockwool, telonate
+                zircon, arsenic, antimony, sand, silicon, metaglass, platinum, rockwool, telonate
         );
     }
 }
