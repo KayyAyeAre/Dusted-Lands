@@ -69,17 +69,14 @@ public class PowderModule extends BlockModule {
         total = 0f;
         int count = read.s();
 
-        Log.info("read start");
         for (int i = 0; i < count; i++) {
             int id = read.s();
             float amount = read.f();
             powders[id] = amount;
             if (amount > 0f) {
                 current = Vars.content.getByID(ContentType.effect_UNUSED, id);
-                Log.info("set current to @ with @ contained", current, amount);
             }
             this.total += amount;
         }
-        Log.info("read end");
     }
 }
