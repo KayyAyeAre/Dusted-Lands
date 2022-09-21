@@ -18,7 +18,7 @@ public class DrawGlowProgress extends DrawBlock {
 
     @Override
     public void draw(Building build) {
-        float progress = (build.warmup() < 1f ? build.progress() : Math.max(build.progress(), Interp.pow2.apply(1 - Mathf.curve(build.progress(), 0f, 0.15f)))) * build.warmup();
+        float progress = build.progress() < 0.9f ? Mathf.curve(build.progress(), 0f, 0.9f) : Mathf.curve(1f - build.progress(), 0f, 0.1f);
 
         Draw.blend(Blending.additive);
         Draw.color(color, progress);
