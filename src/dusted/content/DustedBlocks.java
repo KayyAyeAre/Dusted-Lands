@@ -23,6 +23,7 @@ import mindustry.entities.effect.*;
 import mindustry.entities.part.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.defense.*;
@@ -186,16 +187,16 @@ public class DustedBlocks {
             size = 3;
             squareSprite = false;
 
-            outputItem = new ItemStack(Items.silicon, 3);
-            craftTime = 90f;
-            craftEffect = Fx.smeltsmoke;
-            drawer = new DrawMulti(new DrawDefault(), new DrawSpinFlame());
+            outputItem = new ItemStack(Items.silicon, 10);
+            craftTime = 300f;
+            craftEffect = new MultiEffect(Fx.smeltsmoke, DustedFx.quartzSmokeCloud);
+            drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPowderAbsorb(DustedPowders.quartzDust), new DrawDefault(), new DrawGlowProgress(Pal.redLight));
             ambientSound = Sounds.smelter;
             ambientSoundVolume = 0.08f;
 
-            consumePower(0.6f);
-            consume(new ConsumePowder(DustedPowders.quartzDust, 0.1f));
-            consume(new ConsumePowder(DustedPowders.orchar, 0.05f));
+            consumePower(2f);
+            consume(new ConsumePowder(DustedPowders.quartzDust, 0.5f));
+            consume(new ConsumePowder(DustedPowders.orchar, 0.2f));
         }};
 
         metaglassFurnace = new PowderCrafter("metaglass-furnace") {{
@@ -212,7 +213,7 @@ public class DustedBlocks {
 
             consumePower(1f);
             consume(new ConsumePowder(DustedPowders.quartzDust, 0.05f));
-            consumeItem(DustedItems.platinum, 2);
+            consumeItem(DustedItems.antimony, 2);
         }};
 
         rockwoolExtruder = new DrawerWallCrafter("rockwool-extruder") {{
@@ -328,6 +329,7 @@ public class DustedBlocks {
             requirements(Category.power, ItemStack.with(DustedItems.zircon, 50));
             size = 2;
             floating = true;
+            ambientSound = Sounds.hum;
             filter = f -> f.liquidDrop == Liquids.slag ? f.liquidMultiplier : 0f;
             generateEffect = Fx.incinerateSlag;
             outputLiquid = new LiquidStack(Liquids.slag, 5f / 60f);

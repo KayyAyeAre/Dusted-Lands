@@ -127,6 +127,14 @@ public class DustedFx {
         });
     }),
 
+    quartzSmokeCloud = new Effect(70f, e -> {
+        color(DustedPal.lightQuartz, e.fslope() * 0.6f);
+
+        randLenVectors(e.id, 12, e.finpow() * 18f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 7f);
+        });
+    }),
+
     shootLaunch = new Effect(40f, e -> {
         e.scaled(20f, i -> {
             color(Pal.lighterOrange, Pal.lightOrange, Pal.gray, i.fin());
