@@ -73,7 +73,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         //decayed blocks
         if (decay(position) > 0.9f) {
             if (!(result == DustedBlocks.volstone || result == Blocks.slag)) {
-                result = Simplex.noise3d(seed, 9, 0.4, 0.5, position.x + 20f, position.y + 20f, position.z + 20f) < 0.6f ? DustedBlocks.cavnenSediment : DustedBlocks.cavnenDusting;
+                result = Simplex.noise3d(seed, 9, 0.4, 1f / 55f, position.x + 20f, position.y + 20f, position.z + 20f) < 0.64f ? DustedBlocks.cavnenSediment : DustedBlocks.cavnenDusting;
             }
         }
 
@@ -85,7 +85,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         tile.floor = getBlock(position);
         tile.block = tile.floor == Blocks.slag ? Blocks.duneWall : tile.floor.asFloor().wall;
 
-        if (Ridged.noise3d(seed, position.x, position.y, position.z, 3, 12) > 0.22) {
+        if (Ridged.noise3d(seed, position.x, position.y, position.z, 3, 14) > 0.22) {
             tile.block = Blocks.air;
         }
     }
@@ -218,7 +218,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             for (int i = ores.size - 1; i >= 0; i--) {
                 Block entry = ores.get(i);
                 float freq = frequencies.get(i);
-                if (Math.abs(0.5f - noise(offsetX, offsetY + i * 999, 2, 0.7, (40 + i * 2))) > 0.22f + i * 0.01 &&
+                if (Math.abs(0.5f - noise(offsetX, offsetY + i * 999, 2, 0.7, (40 + i * 2))) > 0.23f + i * 0.01 &&
                         Math.abs(0.5f - noise(offsetX, offsetY - i * 999, 1, 1, (30 + i * 4))) > 0.37f + freq) {
                     ore = entry;
                     break;

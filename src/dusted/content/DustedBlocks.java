@@ -186,8 +186,9 @@ public class DustedBlocks {
             requirements(Category.crafting, ItemStack.with(DustedItems.arsenic, 120, DustedItems.zircon, 80));
             size = 3;
             squareSprite = false;
+            itemCapacity = 20;
 
-            outputItem = new ItemStack(Items.silicon, 10);
+            outputItem = new ItemStack(Items.silicon, 15);
             craftTime = 300f;
             craftEffect = new MultiEffect(Fx.smeltsmoke, DustedFx.quartzSmokeCloud);
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPowderAbsorb(DustedPowders.quartzDust), new DrawDefault(), new DrawGlowProgress(Pal.redLight));
