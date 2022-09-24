@@ -65,15 +65,15 @@ public class DustedFx {
     }).layer(Layer.effect + 0.021f),
 
     blazing = new Effect(40f, e -> {
-        color(DustedPal.lightPyreol, DustedPal.darkPyreol, e.fin());
+        color(DustedPal.lightOrchar, DustedPal.darkOrchar, e.fin());
 
         randLenVectors(e.id, 5, 3f + e.fin() * 9f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, e.fout() * 2f);
         });
         float w = 1f + e.fout() * 3f;
         randLenVectors(e.id, 3, 5f, (x, y) -> {
-            Drawf.tri(e.x, e.y, w, 4f * e.fout(), Mathf.angle(x, y));
-            Drawf.tri(e.x, e.y, w, 2f * e.fout(), Mathf.angle(x, y) + 180f);
+            Drawf.tri(e.x + x, e.y + y, w, 4f * e.fout(), Mathf.angle(x, y));
+            Drawf.tri(e.x + x, e.y + y, w, 2f * e.fout(), Mathf.angle(x, y) + 180f);
         });
     }),
 
@@ -132,6 +132,13 @@ public class DustedFx {
 
         randLenVectors(e.id, 12, e.finpow() * 18f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, e.fout() * 7f);
+        });
+    }),
+
+    mineIgnite = new Effect(50f, e -> {
+        color(Pal.lightFlame, Pal.darkFlame, Color.gray, e.fin());
+        randLenVectors(e.id, 10, e.finpow() * 18f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 2.5f);
         });
     }),
 
@@ -197,9 +204,9 @@ public class DustedFx {
         Drawf.tri(e.x, e.y, w, 6f * e.fout(), e.rotation + 180f);
     }),
 
-    shootPowderSquares = new Effect(20f, e -> {
+    shootPowderSquares = new Effect(40f, e -> {
         color(Color.white, e.color, e.fin());
-        randLenVectors(e.id, 8, e.finpow() * 14f, e.rotation, 25f, (x, y) -> {
+        randLenVectors(e.id, 18, e.finpow() * 18f, e.rotation, 25f, (x, y) -> {
             Fill.rect(e.x + x, e.y + y, e.foutpow() * 6f, e.foutpow() * 6f, Mathf.angle(x, y) + e.fin() * 60f);
         });
     }),

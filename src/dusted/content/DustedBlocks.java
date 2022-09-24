@@ -29,6 +29,7 @@ import mindustry.world.*;
 import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.environment.*;
+import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
@@ -45,7 +46,7 @@ public class DustedBlocks {
     scoriaBoulder, latiteBoulder, stradrockBoulder,
     volstoneBoulder, cavnenBoulder, volSprout, weepingShrub,
     //defense
-    zirconWall, zirconWallLarge,
+    zirconWall, zirconWallLarge, antimonyWall, antimonyWallLarge,
     decaySuppressor,
     //turrets, TODO balancing?
     abrade, sunder, bisect, scald, coruscate, strike, blight,
@@ -60,7 +61,7 @@ public class DustedBlocks {
     //crafters
     quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder,
     //production
-    pressureDrill,
+    pressureDrill, ignitionDrill,
     pneumaticFunnel, rotaryFunnel,
     //cores
     coreAbate, coreDissent, coreDecadence,
@@ -183,7 +184,7 @@ public class DustedBlocks {
         }};
 
         siliconForge = new PowderCrafter("silicon-forge") {{
-            requirements(Category.crafting, ItemStack.with(DustedItems.arsenic, 120, DustedItems.zircon, 80));
+            requirements(Category.crafting, ItemStack.with(DustedItems.arsenic, 120, DustedItems.antimony, 100, DustedItems.zircon, 80));
             size = 3;
             squareSprite = false;
             itemCapacity = 20;
@@ -295,10 +296,10 @@ public class DustedBlocks {
             requirements(Category.production, ItemStack.with(DustedItems.zircon, 20));
             drillTime = 60f * 8f;
             size = 3;
+            tier = 3;
             squareSprite = false;
             hasPower = true;
             drillEffect = new MultiEffect(Fx.mineBig, Fx.explosion);
-            shake = 4f;
             itemCapacity = 20;
             arrows = 2;
             arrowSpacing = 3f;
@@ -308,9 +309,28 @@ public class DustedBlocks {
             consumePower(20f / 60f);
         }};
 
+        ignitionDrill = new PowderBurstDrill("ignition-drill") {{
+            requirements(Category.production, ItemStack.with(DustedItems.zircon, 60, DustedItems.arsenic, 40));
+            drillTime = 60f * 8f;
+            size = 4;
+            tier = 5;
+            squareSprite = false;
+            hasPower = true;
+            drillEffect = new MultiEffect(Fx.mineHuge, Fx.explosion, DustedFx.mineIgnite);
+            shake = 4f;
+            itemCapacity = 40;
+            arrows = 2;
+            arrowSpacing = 4f;
+            baseArrowColor = Color.valueOf("726c6a");
+
+            researchCost = ItemStack.with(DustedItems.zircon, 10);
+
+            consumePower(1f);
+            consume(new ConsumePowder(DustedPowders.orchar, 0.1f));
+        }};
+
         pneumaticFunnel = new Funnel("pneumatic-funnel") {{
             requirements(Category.production, ItemStack.with(DustedItems.zircon, 10));
-            funnelAmount = 7f / 60f;
             powderCapacity = 20f;
             squareSprite = false;
         }};
@@ -320,6 +340,7 @@ public class DustedBlocks {
             size = 2;
             hasPower = true;
             powderCapacity = 40f;
+            funnelAmount = 1f;
             consumePower(0.2f);
             extractEffect = DustedFx.funnelExtract;
             squareSprite = false;
@@ -349,7 +370,18 @@ public class DustedBlocks {
 
         zirconWallLarge = new Wall("zircon-wall-large") {{
             requirements(Category.defense, ItemStack.mult(zirconWall.requirements, 4));
-            health = 280 * 4;
+            scaledHealth = 280;
+            size = 2;
+        }};
+
+        antimonyWall = new Wall("antimony-wall") {{
+            requirements(Category.defense, ItemStack.with(DustedItems.antimony, 6));
+            health = 440;
+        }};
+
+        antimonyWallLarge = new Wall("antimony-wall-large") {{
+            requirements(Category.defense, ItemStack.mult(antimonyWall.requirements, 4));
+            scaledHealth = 440;
             size = 2;
         }};
 
@@ -393,39 +425,34 @@ public class DustedBlocks {
             researchCostMultiplier = 0.1f;
         }};
 
-        sunder = new ItemTurret("sunder") {{
-            requirements(Category.turret, ItemStack.with(DustedItems.zircon, 60, DustedItems.arsenic, 50));
+        sunder = new PowderTurret("sunder") {{
+            requirements(Category.turret, ItemStack.with(DustedItems.zircon, 80, DustedItems.arsenic, 60, DustedItems.antimony, 50));
             size = 2;
             scaledHealth = 220f;
             reload = 80f;
-            range = 280f;
+            range = 135f;
+            inaccuracy = 5f;
+            shootSound = Sounds.bang;
+
+            shoot.shots = 4;
 
             outlineColor = DustedPal.darkerWarmMetal;
             drawer = new DrawTurret("decayed-");
 
             ammo(
-                    DustedItems.arsenic, new RocketBulletType(3.5f, 18f) {{
-                        lifetime = 80f;
+                    DustedPowders.orchar, new BasicBulletType(4.5f, 18f) {{
+                        lifetime = 30f;
                         width = 18f;
                         height = 22f;
-                        splashDamage = 12f;
-                        splashDamageRadius = 16f;
-                        frontColor = Color.white;
-                        backColor = hitColor = Color.valueOf("ff708e");
+                        frontColor = DustedPal.lightOrchar;
+                        backColor = hitColor = trailColor = DustedPal.darkOrchar;
+                        trailLength = 14;
+                        trailWidth = 6f;
                         hitEffect = despawnEffect = Fx.hitSquaresColor;
-
-                        rocketBulletType = new BasicBulletType(2f, 12f, "mine-bullet") {{
-                            lifetime = 65f;
-                            width = height = 12f;
-                            shrinkX = shrinkY = 0.3f;
-                            drag = 0.06f;
-                            splashDamage = 20f;
-                            splashDamageRadius = 24f;
-                            frontColor = Color.white;
-                            backColor = hitColor = Color.valueOf("ff708e");
-                            shootEffect = Fx.hitBulletColor;
-                            hitEffect = despawnEffect = Fx.hitSquaresColor;
-                        }};
+                        shootEffect = Fx.shootSmallColor;
+                        smokeEffect = Fx.shootSmokeSquare;
+                        status = DustedStatusEffects.blazing;
+                        statusDuration = 6 * 60f;
                     }}
             );
         }};
@@ -462,43 +489,31 @@ public class DustedBlocks {
             requirements(Category.turret, ItemStack.with(DustedItems.zircon, 70, DustedItems.arsenic, 60, Items.silicon, 40));
             size = 2;
             scaledHealth = 260f;
-            reload = 80f;
+            reload = 10f;
             recoil = 3f;
-            range = 100f;
-            shootEffect = Fx.shootBig2;
+            range = 140f;
+            shootEffect = Fx.shootBigColor;
             shootSound = Sounds.shootBig;
             targetAir = false;
             outlineColor = DustedPal.darkerWarmMetal;
             drawer = new DrawTurret("decayed-");
 
+            shoot = new ShootSpread(5, 10f);
+
             ammo(
-                    DustedPowders.quartzDust, new BasicBulletType(3.5f, 30f) {{
+                    DustedPowders.orchar, new BasicBulletType(3.5f, 8f, "circle-bullet") {{
                         collidesAir = false;
-                        width = height = 15f;
+                        width = height = 14f;
+                        shrinkX = shrinkY = 0.4f;
                         splashDamageRadius = 20f;
                         splashDamage = 24f;
                         status = StatusEffects.burning;
-                        statusDuration = 8 * 60f;
-                        frontColor = DustedPal.lightQuartz;
-                        backColor = hitColor = DustedPal.darkQuartz;
+                        statusDuration = 8f * 60f;
+                        frontColor = DustedPal.lightOrchar;
+                        backColor = hitColor = DustedPal.darkOrchar;
                         shootEffect = DustedFx.shootPowder;
                         hitEffect = DustedFx.hitPowder;
-                        lifetime = 30f;
-                        makeFire = true;
-
-                        fragBullets = 3;
-                        fragBullet = new ArtilleryBulletType(3f, 20f) {{
-                            width = height = 12f;
-                            lifetime = 25f;
-                            splashDamageRadius = 18f;
-                            splashDamage = 16f;
-                            makeFire = true;
-                            hitEffect = DustedFx.hitPowder;
-                            frontColor = DustedPal.lightQuartz;
-                            backColor = hitColor = DustedPal.darkQuartz;
-                            status = StatusEffects.burning;
-                            statusDuration = 6 * 60f;
-                        }};
+                        lifetime = 40f;
                     }}
             );
 
@@ -635,7 +650,7 @@ public class DustedBlocks {
 
             ammo(
                     //TODO this is probably unbalanced
-                    DustedItems.arsenic, new InstantBulletType() {{
+                    DustedItems.antimony, new InstantBulletType() {{
                         damage = 18f;
                         splashDamage = 10f;
                         splashDamageRadius = 4f;
@@ -716,7 +731,7 @@ public class DustedBlocks {
             }};
 
             ammo(
-                    DustedPowders.orchar, new RocketBulletType(7f, 45f, "circle-bullet") {
+                    DustedPowders.quartzDust, new RocketBulletType(7f, 45f, "circle-bullet") {
                         {
                             lifetime = 240f;
                             drag = 0.02f;
@@ -724,8 +739,8 @@ public class DustedBlocks {
                             shrinkX = shrinkY = 0.25f;
                             ammoMultiplier = 1f;
                             pierce = true;
-                            frontColor = DustedPal.lightPyreol;
-                            backColor = trailColor = hitColor = DustedPal.darkPyreol;
+                            frontColor = DustedPal.lightQuartz;
+                            backColor = trailColor = hitColor = DustedPal.darkQuartz;
                             shootEffect = DustedFx.shootPowderSquares;
                             hitEffect = despawnEffect = DustedFx.hitPowder;
                             trailWidth = 9f;
@@ -743,8 +758,8 @@ public class DustedBlocks {
                                 width = 12f;
                                 height = 18f;
                                 lifetime = 40f;
-                                frontColor = DustedPal.lightPyreol;
-                                backColor = trailColor = hitColor = DustedPal.darkPyreol;
+                                frontColor = DustedPal.lightQuartz;
+                                backColor = trailColor = hitColor = DustedPal.darkQuartz;
                                 shootEffect = DustedFx.shootPowder;
                                 hitEffect = despawnEffect = DustedFx.hitPowder;
                                 trailWidth = 3f;
