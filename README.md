@@ -1,7 +1,9 @@
-![](https://github.com/KayyAyeAre/Dusted-Lands/blob/main/assets/icon.png) 
+![](https://github.com/KayyAyeAre/Dusted-Lands/blob/main/assets/banner.png) 
 # Dusted Lands
 A small mod which adds powders to the game, along with a ton of turrets, units, and other content.
+
+Credit to [Sh1penfire](https://github.com/Sh1penfire) for the deteriorating status effect sprite.
 # Compiling
-1. Clone this repository.
-2. Install any necessary files, such as Java 16 and the Android SDK.
-3. Run `gradlew deploy`. This should create a jar in the `build/libs` directory.
+1. Install Java 16
+2. Run `gradlew deploy` (or `./gradlew` on Linux/Mac) 
+3. The mod jar will be in `build/libs`
