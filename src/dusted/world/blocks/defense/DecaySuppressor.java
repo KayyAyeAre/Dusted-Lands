@@ -48,7 +48,7 @@ public class DecaySuppressor extends Block {
         @Override
         public void created() {
             Core.app.post(() -> {
-                shield = new DecayShield(() -> Tmp.v1.set(this), () -> team, () -> radius);
+                shield = new DecayShield(this);
                 DustedLands.decay.shields.add(shield);
             });
         }
@@ -61,6 +61,7 @@ public class DecaySuppressor extends Block {
         @Override
         public void updateTile() {
             heat = Mathf.lerpDelta(heat, efficiency, 0.05f);
+            if (shield != null) shield.radius = realRadius();
         }
 
         public float realRadius() {

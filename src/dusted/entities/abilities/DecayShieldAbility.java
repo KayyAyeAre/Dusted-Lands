@@ -30,7 +30,7 @@ public class DecayShieldAbility extends Ability {
     @Override
     public void update(Unit unit) {
         if (!added) {
-            DustedLands.decay.shields.add(shield = new DecayShield(() -> Tmp.v1.set(unit), () -> unit.team, () -> radius));
+            DustedLands.decay.shields.add(shield = new DecayShield(unit, radius));
             added = true;
         }
     }

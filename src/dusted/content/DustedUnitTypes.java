@@ -60,7 +60,8 @@ public class DustedUnitTypes {
                     trailWidth = 2f;
                     trailLength = 16;
                     healPercent = 5f;
-                    frontColor = DustedPal.decayingYellow;
+                    collidesTeam = true;
+                    frontColor = healColor = DustedPal.decayingYellow;
                     backColor = trailColor = DustedPal.decayingYellowBack;
                     hitEffect = despawnEffect = DustedFx.hitCavnen;
                 }};
@@ -112,16 +113,53 @@ public class DustedUnitTypes {
         carom = new DustedUnitType("carom") {{
             constructor = UnitEntity::create;
             aiController = BounceAI::new;
-            speed = 2.5f;
+            speed = 4.2f;
             flying = true;
-            health = 80;
-            accel = 0.1f;
-            drag = 0.06f;
+            lowAltitude = true;
+            health = 120;
+            accel = 0.04f;
+            drag = 0.03f;
             rotateSpeed = 10f;
-            range = 120f;
+            trailLength = 12;
+            trailColor = DustedPal.decayingYellow;
+            trailScl = 0.6f;
 
-            abilities.add(new BounceAbility() {{
-                bounceDamage = 8f;
+            weapons.add(new Weapon("dusted-lands-carom-weapon") {{
+                x = 3f;
+                y = -2f;
+                alternate = false;
+                reload = 35f;
+                shootSound = Sounds.missile;
+
+                shoot.shots = 3;
+                shoot.shotDelay = 5f;
+
+                bullet = new BasicBulletType(4f, 8f) {{
+                    width = 6f;
+                    height = 11f;
+                    lifetime = 20f;
+                    frontColor = DustedPal.decayingYellow;
+                    backColor = hitColor = DustedPal.decayingYellowBack;
+                    hitEffect = despawnEffect = DustedFx.hitCavnen;
+                    status = DustedStatusEffects.deteriorating;
+                    statusDuration = 6f * 60f;
+                }};
+
+                abilities.add(new MoveLightningAbility(0f, 0, 1f, 0f, 0.4f, 1.2f, Color.white) {{
+                    shootEffect = Fx.none;
+                    shootSound = Sounds.none;
+                    bullet = new BulletType(0f, 12f) {{
+                        instantDisappear = true;
+                        splashDamage = 10f;
+                        splashDamageRadius = 3f;
+                        hittable = reflectable = absorbable = setDefaults = despawnHit = false;
+                        despawnEffect = Fx.none;
+                        hitEffect = DustedFx.caromSparks;
+                        //TODO sound
+                        hitSound = Sounds.missile;
+                        hitSoundVolume = 0.7f;
+                    }};
+                }});
             }});
         }};
 
@@ -141,7 +179,7 @@ public class DustedUnitTypes {
             weapons.add(new Weapon() {{
                 x = 0f;
                 y = 6.2f;
-                alternate = false;
+                mirror = false;
                 reload = 50f;
                 shootSound = Sounds.laser;
 
@@ -334,7 +372,7 @@ public class DustedUnitTypes {
 
             accel = 0.1f;
             drag = 0.05f;
-            speed = 3f;
+            speed = 5.5f;
             flying = true;
             lowAltitude = true;
             rotateSpeed = 8f;
@@ -348,7 +386,7 @@ public class DustedUnitTypes {
                 reload = 12f;
                 shootSound = Sounds.lasershoot;
 
-                bullet = new BasicBulletType(4f, 6f, "circle-bullet") {{
+                bullet = new BasicBulletType(4f, 0f, "circle-bullet") {{
                     lifetime = 30f;
                     drag = 0.03f;
                     healPercent = 4f;

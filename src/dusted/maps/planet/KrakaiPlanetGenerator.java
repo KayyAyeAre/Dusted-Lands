@@ -16,14 +16,15 @@ import mindustry.world.*;
 
 import static mindustry.Vars.*;
 
+//TODO generated sectors dont really look that good..
 public class KrakaiPlanetGenerator extends PlanetGenerator {
     float scl = 6f;
 
     Block[][] terrain = {
             {DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite},
             {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.latite, DustedBlocks.latite},
-            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, Blocks.hotrock, DustedBlocks.volstone, DustedBlocks.volstone},
-            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, Blocks.hotrock, DustedBlocks.volstone, DustedBlocks.volstone},
+            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, Blocks.hotrock, Blocks.darksand, Blocks.basalt, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone},
+            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, Blocks.hotrock, Blocks.hotrock, Blocks.darksand, Blocks.basalt, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone},
             {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite},
             {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite}
     };
@@ -54,7 +55,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
     }
 
     public float decay(Vec3 position) {
-        return (Math.abs(position.y) * 0.3f) + Simplex.noise3d(seed, 6, 0.5, 0.3, position.x + 20f, position.y + 20f, position.z + 20f);
+        return (Math.abs(position.y) * 0.35f) + Simplex.noise3d(seed, 6, 0.5, 0.3, position.x + 20f, position.y + 20f, position.z + 20f);
     }
 
     @Override
@@ -68,7 +69,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         Block result = terrain[Mathf.clamp(Mathf.round(((position.y + 1f) / 2f) * (terrain.length - 1)), 0, terrain.length - 1)][Mathf.clamp((int) (height * terrain[0].length), 0, terrain[0].length - 1)];
 
-        if (height < 0.6f && Simplex.noise3d(seed, 12, 0.3, 0.9, position.x + 100f, position.y + 100f, position.z + 100f) < 0.3f + position.dst(0f, 0f, 0f) / scl) result = Blocks.slag;
+        if (height < 0.6f && Simplex.noise3d(seed, 12, 0.3, 0.9f, position.x + 100f, position.y + 100f, position.z + 100f) + Math.abs(position.y / 3.5f) < 0.52f) result = Blocks.slag;
 
         //decayed blocks
         if (decay(position) > 0.9f) {
@@ -85,11 +86,16 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         tile.floor = getBlock(position);
         tile.block = tile.floor == Blocks.slag ? Blocks.duneWall : tile.floor.asFloor().wall;
 
-        if (Ridged.noise3d(seed, position.x, position.y, position.z, 3, 14) > 0.22) {
+        if (tile.floor == Blocks.slag && Ridged.noise3d(seed + 20, position.x, position.y, position.z, 12, 1 / 22f) > 0.12f) {
+            tile.block = Blocks.hotrock;
+        }
+
+        if (Ridged.noise3d(seed, position.x, position.y, position.z, 3, 14) > 0.24) {
             tile.block = Blocks.air;
         }
     }
 
+    /*
     @Override
     public void erase(int cx, int cy, int rad) {
         for (int x = -rad; x <= rad; x++) {
@@ -103,6 +109,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             }
         }
     }
+    */
 
     @Override
     protected void generate() {
@@ -191,7 +198,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         roomseq.each(spawn::connect);
 
-        cells(4);
+        cells(2);
         distort(10f, 12f);
 
         inverseFloodFill(tiles.getn(spawn.x, spawn.y));
@@ -228,6 +235,20 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         trimDark();
         median(2);
+
+        int tlen = tiles.width * tiles.height;
+        int total = 0, slag = 0;
+
+        for (int i = 0; i < tlen; i++) {
+            Tile tile = tiles.geti(i);
+            if (tile.block() == Blocks.air) {
+                total++;
+                if (tile.floor().liquidDrop == Liquids.slag) slag++;
+            }
+        }
+
+        //TODO
+        boolean slagUnits = (float) slag / total >= 0.19f;
 
         pass((x, y) -> {
             if (floor == DustedBlocks.stradrock) {

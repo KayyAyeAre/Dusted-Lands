@@ -38,19 +38,19 @@ public class DustedFx {
 
     shieldFade = new Effect(60f, e -> {
         if (!(e.data instanceof DecayShield shield)) return;
-        e.lifetime = shield.radius.get() * 0.8f;
+        e.lifetime = shield.radius * 0.8f;
 
         Draw.z(Layer.shields + 2.5f);
-        Draw.color(shield.team.get().color);
+        Draw.color(shield.owner.team().color);
 
         if (Vars.renderer.animateShields) {
-            Fill.poly(e.x, e.y, 6, shield.radius.get() * e.foutpow());
+            Fill.poly(e.x, e.y, 24, shield.radius * e.foutpow(), Time.time / 10f);
         } else {
             Lines.stroke(1.5f);
             Draw.alpha(0.09f);
-            Fill.poly(e.x, e.y, 6, shield.radius.get() * e.foutpow());
+            Fill.poly(e.x, e.y, 24, shield.radius * e.foutpow(), Time.time / 10f);
             Draw.alpha(1f);
-            Lines.poly(e.x, e.y, 6, shield.radius.get() * e.foutpow());
+            Lines.poly(e.x, e.y, 24, shield.radius * e.foutpow(), Time.time / 10f);
         }
     }),
 
@@ -139,6 +139,14 @@ public class DustedFx {
         color(Pal.lightFlame, Pal.darkFlame, Color.gray, e.fin());
         randLenVectors(e.id, 10, e.finpow() * 18f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, e.fout() * 2.5f);
+        });
+    }),
+
+    caromSparks = new Effect(20f, e -> {
+        color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
+        Lines.stroke(1.5f);
+        randLenVectors(e.id, 2, e.finpow() * 14f, e.rotation + 180f, 10f, (x, y) -> {
+            Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fout() * 9f);
         });
     }),
 

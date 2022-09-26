@@ -425,16 +425,53 @@ public class DustedBlocks {
             researchCostMultiplier = 0.1f;
         }};
 
+        scald = new PowderTurret("scald") {{
+            requirements(Category.turret, ItemStack.with(DustedItems.zircon, 70, DustedItems.arsenic, 60, DustedItems.antimony, 40));
+            size = 2;
+            scaledHealth = 260f;
+            reload = 40f;
+            recoil = 3f;
+            range = 135f;
+            shootEffect = Fx.shootBigColor;
+            shootSound = Sounds.shootBig;
+            targetGround = false;
+            outlineColor = DustedPal.darkerWarmMetal;
+            drawer = new DrawTurret("decayed-");
+
+            shoot = new ShootSpread(10, 4f);
+
+            ammo(
+                    DustedPowders.orchar, new BasicBulletType(4.5f, 6f, "circle-bullet") {{
+                        collidesGround = false;
+                        width = height = 14f;
+                        shrinkX = shrinkY = 0.4f;
+                        splashDamageRadius = 20f;
+                        splashDamage = 24f;
+                        status = DustedStatusEffects.blazing;
+                        statusDuration = 8f * 60f;
+                        frontColor = DustedPal.lightOrchar;
+                        backColor = hitColor = trailColor = DustedPal.darkOrchar;
+                        trailChance = 0.4f;
+                        trailEffect = Fx.hitSquaresColor;
+                        shootEffect = DustedFx.shootPowder;
+                        hitEffect = DustedFx.hitPowder;
+                        lifetime = 30f;
+                    }}
+            );
+
+            coolant = consumeCoolant(0.1f);
+        }};
+
         sunder = new PowderTurret("sunder") {{
-            requirements(Category.turret, ItemStack.with(DustedItems.zircon, 80, DustedItems.arsenic, 60, DustedItems.antimony, 50));
+            requirements(Category.turret, ItemStack.with(DustedItems.zircon, 80, DustedItems.arsenic, 60, DustedItems.antimony, 50, Items.silicon, 50));
             size = 2;
             scaledHealth = 220f;
             reload = 80f;
             range = 135f;
             inaccuracy = 5f;
-            shootSound = Sounds.bang;
+            shootSound = Sounds.missile;
 
-            shoot.shots = 4;
+            shoot.shots = 2;
 
             outlineColor = DustedPal.darkerWarmMetal;
             drawer = new DrawTurret("decayed-");
@@ -453,13 +490,14 @@ public class DustedBlocks {
                         smokeEffect = Fx.shootSmokeSquare;
                         status = DustedStatusEffects.blazing;
                         statusDuration = 6 * 60f;
+                        hitSound = Sounds.bang;
                     }}
             );
         }};
 
         //TODO redo this entirely maybe
         bisect = new PowerTurret("bisect") {{
-            requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with());
+            requirements(Category.turret, BuildVisibility.hidden, ItemStack.with());
             size = 2;
             scaledHealth = 220f;
             targetAir = false;
@@ -482,41 +520,6 @@ public class DustedBlocks {
             }};
 
             consumePower(2f);
-            coolant = consumeCoolant(0.1f);
-        }};
-
-        scald = new PowderTurret("scald") {{
-            requirements(Category.turret, ItemStack.with(DustedItems.zircon, 70, DustedItems.arsenic, 60, Items.silicon, 40));
-            size = 2;
-            scaledHealth = 260f;
-            reload = 10f;
-            recoil = 3f;
-            range = 140f;
-            shootEffect = Fx.shootBigColor;
-            shootSound = Sounds.shootBig;
-            targetAir = false;
-            outlineColor = DustedPal.darkerWarmMetal;
-            drawer = new DrawTurret("decayed-");
-
-            shoot = new ShootSpread(5, 10f);
-
-            ammo(
-                    DustedPowders.orchar, new BasicBulletType(3.5f, 8f, "circle-bullet") {{
-                        collidesAir = false;
-                        width = height = 14f;
-                        shrinkX = shrinkY = 0.4f;
-                        splashDamageRadius = 20f;
-                        splashDamage = 24f;
-                        status = StatusEffects.burning;
-                        statusDuration = 8f * 60f;
-                        frontColor = DustedPal.lightOrchar;
-                        backColor = hitColor = DustedPal.darkOrchar;
-                        shootEffect = DustedFx.shootPowder;
-                        hitEffect = DustedFx.hitPowder;
-                        lifetime = 40f;
-                    }}
-            );
-
             coolant = consumeCoolant(0.1f);
         }};
 
@@ -746,7 +749,7 @@ public class DustedBlocks {
                             trailWidth = 9f;
                             trailInterp = i -> 1f - shrinkX * i;
                             trailLength = 22;
-                            status = DustedStatusEffects.blazing;
+                            status = StatusEffects.burning;
                             statusDuration = 6 * 60f;
 
                             rocketReload = 5f;

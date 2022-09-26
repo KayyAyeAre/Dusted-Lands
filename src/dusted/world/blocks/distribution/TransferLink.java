@@ -210,7 +210,7 @@ public class TransferLink extends Block {
             transferCounter += edelta();
             while (transferCounter >= transferTime) {
                 Item item = items.take();
-                if (item != null && other.acceptItem(this, item)) {
+                if (item != null && other != null && other.acceptItem(this, item)) {
                     other.handleItem(this, item);
                 } else if (item != null) {
                     items.add(item, 1);

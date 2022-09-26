@@ -48,7 +48,7 @@ public class ShieldedCoreBlock extends CoreBlock {
             super.created();
 
             Core.app.post(() -> {
-                shield = new DecayShield(() -> Tmp.v1.set(this), () -> team, () -> radius);
+                shield = new DecayShield(this, radius);
                 DustedLands.decay.shields.add(shield);
             });
         }
