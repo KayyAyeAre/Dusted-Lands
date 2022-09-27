@@ -16,16 +16,15 @@ import mindustry.world.*;
 
 import static mindustry.Vars.*;
 
-//TODO generated sectors dont really look that good..
 public class KrakaiPlanetGenerator extends PlanetGenerator {
     float scl = 6f;
 
     Block[][] terrain = {
             {DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite},
             {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.latite, DustedBlocks.latite},
-            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, Blocks.hotrock, Blocks.darksand, Blocks.basalt, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone},
-            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, Blocks.hotrock, Blocks.hotrock, Blocks.darksand, Blocks.basalt, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.volstone},
-            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite},
+            {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, Blocks.hotrock, Blocks.darksand, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.scoria, DustedBlocks.latite},
+            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, Blocks.hotrock, Blocks.hotrock, Blocks.darksand, Blocks.basalt, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.scoria},
+            {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.volstone, DustedBlocks.volstone, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.scoria, DustedBlocks.latite},
             {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite}
     };
 
@@ -37,6 +36,11 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
     @Override
     public boolean allowLanding(Sector sector) {
         return false;
+    }
+
+    @Override
+    public void generateSector(Sector sector) {
+        //no
     }
 
     @Override
@@ -55,7 +59,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
     }
 
     public float decay(Vec3 position) {
-        return (Math.abs(position.y) * 0.35f) + Simplex.noise3d(seed, 6, 0.5, 0.3, position.x + 20f, position.y + 20f, position.z + 20f);
+        return (Math.abs(position.y) * 0.42f) + Simplex.noise3d(seed, 6, 0.5, 0.6f, position.x + 20f, position.y + 20f, position.z + 20f);
     }
 
     @Override
@@ -74,7 +78,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         //decayed blocks
         if (decay(position) > 0.9f) {
             if (!(result == DustedBlocks.volstone || result == Blocks.slag)) {
-                result = Simplex.noise3d(seed, 9, 0.4, 1f / 55f, position.x + 20f, position.y + 20f, position.z + 20f) < 0.64f ? DustedBlocks.cavnenSediment : DustedBlocks.cavnenDusting;
+                result = Simplex.noise3d(seed, 9, 0.4, 1f / 55f, position.x + 20f, position.y + 20f, position.z + 20f) < 0.54f ? DustedBlocks.cavnenSediment : DustedBlocks.cavnenDusting;
             }
         }
 

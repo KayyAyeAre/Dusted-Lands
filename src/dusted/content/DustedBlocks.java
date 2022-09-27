@@ -323,7 +323,7 @@ public class DustedBlocks {
             arrowSpacing = 4f;
             baseArrowColor = Color.valueOf("726c6a");
 
-            researchCost = ItemStack.with(DustedItems.zircon, 10);
+            researchCost = ItemStack.with(DustedItems.zircon, 20, DustedItems.arsenic, 10);
 
             consumePower(1f);
             consume(new ConsumePowder(DustedPowders.orchar, 0.1f));
@@ -394,7 +394,7 @@ public class DustedBlocks {
         //endregion
         //region turrets
         abrade = new ItemTurret("abrade") {{
-            requirements(Category.turret, ItemStack.with(DustedItems.zircon, 120, DustedItems.arsenic, 100));
+            requirements(Category.turret, ItemStack.with(DustedItems.zircon, 80, DustedItems.arsenic, 60));
             size = 2;
             scaledHealth = 240f;
             reload = 12f;
@@ -432,23 +432,24 @@ public class DustedBlocks {
             reload = 40f;
             recoil = 3f;
             range = 135f;
+            rotateSpeed = 8f;
             shootEffect = Fx.shootBigColor;
             shootSound = Sounds.shootBig;
             targetGround = false;
             outlineColor = DustedPal.darkerWarmMetal;
             drawer = new DrawTurret("decayed-");
 
-            shoot = new ShootSpread(10, 4f);
+            shoot = new ShootSpread(5, 8f);
 
             ammo(
-                    DustedPowders.orchar, new BasicBulletType(4.5f, 6f, "circle-bullet") {{
+                    DustedPowders.orchar, new BasicBulletType(4.5f, 10f, "circle-bullet") {{
                         collidesGround = false;
                         width = height = 14f;
                         shrinkX = shrinkY = 0.4f;
                         splashDamageRadius = 20f;
                         splashDamage = 24f;
                         status = DustedStatusEffects.blazing;
-                        statusDuration = 8f * 60f;
+                        statusDuration = 4f * 60f;
                         frontColor = DustedPal.lightOrchar;
                         backColor = hitColor = trailColor = DustedPal.darkOrchar;
                         trailChance = 0.4f;
@@ -460,6 +461,7 @@ public class DustedBlocks {
             );
 
             coolant = consumeCoolant(0.1f);
+            researchCost = ItemStack.with(DustedItems.zircon, 30, DustedItems.arsenic, 20, DustedItems.antimony, 20);
         }};
 
         sunder = new PowderTurret("sunder") {{
