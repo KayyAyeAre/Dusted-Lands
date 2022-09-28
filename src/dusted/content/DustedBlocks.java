@@ -29,7 +29,6 @@ import mindustry.world.*;
 import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.environment.*;
-import mindustry.world.blocks.power.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
@@ -40,11 +39,13 @@ public class DustedBlocks {
     public static Block
     //environment
     oreZircon, oreArsenic, oreAntimony, orchar, sulfur, volcanoZone,
-    cavnenSediment, cavnenDusting, volstone, latite, scoria, stradrock, scorchedStradrock,
-    cavnenWall, volstoneWall, scoriaWall, latiteWall, stradrockWall,
+    fallenStone, fallenMantle, decayedRock, riftRock, cavnenSediment, cavnenDusting, cavnenSilk,
+    volstone, latite, scoria, stradrock, scorchedStradrock,
+    fallenWall, decayedWall, cavnenWall, volstoneWall, scoriaWall, latiteWall, stradrockWall,
     //decor
     scoriaBoulder, latiteBoulder, stradrockBoulder,
-    volstoneBoulder, cavnenBoulder, volSprout, weepingShrub,
+    fallenBoulder, decayedBoulder, cavnenBoulder,
+    volstoneBoulder, volSprout, weepingShrub,
     //defense
     zirconWall, zirconWallLarge, antimonyWall, antimonyWallLarge,
     decaySuppressor,
@@ -93,16 +94,36 @@ public class DustedBlocks {
             attributes.set(Attribute.water, -0.5f);
         }};
 
-        //TODO rename to decayed? "cavnen" doesnt really indicate decay...
+        //TODO is setting these attributes necessary?
         cavnenSediment = new Floor("cavnen-sediment") {{
             attributes.set(Attribute.oil, 1.2f);
             attributes.set(Attribute.water, -0.6f);
         }};
 
-        cavnenDusting = new PowderFloor("cavnen-dusting") {{
+        cavnenDusting = new Floor("cavnen-dusting") {{
             attributes.set(Attribute.oil, 0.9f);
             attributes.set(Attribute.water, -0.65f);
         }};
+
+        cavnenSilk = new Floor("cavnen-silk") {{
+            drownTime = 360f;
+            status = DustedStatusEffects.deteriorating;
+            statusDuration = 3f * 60f;
+            speedMultiplier = 0.1f;
+            variants = 0;
+            cacheLayer = DustedShaders.silkLayer;
+            albedo = 0.7f;
+        }};
+
+        decayedRock = new Floor("decayed-rock");
+
+        riftRock = new RiftFloor("rift-rock") {{
+            blendGroup = decayedRock;
+        }};
+
+        fallenStone = new MistFloor("fallen-stone");
+
+        fallenMantle = new MistFloor("fallen-mantle");
 
         volstone = new Floor("volstone");
 
@@ -115,8 +136,15 @@ public class DustedBlocks {
         scorchedStradrock = new Floor("scorched-stradrock");
 
         cavnenWall = new StaticWall("cavnen-wall") {{
-            cavnenSediment.asFloor().wall = this;
-            cavnenDusting.asFloor().wall = this;
+            cavnenSediment.asFloor().wall = cavnenDusting.asFloor().wall = cavnenSilk.asFloor().wall = this;
+        }};
+
+        decayedWall = new StaticWall("decayed-wall") {{
+            decayedRock.asFloor().wall = riftRock.asFloor().wall = this;
+        }};
+
+        fallenWall = new StaticWall("fallen-wall") {{
+            fallenStone.asFloor().wall = fallenMantle.asFloor().wall = this;
         }};
 
         volstoneWall = new StaticWall("volstone-wall") {{
@@ -161,8 +189,20 @@ public class DustedBlocks {
 
         cavnenBoulder = new Prop("cavnen-boulder") {{
             variants = 2;
-            cavnenSediment.asFloor().decoration = cavnenDusting.asFloor().decoration = this;
+            cavnenSediment.asFloor().decoration = cavnenDusting.asFloor().decoration = cavnenSilk.asFloor().decoration = this;
         }};
+
+        decayedBoulder = new Prop("decayed-boulder") {{
+            variants = 2;
+            decayedRock.asFloor().decoration = riftRock.asFloor().decoration = this;
+        }};
+
+        fallenBoulder = new Prop("fallen-boulder") {{
+            variants = 2;
+            fallenStone.asFloor().decoration = fallenMantle.asFloor().decoration = this;
+        }};
+
+        //TODO maybe a tree for the fallen blocks?
 
         volstoneBoulder = new Prop("volstone-boulder") {{
             variants = 2;

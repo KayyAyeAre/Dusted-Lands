@@ -38,7 +38,6 @@ public class ShieldAI extends FlyingAI {
 
             moveTo(Tmp.v1.set(x, y), 15f, 10f);
         } else {
-            Log.info("searching");
             float margin = 20f;
 
             Unit following = Units.closest(unit.team, unit.x, unit.y, u -> u != unit && !u.dead() && (!decay.isShielded(u)));
@@ -46,7 +45,6 @@ public class ShieldAI extends FlyingAI {
             if (following != null && !willShield.containsKey(following)) {
                 Units.nearby(following.team(), following.x(), following.y(), followRadius() - margin, nearby::add);
                 nearby.each(u -> willShield.put(u, unit));
-                Log.info("found units @", nearby);
             }
         }
     }

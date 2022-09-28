@@ -28,6 +28,8 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite}
     };
 
+    Block[] decayedTerrain = {DustedBlocks.cavnenSilk, DustedBlocks.cavnenSilk, DustedBlocks.cavnenSilk, DustedBlocks.cavnenDusting, DustedBlocks.cavnenSediment, DustedBlocks.riftRock, DustedBlocks.decayedRock, DustedBlocks.decayedRock, DustedBlocks.fallenStone, DustedBlocks.fallenMantle};
+
     @Override
     public Schematic getDefaultLoadout() {
         return DustedLoadouts.basicAbate;
@@ -71,16 +73,12 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
     Block getBlock(Vec3 position) {
         float height = Mathf.clamp(genHeight(position) * 1.1f);
 
-        Block result = terrain[Mathf.clamp(Mathf.round(((position.y + 1f) / 2f) * (terrain.length - 1)), 0, terrain.length - 1)][Mathf.clamp((int) (height * terrain[0].length), 0, terrain[0].length - 1)];
+        Block[] arr = terrain[Mathf.clamp(Mathf.round(((position.y + 1f) / 2f) * (terrain.length - 1)), 0, terrain.length - 1)];
+        int index = Mathf.clamp((int) (height * terrain[0].length), 0, terrain[0].length - 1);
+        Block result = decay(position) < 0.7f || arr[index] == DustedBlocks.volstone ? arr[index] : decayedTerrain[index];
 
-        if (height < 0.6f && Simplex.noise3d(seed, 12, 0.3, 0.9f, position.x + 100f, position.y + 100f, position.z + 100f) + Math.abs(position.y / 3.5f) < 0.52f) result = Blocks.slag;
-
-        //decayed blocks
-        if (decay(position) > 0.9f) {
-            if (!(result == DustedBlocks.volstone || result == Blocks.slag)) {
-                result = Simplex.noise3d(seed, 9, 0.4, 1f / 55f, position.x + 20f, position.y + 20f, position.z + 20f) < 0.54f ? DustedBlocks.cavnenSediment : DustedBlocks.cavnenDusting;
-            }
-        }
+        //lower slag in decayed biomes
+        if (((decay(position) < 0.7f && height < 0.27f) || height < 0.6f) && Simplex.noise3d(seed, 12, 0.3, 0.9f, position.x + 100f, position.y + 100f, position.z + 100f) + Math.abs(position.y / 3.5f) < 0.52f) result = Blocks.slag;
 
         return result;
     }
@@ -262,7 +260,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             }
 
             if(floor == Blocks.hotrock) {
-                if (Math.abs(0.5f - noise(x - 20, y, 5, 0.8, 85)) > 0.04) {
+                if (Math.abs(0.5f - noise(x - 20, y, 7, 0.8, 85)) > 0.04) {
                     floor = Blocks.basalt;
                 } else {
                     ore = Blocks.air;
@@ -278,6 +276,8 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
                     }
                 }
             }
+
+            if (floor == DustedBlocks.riftRock && Math.abs(0.5f - noise(x + 50, y + 20, 7, 0.8, 70)) > 0.03) floor = DustedBlocks.decayedRock;
 
             //decoration
             boolean decorate = true;

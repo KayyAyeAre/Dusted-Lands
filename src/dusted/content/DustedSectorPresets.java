@@ -12,7 +12,7 @@ public class DustedSectorPresets {
             difficulty = 1;
         }};
 
-        taintedValley = new SectorPreset("tainted-valley", DustedPlanets.krakai, 53) {{
+        taintedValley = new SectorPreset("tainted-valley", DustedPlanets.krakai, 37) {{
             captureWave = 10;
             difficulty = 2;
         }};

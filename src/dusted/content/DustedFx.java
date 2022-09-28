@@ -7,12 +7,13 @@ import arc.util.*;
 import dusted.game.Decay.*;
 import dusted.graphics.*;
 import dusted.type.*;
+import dusted.world.blocks.environment.*;
 import mindustry.*;
 import mindustry.entities.*;
 import mindustry.graphics.*;
+import mindustry.world.*;
 
 import static arc.graphics.g2d.Draw.*;
-import static arc.graphics.g2d.Lines.lineAngle;
 import static arc.graphics.g2d.Lines.stroke;
 import static arc.math.Angles.*;
 
@@ -54,6 +55,15 @@ public class DustedFx {
         }
     }),
 
+    riftGlow = new Effect(180f, e -> {
+        if (!(e.data instanceof Tile tile) || !(tile.floor() instanceof RiftFloor floor)) return;
+        int variant = Mathf.randomSeed(tile.pos(), 0, Math.max(0, floor.variants - 1));
+
+        Draw.color(DustedPal.decayingYellow, e.fslope() * e.fslope());
+        Draw.rect(floor.riftRegions[variant], tile.worldx(), tile.worldy());
+        Draw.rect(floor.riftGlowRegions[variant], tile.worldx(), tile.worldy());
+    }).layer(Layer.floor + 0.01f),
+
     deteriorating = new Effect(25f, e -> {
         color(DustedPal.decay, DustedPal.darkerDecay, e.fin());
 
@@ -63,6 +73,14 @@ public class DustedFx {
             });
         });
     }).layer(Layer.effect + 0.021f),
+
+    mist = new Effect(240f, e -> {
+        color(DustedPal.mist, e.fslope() * e.fslope() * 0.2f);
+
+        randLenVectors(e.id, 2, e.finpow() * 8f, e.finpow() * 14f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, 5f + e.fout() * 2f);
+        });
+    }),
 
     blazing = new Effect(40f, e -> {
         color(DustedPal.lightOrchar, DustedPal.darkOrchar, e.fin());
