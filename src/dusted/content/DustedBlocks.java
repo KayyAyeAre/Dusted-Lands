@@ -212,7 +212,7 @@ public class DustedBlocks {
         //endregion
         //region crafters
         quartzExtractor = new PowderCrafter("quartz-extractor") {{
-            requirements(Category.crafting, ItemStack.with(Items.titanium, 100, DustedItems.zircon, 60, Items.copper, 50));
+            requirements(Category.crafting, ItemStack.with(DustedItems.zircon, 80, DustedItems.arsenic, 80, DustedItems.antimony, 40));
             hasPower = true;
             size = 2;
 
@@ -237,8 +237,8 @@ public class DustedBlocks {
             ambientSoundVolume = 0.08f;
 
             consumePower(2f);
-            consume(new ConsumePowder(DustedPowders.quartzDust, 0.5f));
-            consume(new ConsumePowder(DustedPowders.orchar, 0.2f));
+            consume(new ConsumePowder(DustedPowders.quartzDust, 0.2f));
+            consume(new ConsumePowder(DustedPowders.orchar, 0.1f));
         }};
 
         metaglassFurnace = new PowderCrafter("metaglass-furnace") {{
