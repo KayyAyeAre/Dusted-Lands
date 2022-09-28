@@ -833,7 +833,7 @@ public class DustedBlocks {
         cavnenAerialConstructor = new UnitFactory("cavnen-aerial-constructor") {{
             requirements(Category.units, ItemStack.with(DustedItems.zircon, 60, DustedItems.antimony, 50));
             plans = Seq.with(
-                    new UnitPlan(DustedUnitTypes.carom, 60f * 15f, ItemStack.with(Items.silicon, 10, DustedItems.arsenic, 10));
+                    new UnitPlan(DustedUnitTypes.carom, 60f * 15f, ItemStack.with(Items.silicon, 10, DustedItems.arsenic, 10)),
                     new UnitPlan(DustedUnitTypes.sob, 60f * 30f, ItemStack.with(Items.silicon, 20, DustedItems.zircon, 30, DustedItems.antimony, 20))
             );
             size = 3;
