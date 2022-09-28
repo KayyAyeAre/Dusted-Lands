@@ -212,7 +212,7 @@ public class DustedBlocks {
         //endregion
         //region crafters
         quartzExtractor = new PowderCrafter("quartz-extractor") {{
-            requirements(Category.crafting, ItemStack.with(Items.titanium, 100, DustedItems.zircon, 60, Items.copper, 50));
+            requirements(Category.crafting, ItemStack.with(DustedItems.zircon, 60, DustedItems.antimony, 50));
             hasPower = true;
             size = 2;
 
@@ -505,7 +505,7 @@ public class DustedBlocks {
         }};
 
         sunder = new PowderTurret("sunder") {{
-            requirements(Category.turret, ItemStack.with(DustedItems.zircon, 80, DustedItems.arsenic, 60, DustedItems.antimony, 50, Items.silicon, 50));
+            requirements(Category.turret, ItemStack.with(DustedItems.zircon, 80, DustedItems.antimony, 60, Items.silicon, 50));
             size = 2;
             scaledHealth = 220f;
             reload = 80f;
@@ -822,7 +822,7 @@ public class DustedBlocks {
         //endregion
         //region units
         cavnenTerraConstructor = new UnitFactory("cavnen-terra-constructor") {{
-            requirements(Category.units, ItemStack.with(Items.copper, 80, DustedItems.zircon, 60, Items.titanium, 50));
+            requirements(Category.units, ItemStack.with(Items.silicon, 40, DustedItems.zircon, 80, DustedItems.antimony, 50));
             plans = Seq.with(
                     new UnitPlan(DustedUnitTypes.pique, 60f * 15f, ItemStack.with(Items.silicon, 15, DustedItems.arsenic, 10))
             );
@@ -831,24 +831,26 @@ public class DustedBlocks {
         }};
 
         cavnenAerialConstructor = new UnitFactory("cavnen-aerial-constructor") {{
-            requirements(Category.units, ItemStack.with(DustedItems.zircon, 60, Items.titanium, 50));
+            requirements(Category.units, ItemStack.with(DustedItems.zircon, 60, DustedItems.antimony, 50));
             plans = Seq.with(
-                    new UnitPlan(DustedUnitTypes.carom, 60f * 10f, ItemStack.with(Items.silicon, 10, Items.titanium, 10))
+                    new UnitPlan(DustedUnitTypes.carom, 60f * 15f, ItemStack.with(Items.silicon, 10, DustedItems.arsenic, 10))
+                    new UnitPlan(DustedUnitTypes.sob, 60f * 30f, ItemStack.with(Items.silicon, 20, DustedItems.zircon, 30, DustedItems.antimony, 20))
             );
             size = 3;
             consumePower(1f);
         }};
 
         binaryRestructurer = new PowderReconstructor("binary-restructurer") {{
-            requirements(Category.units, ItemStack.with(Items.copper, 120, Items.titanium, 90, DustedItems.zircon, 75, Items.thorium, 50));
+            requirements(Category.units, ItemStack.with(DustedItems.zircon, 120, Items.metaglass, 90, Items.silicon, 75));
             size = 3;
             constructTime = 10 * 60f;
 
-            consumePower(2f);
+            consumePower(4f);
+            consume(new ConsumePowder(DustedPowders.orchar, 0.2f));
             consumeItems(ItemStack.with(Items.silicon, 50, DustedItems.arsenic, 40));
 
             upgrades.addAll(
-                    new UnitType[]{DustedUnitTypes.carom, DustedUnitTypes.recur},
+                    new UnitType[]{DustedUnitTypes.carom , DustedUnitTypes.recur},
                     new UnitType[]{DustedUnitTypes.pique, DustedUnitTypes.rancor}
             );
         }};
@@ -856,13 +858,41 @@ public class DustedBlocks {
         ternaryRestructurer = new PowderReconstructor("ternary-restructurer") {{
             requirements(Category.units, BuildVisibility.hidden, ItemStack.with());
             size = 5;
+            constructTime = 25 * 60f;
 
-            consumePower(5f);
+            consumePower(10f);
+            consume(new ConsumePowder(DustedPowders.orchar, 0.5f));
             consumeItems(ItemStack.with(Items.silicon, 120, Items.titanium, 100, DustedItems.zircon, 60));
             upgrades.addAll(
                     new UnitType[]{DustedUnitTypes.recur, DustedUnitTypes.saltate},
                     new UnitType[]{DustedUnitTypes.rancor, DustedUnitTypes.animus}
             );
+            /*
+        quarternaryRestructurer = new PowderReconstructor("ternary-restructurer") {{
+            requirements(Category.units, BuildVisibility.hidden, ItemStack.with());
+            size = 7;
+            constructTime = 50 * 60f;
+
+            consumePower(16f);
+            consume(new ConsumePowder(DustedPowders.sulfur, 0.6f));
+            consumeItems(ItemStack.with(Items.silicon, 400, Items.metaglass, 200, DustedItems.platinum, 300));
+            upgrades.addAll(
+                    new UnitType[]{DustedUnitTypes.saltate, DustedUnitTypes.staccato},
+                    new UnitType[]{DustedUnitTypes.animus, tmpNothing}
+            );
+            
+        quinaryRestructurer = new PowderReconstructor("ternary-restructurer") {{
+            requirements(Category.units, BuildVisibility.hidden, ItemStack.with());
+            size = 9;
+            constructTime = 120 * 60f;
+
+            consumePower(30f);
+            consume(new ConsumePowder(DustedPowders.sulfur, 0.8f));
+            consumeItems(ItemStack.with(Items.silicon, 1200, DustedItems.rockwool, 800, DustedItems.platinum, 600, DustedItems.telonate, 400));
+            upgrades.addAll(
+                    new UnitType[]{DustedUnitTypes.staccato, tmpNothing},
+                    new UnitType[]{tmpNothing, tmpNothing}
+            );*/
         }};
         //endregion
         //region cores
