@@ -39,6 +39,8 @@ public class FilterTileGenerator extends PowerGenerator {
             hasLiquids = true;
         }
 
+        clipSize = Math.max(clipSize, radius * 2f);
+
         super.init();
     }
 
@@ -62,7 +64,7 @@ public class FilterTileGenerator extends PowerGenerator {
         super.drawPlace(x, y, rotation, valid);
 
         Drawf.dashCircle(x * Vars.tilesize, y * Vars.tilesize, radius, Pal.accent);
-        drawPlaceText(Core.bundle.formatFloat("bar.efficiency", Vars.world.tile(x, y).getLinkedTilesAs(this, tempTiles).sumf(other -> filter.get(other.floor())) * 100f, 1), x, y, valid);
+        drawPlaceText(Core.bundle.formatFloat("bar.efficiency", (Vars.world.tile(x, y) != null ? Vars.world.tile(x, y).getLinkedTilesAs(this, tempTiles).sumf(other -> filter.get(other.floor())) : 0f) * 100f, 1), x, y, valid);
     }
 
     @Override
