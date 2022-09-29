@@ -26,7 +26,7 @@ public class KrakaiTechTree {
                     });
                 });
 
-                node(transferTower, Seq.with(tmpNever), () -> {});
+                node(transferTower, Seq.with(new OnSector(corruptedIslands)), () -> {});
             });
 
             node(pressureDrill, () -> {
@@ -55,7 +55,7 @@ public class KrakaiTechTree {
                 node(sunder, Seq.with(tmpNever), () -> {});
             });
 
-            node(quartzExtractor, Seq.with(tmpNever), () -> {
+            node(quartzExtractor, Seq.with(new OnSector(corruptedIslands)), () -> {
                 node(metaglassFurnace, () -> {
                     node(rockwoolExtruder);
                 });
@@ -93,7 +93,9 @@ public class KrakaiTechTree {
             });
 
             node(outbreak, () -> {
-                node(taintedValley, Seq.with(new SectorComplete(outbreak)), () -> {});
+                node(taintedValley, Seq.with(new SectorComplete(outbreak)), () -> {
+                    node(corruptedIslands, Seq.with(new SectorComplete(taintedValley)), () -> {});
+                });
             });
         });
     }
