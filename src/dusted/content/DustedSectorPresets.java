@@ -18,7 +18,7 @@ public class DustedSectorPresets {
         }};
 
         corruptedIslands = new SectorPreset("corrupted-islands", DustedPlanets.krakai, 127) {{
-            captureWave = 20;
+            captureWave = 12;
             difficulty = 3;
         }};
 /*
