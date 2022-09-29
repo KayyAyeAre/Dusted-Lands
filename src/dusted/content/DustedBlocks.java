@@ -862,7 +862,7 @@ public class DustedBlocks {
 
             consumePower(10f);
             consume(new ConsumePowder(DustedPowders.orchar, 0.5f));
-            consumeItems(ItemStack.with(Items.silicon, 200, Items.antimony, 150, DustedItems.metaglass, 100));
+            consumeItems(ItemStack.with(Items.silicon, 200, DustedItems.antimony, 150, Items.metaglass, 100));
             upgrades.addAll(
                     new UnitType[]{DustedUnitTypes.recur, DustedUnitTypes.saltate},
                     new UnitType[]{DustedUnitTypes.rancor, DustedUnitTypes.animus}
