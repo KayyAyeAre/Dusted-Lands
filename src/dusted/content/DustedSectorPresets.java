@@ -21,9 +21,9 @@ public class DustedSectorPresets {
             captureWave = 20;
             difficulty = 3;
         }};
-
+/*
         cariousBulwark = new SectorPreset("carious-bulwark", DustedPlanets.krakai, 24) {{
             difficulty = 4;
-        }};
+        }};*/
     }
 }
