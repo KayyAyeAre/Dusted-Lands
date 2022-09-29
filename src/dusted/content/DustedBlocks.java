@@ -873,6 +873,7 @@ public class DustedBlocks {
             size = 3;
             health = 2000;
             itemCapacity = 2000;
+            alwaysUnlocked = true;
             isFirstTier = true;
         }};
 

@@ -12,7 +12,7 @@ public class KrakaiTechTree {
     public static void load() {
         Objective tmpNever = new Research(Items.fissileMatter);
 
-        DustedPlanets.krakai.techTree = nodeRoot("krakai", coreAbate, () -> {
+        DustedPlanets.krakai.techTree = nodeRoot("krakai", coreAbate, true, () -> {
             node(transferLink, () -> {
                 node(pneumaticFunnel, Seq.with(new OnSector(taintedValley)), () -> {
                     node(chute, Seq.with(new OnSector(taintedValley)), () -> {
