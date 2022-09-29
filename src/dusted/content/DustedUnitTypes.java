@@ -11,6 +11,7 @@ import mindustry.ai.types.*;
 import mindustry.content.*;
 import mindustry.entities.abilities.*;
 import mindustry.entities.bullet.*;
+import mindustry.entities.part.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
 import mindustry.graphics.*;
@@ -25,89 +26,32 @@ public class DustedUnitTypes {
     sob, wail,
     annul,
     pique, rancor, animus,
+    protei,
     erode, recede, atrophy;
 
     public static void load() {
-        erode = new DustedUnitType("erode") {{
-            constructor = PayloadUnit::create;
-            coreUnitDock = true;
-            isEnemy = false;
-            aiController = BuilderAI::new;
-            flying = true;
-            itemCapacity = 30;
-            alwaysUnlocked = true;
-            accel = 0.1f;
-            drag = 0.05f;
-            speed = 4f;
-            mineSpeed = 7f;
-            mineTier = 1;
-            buildSpeed = 0.6f;
-            rotateSpeed = 12f;
-            payloadCapacity = 2f * 2f * tilesize * tilesize;
+        annul = new DustedUnitType("annul") {{
+            constructor = MechUnit::create;
+            speed = 0.6f;
+            health = 180f;
+            hitSize = 7f;
 
-            weapons.add(new Weapon("dusted-lands-core-decay-weapon") {{
-                x = 3.1f;
-                y = 2f;
-                top = false;
-                reload = 40f;
-                shootSound = Sounds.lasershoot;
-
-                bullet = new BasicBulletType(3f, 10f) {{
-                    width = 8f;
-                    height = 12f;
-                    lifetime = 40f;
-                    buildingDamageMultiplier = 0.01f;
-                    trailWidth = 2f;
-                    trailLength = 16;
-                    healPercent = 5f;
-                    collidesTeam = true;
-                    frontColor = healColor = DustedPal.decayingYellow;
-                    backColor = trailColor = DustedPal.decayingYellowBack;
-                    hitEffect = despawnEffect = DustedFx.hitCavnen;
-                }};
-            }});
-
-            abilities.add(new DecayShieldAbility(40f));
-        }};
-
-        recede = new DustedUnitType("recede") {{
-            constructor = UnitEntity::create;
-            aiController = BuilderAI::new;
-            flying = true;
-            mineSpeed = 7f;
-            mineTier = 1;
-            buildSpeed = 0.8f;
-            drag = 0.05f;
-            accel = 0.1f;
-            speed = 3.5f;
-            rotateSpeed = 16f;
-            itemCapacity = 40;
-            health = 160f;
-            engineOffset = 7f;
-            engineSize = 3f;
-            hitSize = 8f;
-            lowAltitude = true;
-
-            weapons.add(new RepairBeamWeapon("dusted-lands-recede-repair-weapon") {{
-                x = 0f;
-                y = -2f;
-                shootY = 2.5f;
-                beamWidth = 0.6f;
-                laserColor = DustedPal.decayingYellow;
+            weapons.add(new Weapon("dusted-lands-small-decay-launcher") {{
                 mirror = false;
-                repairSpeed = 0.7f;
+                x = 0f;
+                y = -3f;
+                reload = 45f;
+                recoil = 3f;
+                shootSound = Sounds.bang;
 
-                bullet = new BulletType() {{
-                    maxRange = 120f;
+                bullet = new InstantBulletType() {{
+                    damage = 17f;
+                    distance = 100f;
+                    shootEffect = DustedFx.shootLaunch;
+                    status = StatusEffects.blasted;
+                    hitEffect = despawnEffect = DustedFx.hitLaunch;
                 }};
             }});
-
-            abilities.add(new DecayShieldAbility(60f));
-        }};
-
-        atrophy = new UnitType("atrophy") {{
-            constructor = UnitEntity::create;
-            hidden = true;
         }};
 
         carom = new DustedUnitType("carom") {{
@@ -166,7 +110,7 @@ public class DustedUnitTypes {
         recur = new DustedUnitType("recur") {{
             constructor = UnitEntity::create;
             aiController = BounceAI::new;
-            health = 320;
+            health = 320f;
             armor = 2f;
             speed = 2.6f;
             accel = 0.16f;
@@ -203,7 +147,7 @@ public class DustedUnitTypes {
         saltate = new DustedUnitType("saltate") {{
             constructor = UnitEntity::create;
             aiController = BounceAI::new;
-            health = 650;
+            health = 680f;
             speed = 2f;
             accel = 0.08f;
             drag = 0.03f;
@@ -571,28 +515,135 @@ public class DustedUnitTypes {
             }});
         }};
 
-        annul = new DustedUnitType("annul") {{
-            constructor = MechUnit::create;
-            speed = 0.6f;
-            health = 120;
-            hitSize = 7f;
+        protei = new DustedUnitType("protei") {{
+            constructor = ElevationMoveUnit::create;
+            hovering = true;
+            speed = 2.6f;
+            drag = 0.06f;
+            accel = 0.1f;
+            health = 160f;
+            hitSize = 8f;
+            engineSize = 0f;
 
-            weapons.add(new Weapon("dusted-lands-small-decay-launcher") {{
-                mirror = false;
-                x = 0f;
-                y = -3f;
-                reload = 45f;
-                recoil = 3f;
-                shootSound = Sounds.bang;
+            abilities.add(new MoveEffectAbility(0f, -6f, Color.white, Fx.missileTrailShort, 4f){{
+                teamColor = true;
+            }});
 
-                bullet = new InstantBulletType() {{
-                    damage = 17f;
-                    distance = 100f;
-                    shootEffect = DustedFx.shootLaunch;
-                    status = StatusEffects.blasted;
-                    hitEffect = despawnEffect = DustedFx.hitLaunch;
+            parts.add(
+                    new HoverPart() {{
+                        x = 2.5f;
+                        y = -5.5f;
+                        mirror = true;
+                        radius = 4f;
+                        phase = 90f;
+                        stroke = 1.5f;
+                        layerOffset = -0.001f;
+                        color = Color.valueOf("ecae9e");
+                    }},
+                    new RegionPart() {{
+                        drawRegion = false;
+                    }}
+            );
+
+            weapons.add(
+                    new Weapon() {{
+                        mirror = false;
+                        alwaysContinuous = true;
+                        shootSound = Sounds.tractorbeam;
+                        x = 0f;
+                        bullet = new ContinuousFlameBulletType() {{
+                            damage = 3f;
+                            length = 24f;
+                            width = 4f;
+                            pierceCap = 2;
+                            drawFlare = false;
+                            colors = new Color[]{Color.valueOf("cd3007").a(0.55f), Color.valueOf("cd5c5c").a(0.7f), Color.valueOf("ecae9e").a(0.8f), Color.valueOf("ffe5d3"), Color.white};
+                            lightColor = hitColor = Color.valueOf("ecae9e");
+                        }};
+                    }}
+            );
+        }};
+
+        erode = new DustedUnitType("erode") {{
+            constructor = PayloadUnit::create;
+            coreUnitDock = true;
+            isEnemy = false;
+            aiController = BuilderAI::new;
+            flying = true;
+            itemCapacity = 30;
+            alwaysUnlocked = true;
+            accel = 0.1f;
+            drag = 0.05f;
+            speed = 4f;
+            mineSpeed = 7f;
+            mineTier = 1;
+            buildSpeed = 0.6f;
+            rotateSpeed = 12f;
+            payloadCapacity = 2f * 2f * tilesize * tilesize;
+
+            weapons.add(new Weapon("dusted-lands-core-decay-weapon") {{
+                x = 3.1f;
+                y = 2f;
+                top = false;
+                reload = 40f;
+                shootSound = Sounds.lasershoot;
+
+                bullet = new BasicBulletType(3f, 10f) {{
+                    width = 8f;
+                    height = 12f;
+                    lifetime = 40f;
+                    buildingDamageMultiplier = 0.01f;
+                    trailWidth = 2f;
+                    trailLength = 16;
+                    healPercent = 5f;
+                    collidesTeam = true;
+                    frontColor = healColor = DustedPal.decayingYellow;
+                    backColor = trailColor = DustedPal.decayingYellowBack;
+                    hitEffect = despawnEffect = DustedFx.hitCavnen;
                 }};
             }});
+
+            abilities.add(new DecayShieldAbility(40f));
+        }};
+
+        recede = new DustedUnitType("recede") {{
+            constructor = UnitEntity::create;
+            aiController = BuilderAI::new;
+            flying = true;
+            mineSpeed = 7f;
+            mineTier = 1;
+            buildSpeed = 0.8f;
+            drag = 0.05f;
+            accel = 0.1f;
+            speed = 3.5f;
+            rotateSpeed = 16f;
+            itemCapacity = 40;
+            health = 160f;
+            engineOffset = 7f;
+            engineSize = 3f;
+            hitSize = 8f;
+            lowAltitude = true;
+
+            weapons.add(new RepairBeamWeapon("dusted-lands-recede-repair-weapon") {{
+                x = 0f;
+                y = -2f;
+                shootY = 2.5f;
+                beamWidth = 0.6f;
+                laserColor = DustedPal.decayingYellow;
+                mirror = false;
+                repairSpeed = 0.7f;
+
+                bullet = new BulletType() {{
+                    maxRange = 120f;
+                }};
+            }});
+
+            abilities.add(new DecayShieldAbility(60f));
+        }};
+
+        atrophy = new UnitType("atrophy") {{
+            constructor = UnitEntity::create;
+            hidden = true;
         }};
     }
 }
