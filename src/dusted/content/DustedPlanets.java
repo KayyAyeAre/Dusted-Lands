@@ -29,6 +29,9 @@ public class DustedPlanets {
             defaultCore = DustedBlocks.coreAbate;
             defaultEnv = DustedEnv.volcanic | Env.terrestrial | Env.oxygen;
 
+            //disabled for now, breaks transfer link configs
+            prebuildBase = false;
+
             ruleSetter = r -> {
                 r.attributes.set(Attribute.heat, 1.2f);
                 r.attributes.set(DustedAttribute.decay, 0.5f);

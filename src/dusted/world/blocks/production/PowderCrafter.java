@@ -27,7 +27,7 @@ public class PowderCrafter extends GenericCrafter implements PowderBlockc {
         stats.add(DustedStats.powderCapacity, powderCapacity, DustedStatUnits.powderUnits);
 
         if (outputPowder != null) {
-            stats.add(Stat.output, DustedStatValues.powder(outputPowder.powder, outputPowder.amount * (60f / craftTime), true));
+            stats.add(Stat.output, DustedStatValues.powder(outputPowder.powder, outputPowder.amount * 60f, true));
         }
     }
 

@@ -31,6 +31,13 @@ public class KrakaiTechTree {
 
             node(pressureDrill, () -> {
                 node(ignitionDrill, Seq.with(new OnSector(taintedValley)), () -> {});
+
+                node(siliconForge, Seq.with(new OnSector(magmaticPassage)), () -> {});
+                node(quartzExtractor, Seq.with(new OnSector(magmaticPassage), new Research(siliconForge)), () -> {
+                    node(metaglassFurnace, Seq.with(tmpNever), () -> {
+                        node(rockwoolExtruder);
+                    });
+                });
             });
 
             node(magmaticGenerator, () -> {
@@ -52,14 +59,7 @@ public class KrakaiTechTree {
                         node(blight);
                     });
                 });
-                node(sunder, Seq.with(tmpNever), () -> {});
-            });
-
-            node(quartzExtractor, Seq.with(tmpNever), () -> {
-                node(metaglassFurnace, () -> {
-                    node(rockwoolExtruder);
-                });
-                node(siliconForge);
+                node(sunder, Seq.with(new OnSector(magmaticPassage)), () -> {});
             });
 
             node(coreDissent, Seq.with(tmpNever), () -> {
@@ -93,7 +93,9 @@ public class KrakaiTechTree {
             });
 
             node(outbreak, () -> {
-                node(taintedValley, Seq.with(new SectorComplete(outbreak)), () -> {});
+                node(taintedValley, Seq.with(new SectorComplete(outbreak)), () -> {
+                    node(magmaticPassage, Seq.with(new SectorComplete(taintedValley)), () -> {});
+                });
             });
         });
     }

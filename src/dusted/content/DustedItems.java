@@ -7,6 +7,7 @@ import mindustry.type.*;
 import static mindustry.content.Items.*;
 
 public class DustedItems {
+    //TODO need more content aaa
     public static Item zircon, arsenic, antimony, platinum, rockwool, telonate;
 
     //TODO am i supposed to do this?

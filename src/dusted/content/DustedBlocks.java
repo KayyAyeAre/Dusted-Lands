@@ -221,6 +221,8 @@ public class DustedBlocks {
             craftTime = 120f;
             consumePower(1f);
             consumeItem(Items.sand, 1);
+
+            researchCost = ItemStack.with(DustedItems.zircon, 100, DustedItems.arsenic, 50, DustedItems.antimony, 50);
         }};
 
         siliconForge = new PowderCrafter("silicon-forge") {{
@@ -228,6 +230,7 @@ public class DustedBlocks {
             size = 3;
             squareSprite = false;
             itemCapacity = 20;
+            researchCost = ItemStack.with(DustedItems.zircon, 120, DustedItems.arsenic, 50, DustedItems.antimony, 50);
 
             outputItem = new ItemStack(Items.silicon, 15);
             craftTime = 300f;
@@ -536,6 +539,8 @@ public class DustedBlocks {
                         hitSound = Sounds.bang;
                     }}
             );
+
+            researchCost = ItemStack.with(DustedItems.zircon, 100, DustedItems.arsenic, 50, DustedItems.antimony, 50, Items.silicon, 50);
         }};
 
         //TODO redo this entirely maybe
