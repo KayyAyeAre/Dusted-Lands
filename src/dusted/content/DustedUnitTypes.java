@@ -580,6 +580,7 @@ public class DustedUnitTypes {
             health = 290f;
             hitSize = 11f;
             engineSize = 0f;
+            finScl = 10f;
 
             fins.add(
                     new FinPart(3f, 3f, 10f, 40f),

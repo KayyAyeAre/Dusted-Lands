@@ -217,10 +217,10 @@ public class DustedBlocks {
             size = 2;
 
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPowder(DustedPowders.quartzDust), new DrawDefault());
-            outputPowder = new PowderStack(DustedPowders.quartzDust, 1f);
-            craftTime = 12f;
+            outputPowder = new PowderStack(DustedPowders.quartzDust, 0.1f);
+            craftTime = 120f;
             consumePower(1f);
-            consumeItem(Items.sand, 3);
+            consumeItem(Items.sand, 1);
         }};
 
         siliconForge = new PowderCrafter("silicon-forge") {{
@@ -369,6 +369,7 @@ public class DustedBlocks {
             consume(new ConsumePowder(DustedPowders.orchar, 0.1f));
         }};
 
+        //TODO maybe it should just be a 2x2 block instead
         pneumaticFunnel = new Funnel("pneumatic-funnel") {{
             requirements(Category.production, ItemStack.with(DustedItems.zircon, 10));
             powderCapacity = 20f;
@@ -565,7 +566,6 @@ public class DustedBlocks {
             coolant = consumeCoolant(0.1f);
         }};
 
-        //TODO change weapon maybe
         coruscate = new PowderTurret("coruscate") {{
             requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 110, DustedItems.antimony, 80, Items.silicon, 70));
             size = 3;

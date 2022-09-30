@@ -12,7 +12,6 @@ import mindustry.gen.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.meta.*;
 
-//TODO change crafting
 public class PowderCrafter extends GenericCrafter implements PowderBlockc {
     public boolean[] powderFilter = {};
     public float powderCapacity = 20f;
@@ -52,6 +51,16 @@ public class PowderCrafter extends GenericCrafter implements PowderBlockc {
         public PowderModule powders = new PowderModule();
 
         @Override
+        public void updateTile() {
+            super.updateTile();
+
+            if (outputPowder != null) {
+                float inc = getProgressIncrease(1f);
+                handlePowder(this, outputPowder.powder, Math.min(outputPowder.amount * inc, powderCapacity - powders.get(outputPowder.powder)));
+            }
+        }
+
+        @Override
         public boolean shouldConsume() {
             if (outputPowder != null) return !(powders.get(outputPowder.powder) >= powderCapacity - 0.001f) && enabled;
             return super.shouldConsume();
@@ -60,14 +69,6 @@ public class PowderCrafter extends GenericCrafter implements PowderBlockc {
         @Override
         public boolean outputsPowder() {
             return true;
-        }
-
-        @Override
-        public void craft() {
-            super.craft();
-            if (outputPowder != null) {
-                handlePowder(this, outputPowder.powder, outputPowder.amount);
-            }
         }
 
         @Override
