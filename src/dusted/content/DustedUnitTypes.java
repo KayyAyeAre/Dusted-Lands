@@ -6,6 +6,7 @@ import dusted.entities.abilities.*;
 import dusted.entities.bullet.*;
 import dusted.entities.units.*;
 import dusted.graphics.*;
+import dusted.type.weapons.*;
 import mindustry.ai.*;
 import mindustry.ai.types.*;
 import mindustry.content.*;
@@ -26,10 +27,12 @@ public class DustedUnitTypes {
     sob, wail,
     annul,
     pique, rancor, animus,
-    protei,
+    protei, hynobii,
     erode, recede, atrophy;
 
     public static void load() {
+        FinUnitEntity.classID = EntityMapping.register("FinUnitEntity", FinUnitEntity::new);
+
         annul = new DustedUnitType("annul") {{
             constructor = MechUnit::create;
             speed = 0.6f;
@@ -557,11 +560,60 @@ public class DustedUnitTypes {
                             width = 4f;
                             pierceCap = 2;
                             drawFlare = false;
-                            colors = new Color[]{Color.valueOf("cd3007").a(0.55f), Color.valueOf("cd5c5c").a(0.7f), Color.valueOf("ecae9e").a(0.8f), Color.valueOf("ffe5d3"), Color.white};
+                            colors = new Color[]{Color.valueOf("cd5c5c").a(0.55f), Color.valueOf("cd5c5c").a(0.7f), Color.valueOf("ecae9e").a(0.8f), Color.valueOf("ffe5d3"), Color.white};
                             lightColor = hitColor = Color.valueOf("ecae9e");
                         }};
                     }}
             );
+        }};
+
+        EntityMapping.register("dusted-lands-hynobii", FinUnitEntity::new);
+        hynobii = new FinUnitType("hynobii") {{
+            hovering = true;
+            rotateSpeed = 3.6f;
+            speed = 2f;
+            drag = 0.07f;
+            accel = 0.09f;
+            health = 290f;
+            hitSize = 11f;
+            engineSize = 0f;
+
+            fins.add(
+                    new FinPart(3f, 3f, 10f, 40f),
+                    new FinPart(4.5f, -4f, -10f, 50f)
+            );
+
+            parts.add(new RegionPart() {{
+                drawRegion = false;
+                heatColor = Color.valueOf("cd5c5c");
+            }});
+
+            weapons.add(new PointWeapon() {{
+                mirror = false;
+                alwaysContinuous = true;
+                shootSound = Sounds.minebeam;
+                shootCone = 360f;
+                rotate = true;
+                rotateSpeed = 8f;
+                aimChangeSpeed = 4f;
+                shootY = 0f;
+                x = 0f;
+                y = 0.5f;
+
+                bullet = new FlamePointLaserBulletType() {{
+                    shootEffect = smokeEffect = Fx.none;
+                    rangeOverride = 120f;
+                    frontRad = 3f;
+                    backRad = 5f;
+                    color = Color.valueOf("ecae9e");
+                    backColor = hitColor = Color.valueOf("cd5c5c");
+                    beamEffect = DustedFx.flameSpreadColor;
+                    damage = 16f;
+                    damageInterval = 15f;
+                    status = DustedStatusEffects.blazing;
+                    statusDuration = 3f * 60f;
+                }};
+            }});
         }};
 
         erode = new DustedUnitType("erode") {{

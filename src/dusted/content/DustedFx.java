@@ -168,6 +168,14 @@ public class DustedFx {
         });
     }),
 
+    flameSpreadColor = new Effect(30f, e -> {
+        color(e.color);
+
+        randLenVectors(e.id, 14, e.finpow() * 12f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, 0.65f + e.fout() * 1.6f);
+        });
+    }),
+
     shootLaunch = new Effect(40f, e -> {
         e.scaled(20f, i -> {
             color(Pal.lighterOrange, Pal.lightOrange, Pal.gray, i.fin());
