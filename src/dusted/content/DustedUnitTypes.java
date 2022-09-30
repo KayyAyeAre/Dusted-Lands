@@ -22,6 +22,7 @@ import mindustry.type.weapons.*;
 import static mindustry.Vars.tilesize;
 
 public class DustedUnitTypes {
+    //TODO blazing variants for ground and air units?
     public static UnitType
     carom, recur, saltate, staccato,
     sob, wail,
@@ -520,8 +521,9 @@ public class DustedUnitTypes {
 
         protei = new DustedUnitType("protei") {{
             constructor = ElevationMoveUnit::create;
+            aiController = HoverAI::new;
             hovering = true;
-            speed = 2.6f;
+            speed = 2f;
             drag = 0.06f;
             accel = 0.1f;
             health = 160f;
@@ -570,8 +572,9 @@ public class DustedUnitTypes {
         EntityMapping.register("dusted-lands-hynobii", FinUnitEntity::new);
         hynobii = new FinUnitType("hynobii") {{
             hovering = true;
+            aiController = HoverAI::new;
             rotateSpeed = 3.6f;
-            speed = 2f;
+            speed = 1.6f;
             drag = 0.07f;
             accel = 0.09f;
             health = 290f;
