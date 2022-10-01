@@ -21,7 +21,7 @@ public class RevolvingOrbAbility extends Ability {
     public float damage;
     public int orbs = 1;
     public float orbLifetime;
-    public Color orbColor = DustedPal.decayingYellow;
+    public Color orbColor = DustedPal.pinkHeal;
     public Sound summonSound = Sounds.lasershoot;
     public Effect summonEffect = DustedFx.orbSummon;
 

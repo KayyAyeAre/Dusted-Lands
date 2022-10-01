@@ -58,7 +58,7 @@ public class DustedBlocks {
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
     //power
-    magmaticGenerator,
+    magmaticGenerator, slagCombustor,
     //crafters
     quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder,
     //production
@@ -453,7 +453,7 @@ public class DustedBlocks {
                     DustedItems.zircon, new ShrapnelBulletType() {{
                         hitEffect = Fx.hitBulletSmall;
                         smokeEffect = Fx.shootSmallSmoke;
-                        shootEffect = DustedFx.shootCavnenShrapnel;
+                        shootEffect = DustedFx.shootPinkShrapnel;
                         status = DustedStatusEffects.deteriorating;
                         statusDuration = 8 * 60f;
                         fromColor = DustedPal.decayingYellow;

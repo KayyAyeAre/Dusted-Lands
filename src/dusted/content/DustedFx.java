@@ -207,8 +207,8 @@ public class DustedFx {
         Lines.circle(e.x, e.y, e.finpow() * 4f);
     }),
 
-    shootCavnenShrapnel = new Effect(20f, e -> {
-        color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
+    shootPinkShrapnel = new Effect(20f, e -> {
+        color(Color.white, DustedPal.pinkHeal, e.fin());
         Lines.stroke(e.fout() + 0.5f);
 
         randLenVectors(e.id, 5, 20f * e.finpow(), e.rotation, 30f, (x, y) -> {

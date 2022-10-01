@@ -12,6 +12,7 @@ import mindustry.graphics.MultiPacker.*;
 public class FinUnitType extends DustedUnitType {
     public Seq<FinPart> fins = new Seq<>();
     public float finScl = 25f;
+    public float groundSpeedMultiplier = 0.4f;
 
     public FinUnitType(String name) {
         super(name);

@@ -16,6 +16,11 @@ public class FinUnitEntity extends ElevationMoveUnit {
     }
 
     @Override
+    public float floorSpeedMultiplier() {
+        return !(type instanceof FinUnitType funit) || (floorOn().isDeep() || floorOn().isLiquid) ? speedMultiplier : funit.groundSpeedMultiplier * speedMultiplier;
+    }
+
+    @Override
     public int classId() {
         return classID;
     }

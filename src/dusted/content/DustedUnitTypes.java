@@ -395,9 +395,9 @@ public class DustedUnitTypes {
                     shrinkX = shrinkY = 0.4f;
                     drag = 0.04f;
                     lifetime = 50f;
-                    frontColor = DustedPal.decayingYellow;
-                    backColor = DustedPal.decayingYellowBack;
-                    hitEffect = despawnEffect = DustedFx.hitCavnen;
+                    frontColor = Color.white;
+                    backColor = DustedPal.pinkHeal;
+                    hitEffect = despawnEffect = DustedFx.pinkHeal;
                     status = DustedStatusEffects.deteriorating;
                     statusDuration = 4 * 60f;
                 }};
@@ -425,19 +425,20 @@ public class DustedUnitTypes {
             weapons.add(new Weapon("dusted-lands-large-decay-gun") {{
                 x = 3;
                 y = -2;
+                shootY = 6f;
                 reload = 40f;
                 shoot = new ShootSpread(2, 15f);
                 shootSound = Sounds.shootBig;
 
                 bullet = new ShrapnelBulletType() {{
-                    length = 80f;
+                    length = 60f;
                     damage = 22f;
-                    width = 20f;
+                    width = 8f;
                     serrations = 8;
-                    shootEffect = DustedFx.shootCavnenShrapnel;
+                    shootEffect = DustedFx.shootPinkShrapnel;
                     smokeEffect = Fx.shootSmallSmoke;
-                    fromColor = DustedPal.decayingYellow;
-                    toColor = DustedPal.decayingYellowBack;
+                    fromColor = Color.white;
+                    toColor = DustedPal.pinkHeal;
                 }};
             }});
 
@@ -483,14 +484,12 @@ public class DustedUnitTypes {
                     splashDamage = 16f;
                     splashDamageRadius = 20f;
                     lifetime = 80f;
-                    frontColor = DustedPal.decayingYellow;
-                    backColor = trailColor = DustedPal.decayingYellowBack;
+                    frontColor = Color.white;
+                    backColor = trailColor = DustedPal.pinkHeal;
                     trailLength = 18;
                     trailWidth = 4f;
-                    status = DustedStatusEffects.deteriorating;
-                    statusDuration = 12 * 60f;
                     shootSound = Sounds.explosion;
-                    hitEffect = despawnEffect = DustedFx.hitCavnen;
+                    hitEffect = despawnEffect = DustedFx.pinkHeal;
 
                     shoot = new ShootSpread(3, 20f);
 
@@ -499,11 +498,9 @@ public class DustedUnitTypes {
                         splashDamage = 14f;
                         splashDamageRadius = 14f;
                         lifetime = 40f;
-                        frontColor = DustedPal.decayingYellow;
-                        backColor = DustedPal.decayingYellowBack;
-                        status = DustedStatusEffects.deteriorating;
-                        statusDuration = 4 * 60f;
-                        hitEffect = despawnEffect = DustedFx.hitCavnen;
+                        frontColor = Color.white;
+                        backColor = DustedPal.pinkHeal;
+                        hitEffect = despawnEffect = DustedFx.pinkHeal;
                     }};
                 }};
             }});
@@ -572,7 +569,7 @@ public class DustedUnitTypes {
         EntityMapping.register("dusted-lands-hynobii", FinUnitEntity::new);
         hynobii = new FinUnitType("hynobii") {{
             hovering = true;
-            aiController = HoverAI::new;
+            aiController = LiquidPrefAI::new;
             rotateSpeed = 3.6f;
             speed = 1.6f;
             drag = 0.07f;

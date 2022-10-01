@@ -7,16 +7,17 @@ import mindustry.world.*;
 
 import static mindustry.Vars.*;
 
-//ground ai that pathfinds over deep floors and liquids because that doesnt exist in vanilla for some reason
-public class HoverAI extends GroundAI {
+//hover ai that prefers paths on liquid
+public class LiquidPrefAI extends GroundAI {
     public static int costIndex;
 
     static {
         costIndex = Pathfinder.costTypes.add(
                 (team, tile) ->
                         (((PathTile.team(tile) == team && !PathTile.teamPassable(tile)) || PathTile.team(tile) == 0) && PathTile.solid(tile)) ? -1 : 1 +
-                        PathTile.health(tile) * 5 +
-                        (PathTile.nearSolid(tile) ? 2 : 0)
+                                PathTile.health(tile) * 5 +
+                                (PathTile.nearSolid(tile) ? 2 : 0) +
+                                (PathTile.deep(tile) || PathTile.liquid(tile) ? 0 : 2)
         ).size - 1;
     }
 
