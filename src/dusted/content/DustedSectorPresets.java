@@ -3,7 +3,7 @@ package dusted.content;
 import mindustry.type.*;
 
 public class DustedSectorPresets {
-    public static SectorPreset outbreak, taintedValley, corruptedIslands, cariousBulwark;
+    public static SectorPreset outbreak, taintedValley, corruptedIslands//, cariousBulwark;
 
     public static void load() {
         outbreak = new SectorPreset("outbreak", DustedPlanets.krakai, 269) {{

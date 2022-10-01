@@ -4,27 +4,17 @@ import arc.*;
 import arc.graphics.*;
 import arc.graphics.Texture.*;
 import arc.graphics.g2d.*;
-import arc.graphics.g2d.Font.*;
 import arc.math.*;
-import arc.math.geom.*;
-import arc.struct.*;
-import arc.util.*;
 import dusted.content.*;
 import dusted.game.*;
 import dusted.graphics.*;
 import dusted.input.*;
 import dusted.world.meta.*;
 import mindustry.*;
-import mindustry.entities.*;
 import mindustry.game.EventType.*;
 import mindustry.graphics.*;
 import mindustry.mod.*;
 import mindustry.type.*;
-import mindustry.ui.*;
-import mindustry.world.blocks.defense.turrets.*;
-import mindustry.world.draw.*;
-
-import static mindustry.Vars.state;
 
 public class DustedLands extends Mod {
     public static DustedInputHandler inputHandler;
@@ -37,10 +27,11 @@ public class DustedLands extends Mod {
 
         Events.run(FileTreeInitEvent.class, () -> Core.app.post(DustedShaders::init));
         Events.run(Trigger.drawOver, () -> {
-            if (Vars.renderer.animateShields && DustedShaders.decayShield != null) Draw.drawRange(Layer.shields + 2.5f, 1f, () -> Vars.renderer.effectBuffer.begin(Color.clear), () -> {
-                Vars.renderer.effectBuffer.end();
-                Vars.renderer.effectBuffer.blit(DustedShaders.decayShield);
-            });
+            if (Vars.renderer.animateShields && DustedShaders.decayShield != null)
+                Draw.drawRange(Layer.shields + 2.5f, 1f, () -> Vars.renderer.effectBuffer.begin(Color.clear), () -> {
+                    Vars.renderer.effectBuffer.end();
+                    Vars.renderer.effectBuffer.blit(DustedShaders.decayShield);
+                });
         });
 
         //TODO should this be moved to a different class?
@@ -49,7 +40,7 @@ public class DustedLands extends Mod {
 
         Vars.renderer.addEnvRenderer(DustedEnv.volcanic, () -> {
             Texture tex = Core.assets.get("sprites/distortAlpha.png", Texture.class);
-            if(tex.getMagFilter() != TextureFilter.linear){
+            if (tex.getMagFilter() != TextureFilter.linear) {
                 tex.setFilter(TextureFilter.linear);
                 tex.setWrap(TextureWrap.repeat);
             }

@@ -12,7 +12,7 @@ public class KrakaiTechTree {
     public static void load() {
         Objective tmpNever = new Research(Items.fissileMatter);
 
-        DustedPlanets.krakai.techTree = nodeRoot("krakai", coreAbate, () -> {
+        DustedPlanets.krakai.techTree = nodeRoot("krakai", coreAbate, true, () -> {
             node(transferLink, () -> {
                 node(pneumaticFunnel, Seq.with(new OnSector(taintedValley)), () -> {
                     node(chute, Seq.with(new OnSector(taintedValley)), () -> {
@@ -31,6 +31,13 @@ public class KrakaiTechTree {
 
             node(pressureDrill, () -> {
                 node(ignitionDrill, Seq.with(new OnSector(taintedValley)), () -> {});
+
+                node(siliconForge, Seq.with(new OnSector(magmaticPassage)), () -> {});
+                node(quartzExtractor, Seq.with(new OnSector(magmaticPassage), new Research(siliconForge)), () -> {
+                    node(metaglassFurnace, Seq.with(tmpNever), () -> {
+                        node(rockwoolExtruder);
+                    });
+                });
             });
 
             node(magmaticGenerator, () -> {
@@ -94,7 +101,7 @@ public class KrakaiTechTree {
 
             node(outbreak, () -> {
                 node(taintedValley, Seq.with(new SectorComplete(outbreak)), () -> {
-                    node(corruptedIslands, Seq.with(new SectorComplete(taintedValley)), () -> {});
+                    node(magmaticPassage, Seq.with(new SectorComplete(taintedValley), new Research(scald)), () -> {});
                 });
             });
         });

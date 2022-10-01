@@ -64,6 +64,10 @@ public class DustedUnitType extends UnitType {
                                 true);
                     }
                 }
+
+                if (weapon.layerOffset < 0f) {
+                    base.pixmap.draw(over, true);
+                }
             }
         }
 

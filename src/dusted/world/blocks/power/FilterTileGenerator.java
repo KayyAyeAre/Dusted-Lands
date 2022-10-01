@@ -5,19 +5,24 @@ import arc.func.*;
 import arc.graphics.*;
 import arc.math.*;
 import arc.util.*;
+import dusted.world.interfaces.*;
 import dusted.world.meta.*;
 import mindustry.*;
 import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.game.*;
+import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
+import mindustry.world.blocks.power.*;
 import mindustry.world.meta.*;
 
 //copy of thermal gen which uses floatf instead of attribute
-public class FilterTileGenerator extends TransferPowerGenerator {
+public class FilterTileGenerator extends PowerGenerator {
+    public float radius = 60f * 8f;
+
     public Floatf<Floor> filter;
     public Effect generateEffect = Fx.none;
     public float effectChance = 0.05f;
@@ -34,12 +39,16 @@ public class FilterTileGenerator extends TransferPowerGenerator {
             hasLiquids = true;
         }
 
+        clipSize = Math.max(clipSize, radius * 2f);
+
         super.init();
     }
 
     @Override
     public void setStats() {
         super.setStats();
+
+        stats.add(Stat.powerRange, radius / Vars.tilesize, StatUnit.blocks);
 
         stats.add(Stat.tiles, DustedStatValues.blocksFilter(filter, floating, size * size, false));
         stats.remove(generationType);
@@ -54,7 +63,8 @@ public class FilterTileGenerator extends TransferPowerGenerator {
     public void drawPlace(int x, int y, int rotation, boolean valid) {
         super.drawPlace(x, y, rotation, valid);
 
-        drawPlaceText(Core.bundle.formatFloat("bar.efficiency", Vars.world.tile(x, y).getLinkedTilesAs(this, tempTiles).sumf(other -> filter.get(other.floor())) * 100f, 1), x, y, valid);
+        Drawf.dashCircle(x * Vars.tilesize, y * Vars.tilesize, radius, Pal.accent);
+        drawPlaceText(Core.bundle.formatFloat("bar.efficiency", (Vars.world.tile(x, y) != null ? Vars.world.tile(x, y).getLinkedTilesAs(this, tempTiles).sumf(other -> filter.get(other.floor())) : 0f) * 100f, 1), x, y, valid);
     }
 
     @Override
@@ -62,7 +72,8 @@ public class FilterTileGenerator extends TransferPowerGenerator {
         return tile.getLinkedTilesAs(this, tempTiles).sumf(other -> filter.get(other.floor())) > 0f;
     }
 
-    public class FilterTileGeneratorBuild extends TransferPowerGeneratorBuild {
+    public class FilterTileGeneratorBuild extends GeneratorBuild implements TransferPowerc {
+        public int lastChange = -2;
         public float eff;
 
         @Override
@@ -80,6 +91,8 @@ public class FilterTileGenerator extends TransferPowerGenerator {
                 liquids.add(outputLiquid.liquid, added);
                 dumpLiquid(outputLiquid.liquid);
             }
+
+            updateTransfer();
         }
 
         @Override
@@ -88,10 +101,36 @@ public class FilterTileGenerator extends TransferPowerGenerator {
         }
 
         @Override
+        public void draw() {
+            super.draw();
+            drawTransfer();
+        }
+
+        @Override
         public void onProximityAdded() {
             super.onProximityAdded();
 
             eff = tile.getLinkedTiles(tempTiles).sumf(other -> filter.get(other.floor()));
+        }
+
+        @Override
+        public Building build() {
+            return this;
+        }
+
+        @Override
+        public float radius() {
+            return radius;
+        }
+
+        @Override
+        public int lastChange() {
+            return lastChange;
+        }
+
+        @Override
+        public void lastChange(int change) {
+            lastChange = change;
         }
     }
 }

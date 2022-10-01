@@ -88,11 +88,11 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         tile.floor = getBlock(position);
         tile.block = tile.floor == Blocks.slag ? Blocks.duneWall : tile.floor.asFloor().wall;
 
-        if (tile.floor == Blocks.slag && Ridged.noise3d(seed + 20, position.x, position.y, position.z, 12, 1 / 22f) > 0.12f) {
-            tile.block = Blocks.hotrock;
+        if (tile.floor == Blocks.slag && Ridged.noise3d(seed, position.x, position.y, position.z, 4, 17) > 0.68) {
+            tile.floor = Blocks.hotrock;
         }
 
-        if (Ridged.noise3d(seed, position.x, position.y, position.z, 3, 14) > 0.24) {
+        if (Ridged.noise3d(seed, position.x, position.y, position.z, 2, 14) > 0.24) {
             tile.block = Blocks.air;
         }
     }
@@ -116,7 +116,8 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
     @Override
     protected void generate() {
         //:<
-        Blocks.slag.asFloor().wall = Blocks.duneWall;
+        Block slagwall = Blocks.slag.asFloor().wall, hotwall = Blocks.hotrock.asFloor().wall, magmawall = Blocks.magmarock.asFloor().wall;
+        Blocks.slag.asFloor().wall = Blocks.hotrock.asFloor().wall = Blocks.magmarock.asFloor().wall = Blocks.duneWall;
 
         class Room {
             final int x, y, radius;
@@ -200,37 +201,29 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         roomseq.each(spawn::connect);
 
-        cells(2);
+        cells(4);
         distort(10f, 12f);
 
         inverseFloodFill(tiles.getn(spawn.x, spawn.y));
 
-        //this sucks
-        Seq<Block> ores = Seq.with(DustedBlocks.oreZircon, DustedBlocks.oreArsenic);
-        float poles = Math.abs(sector.tile.v.y);
-        float nmag = 0.5f;
-        float scl = 1f;
-        float addscl = 1.3f;
+        //antimony spawns more commonly near the equator
+        boolean antimony = Simplex.noise3d(seed, 2, 0.5, scl, sector.tile.v.x, sector.tile.v.y, sector.tile.v.z) + (1f - Math.abs(sector.tile.v.y)) * 0.55f > 0.81f;
+        //platinum spawns more in low, decayed biomes (this isnt actually used yet)
+        boolean platinum = Simplex.noise3d(seed, 3, 0.5, scl, sector.tile.v.x, sector.tile.v.y + 20, sector.tile.v.z) + decay(sector.tile.v) * 0.7f > 0.85f + rawHeight(sector.tile.v) * 0.33f;
 
-        if (Simplex.noise3d(seed, 2, 0.5, scl, sector.tile.v.x + 2, sector.tile.v.y, sector.tile.v.z) * nmag + poles > 0.7f * addscl) {
-            ores.add(DustedBlocks.oreAntimony);
-        }
-        FloatSeq frequencies = new FloatSeq();
-        for (int i = 0; i < ores.size; i++) {
-            frequencies.add(rand.random(-0.1f, 0.01f) - i * 0.01f + poles * 0.04f);
-        }
-
+        //ore
         pass((x, y) -> {
-            if (!floor.asFloor().hasSurface()) return;
+            if (!floor.asFloor().isDeep()) {
+                if (noise(x / 3f + 150f, y + 500f, 4, 0.7f, 20f, 1f) > 0.7f) {
+                    ore = DustedBlocks.oreZircon;
+                }
 
-            int offsetX = x - 4, offsetY = y + 23;
-            for (int i = ores.size - 1; i >= 0; i--) {
-                Block entry = ores.get(i);
-                float freq = frequencies.get(i);
-                if (Math.abs(0.5f - noise(offsetX, offsetY + i * 999, 2, 0.7, (40 + i * 2))) > 0.23f + i * 0.01 &&
-                        Math.abs(0.5f - noise(offsetX, offsetY - i * 999, 1, 1, (30 + i * 4))) > 0.37f + freq) {
-                    ore = entry;
-                    break;
+                if (noise(x - 300f, y - x + 100f, 4, 0.8f, 20f, 1f) > 0.72f) {
+                    ore = DustedBlocks.oreArsenic;
+                }
+
+                if (antimony && noise(x + 999f, y / 4f - 150f, 4, 0.9f, 15f, 1f) < 0.22f) {
+                    ore = DustedBlocks.oreAntimony;
                 }
             }
         });
@@ -311,10 +304,11 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         state.rules.waves = sector.info.waves = true;
         state.rules.enemyCoreBuildRadius = 600f;
 
-        //TODO change enemies
-        state.rules.spawns = Waves.generate(difficulty, new Rand(), state.rules.attackMode);
+        //TODO enemy waves
 
         //rollback
-        Blocks.slag.asFloor().wall = Blocks.yellowStoneWall;
+        Blocks.slag.asFloor().wall = slagwall;
+        Blocks.hotrock.asFloor().wall = hotwall;
+        Blocks.magmarock.asFloor().wall = magmawall;
     }
 }

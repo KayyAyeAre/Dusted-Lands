@@ -168,6 +168,14 @@ public class DustedFx {
         });
     }),
 
+    flameSpreadColor = new Effect(30f, e -> {
+        color(e.color);
+
+        randLenVectors(e.id, 14, e.finpow() * 12f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, 0.65f + e.fout() * 1.6f);
+        });
+    }),
+
     shootLaunch = new Effect(40f, e -> {
         e.scaled(20f, i -> {
             color(Pal.lighterOrange, Pal.lightOrange, Pal.gray, i.fin());
@@ -199,8 +207,8 @@ public class DustedFx {
         Lines.circle(e.x, e.y, e.finpow() * 4f);
     }),
 
-    shootCavnenShrapnel = new Effect(20f, e -> {
-        color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
+    shootPinkShrapnel = new Effect(20f, e -> {
+        color(Color.white, DustedPal.pinkHeal, e.fin());
         Lines.stroke(e.fout() + 0.5f);
 
         randLenVectors(e.id, 5, 20f * e.finpow(), e.rotation, 30f, (x, y) -> {

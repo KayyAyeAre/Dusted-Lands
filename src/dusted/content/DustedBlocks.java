@@ -58,7 +58,7 @@ public class DustedBlocks {
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
     //power
-    magmaticGenerator,
+    magmaticGenerator, slagCombustor,
     //crafters
     quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder,
     //production
@@ -217,10 +217,12 @@ public class DustedBlocks {
             size = 2;
 
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawPowder(DustedPowders.quartzDust), new DrawDefault());
-            outputPowder = new PowderStack(DustedPowders.quartzDust, 1f);
-            craftTime = 12f;
+            outputPowder = new PowderStack(DustedPowders.quartzDust, 0.1f);
+            craftTime = 120f;
             consumePower(1f);
-            consumeItem(Items.sand, 3);
+            consumeItem(Items.sand, 1);
+
+            researchCost = ItemStack.with(DustedItems.zircon, 100, DustedItems.arsenic, 50, DustedItems.antimony, 50);
         }};
 
         siliconForge = new PowderCrafter("silicon-forge") {{
@@ -228,6 +230,7 @@ public class DustedBlocks {
             size = 3;
             squareSprite = false;
             itemCapacity = 20;
+            researchCost = ItemStack.with(DustedItems.zircon, 120, DustedItems.arsenic, 50, DustedItems.antimony, 50);
 
             outputItem = new ItemStack(Items.silicon, 15);
             craftTime = 300f;
@@ -237,8 +240,8 @@ public class DustedBlocks {
             ambientSoundVolume = 0.08f;
 
             consumePower(2f);
-            consume(new ConsumePowder(DustedPowders.quartzDust, 0.5f));
-            consume(new ConsumePowder(DustedPowders.orchar, 0.2f));
+            consume(new ConsumePowder(DustedPowders.quartzDust, 0.2f));
+            consume(new ConsumePowder(DustedPowders.orchar, 0.1f));
         }};
 
         metaglassFurnace = new PowderCrafter("metaglass-furnace") {{
@@ -369,6 +372,7 @@ public class DustedBlocks {
             consume(new ConsumePowder(DustedPowders.orchar, 0.1f));
         }};
 
+        //TODO maybe it should just be a 2x2 block instead
         pneumaticFunnel = new Funnel("pneumatic-funnel") {{
             requirements(Category.production, ItemStack.with(DustedItems.zircon, 10));
             powderCapacity = 20f;
@@ -449,7 +453,7 @@ public class DustedBlocks {
                     DustedItems.zircon, new ShrapnelBulletType() {{
                         hitEffect = Fx.hitBulletSmall;
                         smokeEffect = Fx.shootSmallSmoke;
-                        shootEffect = DustedFx.shootCavnenShrapnel;
+                        shootEffect = DustedFx.shootPinkShrapnel;
                         status = DustedStatusEffects.deteriorating;
                         statusDuration = 8 * 60f;
                         fromColor = DustedPal.decayingYellow;
@@ -535,6 +539,8 @@ public class DustedBlocks {
                         hitSound = Sounds.bang;
                     }}
             );
+
+            researchCost = ItemStack.with(DustedItems.zircon, 100, DustedItems.arsenic, 50, DustedItems.antimony, 50, Items.silicon, 50);
         }};
 
         //TODO redo this entirely maybe
@@ -565,7 +571,6 @@ public class DustedBlocks {
             coolant = consumeCoolant(0.1f);
         }};
 
-        //TODO change weapon maybe
         coruscate = new PowderTurret("coruscate") {{
             requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 110, DustedItems.antimony, 80, Items.silicon, 70));
             size = 3;
@@ -903,6 +908,7 @@ public class DustedBlocks {
             size = 3;
             health = 2000;
             itemCapacity = 2000;
+            alwaysUnlocked = true;
             isFirstTier = true;
         }};
 
