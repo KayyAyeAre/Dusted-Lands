@@ -7,6 +7,7 @@ import dusted.content.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
 
+//TODO this is pretty laggy
 public class MistFloor extends Floor {
     public int seed = 0;
     public double octaves = 8, persistence = 0.5, scale = 7;

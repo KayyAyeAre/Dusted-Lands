@@ -2,8 +2,10 @@ package dusted.game;
 
 import arc.*;
 import arc.func.*;
+import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
+import arc.util.*;
 import dusted.content.*;
 import dusted.world.blocks.storage.ShieldedCoreBlock.*;
 import dusted.world.meta.*;
@@ -25,20 +27,27 @@ public class Decay implements ApplicationListener {
     public void update() {
         float decayDamage = Vars.state.rules.attributes.get(DustedAttribute.decay);
 
-        if (Vars.state.isPlaying() && !Vars.state.isEditor() && decayDamage > 0f) {
+        if (Vars.state.isPlaying() && !Vars.state.isEditor()) {
             Groups.unit.each(u -> {
                 //prevent wave units from dying before their shield unit can come shield them
                 if (u.team == Vars.state.rules.waveTeam && Vars.spawner.getSpawns().contains(t -> u.within(t.worldx(), t.worldy(), Vars.state.rules.dropZoneRadius))) return;
 
-                if (!isShielded(u)) {
-                    u.damagePierce(decayDamage, false);
+                float dmg = (decayDamage + (u.isGrounded() ? u.tileOn().floor().attributes.get(DustedAttribute.decay) : 0f)) * Time.delta;
+
+                if (!isShielded(u) && dmg > 0) {
+                    u.damagePierce(dmg, false);
                 }
             });
 
             Vars.indexer.allBuildings(Vars.world.width() * 4, Vars.world.height() * 4, Math.max(Vars.world.width() * 4, Vars.world.height() * 4), b -> {
                 //sure the cores already have shields but they still get decayed while launching for some reason
                 if (!(b instanceof ShieldedCoreBuild) && !isShielded(b) && b.health > b.maxHealth * calculateDamage(b.block)) {
-                    b.damagePierce(Math.min(decayDamage, (1f - calculateDamage(b.block)) * b.maxHealth + b.maxHealth - b.health), false);
+                    float dmg = (decayDamage + b.tile.floor().attributes.get(DustedAttribute.decay)) * Time.delta;
+                    if (dmg <= 0) return;
+
+                    b.damagePierce(Math.min(dmg, (1f - calculateDamage(b.block)) * b.maxHealth + b.maxHealth - b.health), false);
+
+                    if (Mathf.chanceDelta(0.01f)) DustedFx.deteriorating.at(b.x + Mathf.range(b.hitSize() / 2f), b.y + Mathf.range(b.hitSize() / 2f));
                 }
             });
         }

@@ -94,15 +94,16 @@ public class DustedBlocks {
             attributes.set(Attribute.water, -0.5f);
         }};
 
-        //TODO is setting these attributes necessary?
         cavnenSediment = new Floor("cavnen-sediment") {{
             attributes.set(Attribute.oil, 1.2f);
             attributes.set(Attribute.water, -0.6f);
+            attributes.set(DustedAttribute.decay, 0.25f);
         }};
 
         cavnenDusting = new Floor("cavnen-dusting") {{
             attributes.set(Attribute.oil, 0.9f);
             attributes.set(Attribute.water, -0.65f);
+            attributes.set(DustedAttribute.decay, 0.25f);
         }};
 
         cavnenSilk = new Floor("cavnen-silk") {{
@@ -112,18 +113,26 @@ public class DustedBlocks {
             speedMultiplier = 0.1f;
             variants = 0;
             cacheLayer = DustedShaders.silkLayer;
+            attributes.set(DustedAttribute.decay, 0.5f);
             albedo = 0.7f;
         }};
 
-        decayedRock = new Floor("decayed-rock");
+        decayedRock = new Floor("decayed-rock") {{
+            attributes.set(DustedAttribute.decay, 0.25f);
+        }};
 
         riftRock = new RiftFloor("rift-rock") {{
+            attributes.set(DustedAttribute.decay, 0.25f);
             blendGroup = decayedRock;
         }};
 
-        fallenStone = new MistFloor("fallen-stone");
+        fallenStone = new MistFloor("fallen-stone") {{
+            attributes.set(DustedAttribute.decay, 0.25f);
+        }};
 
-        fallenMantle = new MistFloor("fallen-mantle");
+        fallenMantle = new MistFloor("fallen-mantle") {{
+            attributes.set(DustedAttribute.decay, 0.25f);
+        }};
 
         volstone = new Floor("volstone");
 
