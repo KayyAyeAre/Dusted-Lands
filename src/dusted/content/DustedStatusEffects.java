@@ -37,6 +37,7 @@ public class DustedStatusEffects {
             });
         }};
 
+        //TODO make orchar bullets use burning and quartz bullets use blazing
         blazing = new StatusEffect("blazing") {{
             damage = 0.3f;
             effect = DustedFx.blazing;

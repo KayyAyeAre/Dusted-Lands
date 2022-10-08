@@ -8,6 +8,7 @@ import mindustry.entities.bullet.*;
 import mindustry.entities.pattern.*;
 import mindustry.gen.*;
 
+//yes i know intervalbullet exists now but i just wanna keep this thing ok?
 public class RocketBulletType extends BasicBulletType {
     public float rocketReload = 10f;
     public float rocketDelay;

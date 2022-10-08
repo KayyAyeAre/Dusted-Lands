@@ -95,6 +95,14 @@ public class DustedFx {
         });
     }),
 
+    quartzBurn = new Effect(25f, e -> {
+        color(DustedPal.lightQuartz, DustedPal.darkQuartz, e.fin());
+
+        randLenVectors(e.id, 3, e.finpow() * 7f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 2f);
+        });
+    }),
+
     funnelExtractSmall = new Effect(30f, e -> {
         if (!(e.data instanceof Powder powder)) return;
         Draw.z(Layer.blockOver);
@@ -205,6 +213,45 @@ public class DustedFx {
         });
 
         Lines.circle(e.x, e.y, e.finpow() * 4f);
+    }),
+
+    shootCrushQuartz = new Effect(65f, e -> {
+        e.scaled(20f, i -> {
+            color(DustedPal.lightQuartz, DustedPal.darkQuartz, i.fin());
+            Lines.stroke(2f);
+            randLenVectors(i.id, 8, i.finpow() * 14f, i.rotation + 180f, 35f, (x, y) -> {
+                Lines.lineAngle(i.x + x, i.y + y, Mathf.angle(x, y), i.fout() * 7f);
+            });
+        });
+
+        color(DustedPal.lightQuartz, DustedPal.darkQuartz, e.fin());
+        randLenVectors(e.id, 14, e.finpow() * 35f, e.rotation, 10f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 7f);
+        });
+    }),
+
+    hitCrushQuartz = new Effect(70f, e -> {
+        e.scaled(35f, i -> {
+            color(DustedPal.lightQuartz, DustedPal.darkQuartz, i.fin());
+            randLenVectors(i.id, 16, i.finpow() * 65f, i.rotation, 50f, (x, y) -> {
+                Fill.circle(i.x + x, i.y + y, i.fout() * 14f);
+            });
+
+            Lines.stroke(i.fout() * 2.5f);
+            Lines.circle(i.x, i.y, i.finpow() * 40f);
+        });
+
+        color(DustedPal.darkQuartz, 0.8f);
+        randLenVectors(e.id, 8, e.finpow() * 45f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.foutpowdown() * 9f);
+        });
+    }),
+
+    pushQuartz = new Effect(18f, e -> {
+        color(DustedPal.darkQuartz);
+        randLenVectors(e.id, 12, e.finpow() * 26f, e.rotation, 25f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 5f);
+        });
     }),
 
     shootPinkShrapnel = new Effect(20f, e -> {

@@ -50,7 +50,7 @@ public class DustedBlocks {
     zirconWall, zirconWallLarge, antimonyWall, antimonyWallLarge,
     decaySuppressor,
     //turrets, TODO balancing?
-    abrade, sunder, bisect, scald, coruscate, strike, blight,
+    abrade, sunder, bisect, scald, coruscate, strike, blight, crush,
     cocaineDuo,
     //distribution
     transferLink, transferTower,
@@ -811,6 +811,7 @@ public class DustedBlocks {
                             rocketReload = 5f;
                             rocketDelay = 50f;
                             inaccuracy = 180f;
+                            shoot.shots = 3;
                             shootSound = Sounds.missile;
 
                             rocketBulletType = new BasicBulletType(3f, 30f) {{
@@ -831,6 +832,80 @@ public class DustedBlocks {
                             //doesn't do anything, only overriden so that it doesn't draw trail fade
                         }
                     }
+            );
+        }};
+
+        crush = new PowderTurret("crush") {{
+            requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with());
+            size = 4;
+            scaledHealth = 280f;
+            outlineColor = DustedPal.darkerWarmMetal;
+            reload = 160f;
+            shootSound = Sounds.artillery;
+            minWarmup = 0.9f;
+            range = 380f;
+
+            drawer = new DrawTurret("decayed-") {{
+                parts.addAll(
+                        new RegionPart("-side") {{
+                            mirror = true;
+                            under = true;
+                            moveX = 2f;
+                            moveY = -5f;
+                            moveRot = 15f;
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("ec4800");
+                        }},
+                        new RegionPart("-glow") {{
+                            moveX = 2f;
+                            moveY = -5f;
+                            moveRot = 15f;
+                            drawRegion = false;
+                            mirror = true;
+                            heatColor = Color.valueOf("ec4800");
+                        }},
+                        new RegionPart() {{
+                            drawRegion = false;
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("ec4800");
+                        }},
+                        new RegionPart("-barrel") {{
+                            under = true;
+                            moveY = -2f;
+                            progress = PartProgress.recoil;
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("ec4800");
+                        }}
+                );
+            }};
+
+            ammo(
+                    DustedPowders.quartzDust, new PushBulletType(5f, 60f) {{
+                        height = 21f;
+                        width = 18f;
+                        lifetime = 80f;
+                        splashDamage = 80f;
+                        splashDamageRadius = 12f;
+                        frontColor = DustedPal.lightQuartz;
+                        backColor = trailColor = DustedPal.darkQuartz;
+                        shootEffect = DustedFx.shootCrushQuartz;
+                        hitSound = Sounds.explosion;
+                        hitEffect = despawnEffect = DustedFx.hitCrushQuartz;
+                        pushEffect = DustedFx.pushQuartz;
+                        trailLength = 16;
+                        trailWidth = 3.5f;
+                        trailRotation = true;
+                        fragBullets = 1;
+                        fragBullet = new StatusFieldBulletType() {{
+                            damage = 10f;
+                            damageInterval = 15f;
+                            status = DustedStatusEffects.blazing;
+                            statusDuration = 3f * 60f;
+                            fieldEffect = DustedFx.quartzBurn;
+                            color = DustedPal.darkQuartz.cpy().a(0.5f);
+                            lifetime = 180f;
+                        }};
+                    }}
             );
         }};
         //endregion

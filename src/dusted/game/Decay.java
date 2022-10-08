@@ -32,7 +32,7 @@ public class Decay implements ApplicationListener {
                 //prevent wave units from dying before their shield unit can come shield them
                 if (u.team == Vars.state.rules.waveTeam && Vars.spawner.getSpawns().contains(t -> u.within(t.worldx(), t.worldy(), Vars.state.rules.dropZoneRadius))) return;
 
-                float dmg = (decayDamage + (u.isGrounded() ? u.tileOn().floor().attributes.get(DustedAttribute.decay) : 0f)) * Time.delta;
+                float dmg = (decayDamage + (u.isGrounded() && !u.hovering ? u.tileOn().floor().attributes.get(DustedAttribute.decay) : 0f)) * Time.delta;
 
                 if (!isShielded(u) && dmg > 0) {
                     u.damagePierce(dmg, false);
