@@ -42,7 +42,7 @@ public class Decay implements ApplicationListener {
             Vars.indexer.allBuildings(Vars.world.width() * 4, Vars.world.height() * 4, Math.max(Vars.world.width() * 4, Vars.world.height() * 4), b -> {
                 //sure the cores already have shields but they still get decayed while launching for some reason
                 if (!(b instanceof ShieldedCoreBuild) && !isShielded(b) && b.health > b.maxHealth * calculateDamage(b.block)) {
-                    float dmg = (decayDamage + b.tile.floor().attributes.get(DustedAttribute.decay)) * Time.delta;
+                    float dmg = (decayDamage + b.block.sumAttribute(DustedAttribute.decay, b.tileX(), b.tileY())) * Time.delta;
                     if (dmg <= 0) return;
 
                     b.damagePierce(Math.min(dmg, (1f - calculateDamage(b.block)) * b.maxHealth + b.maxHealth - b.health), false);
@@ -66,10 +66,6 @@ public class Decay implements ApplicationListener {
 
     public <T extends Teamc & Sized> boolean isShielded(T entity) {
         return shields.contains(s -> entity.team() == s.owner.team() && entity.dst(s.owner) < s.radius + entity.hitSize() / 2f);
-    }
-
-    public <T extends Teamc & Sized> Seq<Teamc> getShielding(T entity) {
-        return shields.select(s -> entity.team() == s.owner.team() && entity.dst(s.owner) < s.radius + entity.hitSize() / 2f).map(s -> s.owner);
     }
 
     public static class DecayShield {

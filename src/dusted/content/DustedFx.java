@@ -161,6 +161,14 @@ public class DustedFx {
         });
     }),
 
+    crisaltSmoke = new Effect(70f, e -> {
+        color(DustedPal.lightCrisalt, e.fout());
+
+        randLenVectors(e.id, 4, e.fin() * 14f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.finpow() * 5f);
+        });
+    }),
+
     mineIgnite = new Effect(50f, e -> {
         color(Pal.lightFlame, Pal.darkFlame, Color.gray, e.fin());
         randLenVectors(e.id, 10, e.finpow() * 18f, (x, y) -> {

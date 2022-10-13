@@ -8,7 +8,7 @@ import static mindustry.content.Items.*;
 
 public class DustedItems {
     //TODO need more content aaa
-    public static Item zircon, arsenic, antimony, platinum, rockwool, telonate;
+    public static Item zircon, arsenic, antimony, rockwool, crisalt, platinum, perisle, telonate;
 
     //TODO am i supposed to do this?
     public static final Seq<Item> krakaiItems = new Seq<>();
@@ -27,11 +27,24 @@ public class DustedItems {
             hardness = 4;
         }};
 
-        platinum = new Item("platinum", Color.valueOf("c0c7ff")) {{
-            hardness = 5;
+        rockwool = new Item("rockwool", Color.valueOf("85889b")) {{
+            healthScaling = 0.2f;
         }};
 
-        rockwool = new Item("rockwool", Color.valueOf("85889b"));
+        crisalt = new Item("crisalt", Color.valueOf("eccb96")) {{
+            healthScaling = 0.3f;
+            explosiveness = 0.1f;
+            flammability = 0.2f;
+        }};
+
+        platinum = new Item("platinum", Color.valueOf("c0c7ff")) {{
+            hardness = 5;
+            healthScaling = 0.2f;
+        }};
+
+        perisle = new Item("perisle", Color.valueOf("98a998")) {{
+            healthScaling = 0.6f;
+        }};
 
         //TODO resprite
         telonate = new Item("telonate", Color.valueOf("9b77bc")) {{

@@ -60,7 +60,7 @@ public class DustedBlocks {
     //power
     magmaticGenerator, slagCombustor,
     //crafters
-    quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder,
+    quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, crisaltSynthesizer, deteriorationChamber,
     //production
     pressureDrill, ignitionDrill,
     pneumaticFunnel, rotaryFunnel,
@@ -289,6 +289,53 @@ public class DustedBlocks {
             consumeLiquid(Liquids.slag, 0.1f);
         }};
 
+        crisaltSynthesizer = new PowderCrafter("crisalt-synthesizer") {{
+            requirements(Category.crafting, ItemStack.with(DustedItems.antimony, 100, Items.silicon, 80, DustedItems.arsenic, 50));
+            size = 3;
+
+            outputItem = new ItemStack(DustedItems.crisalt, 2);
+            craftTime = 80f;
+            craftEffect = DustedFx.crisaltSmoke;
+            ambientSound = Sounds.smelter;
+            ambientSoundVolume = 0.09f;
+
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawSquarePulse(),
+                    new DrawGlowRegion() {{
+                        color = Color.valueOf("ee9b40");
+                        layer = 0f;
+                        glowIntensity = 0.25f;
+                    }},
+                    new DrawDefault()
+            );
+
+            consumePower(1.5f);
+            consume(new ConsumePowder(DustedPowders.quartzDust, 0.1f));
+            consumeLiquid(Liquids.slag, 0.2f);
+        }};
+
+        //TODO maybe output some sort of decayed powder like that cavnen dust i removed? also make a block that can actively heal this/reduce the amount of decay it takes
+        deteriorationChamber = new GenericCrafter("deterioration-chamber") {{
+            requirements(Category.crafting, ItemStack.with(DustedItems.antimony, 120, DustedItems.platinum, 60, Items.metaglass, 40, DustedItems.arsenic, 40));
+            size = 3;
+
+            outputItem = new ItemStack(DustedItems.perisle, 1);
+            craftTime = 120f;
+            ambientSound = Sounds.smelter;
+            ambientSoundVolume = 0.09f;
+
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawDeterioration(),
+                    new DrawDefault()
+            );
+
+            consume(new ConsumeDecay());
+            consumePower(1.5f);
+            consumeItem(DustedItems.platinum, 2);
+            consumeLiquid(Liquids.hydrogen, 0.1f);
+        }};
         //endregion
         //region distribution
         transferLink = new TransferLink("transfer-link") {{
@@ -446,6 +493,7 @@ public class DustedBlocks {
         }};
         //endregion
         //region turrets
+        //TODO make all of these use hydrogen as a coolant
         abrade = new ItemTurret("abrade") {{
             requirements(Category.turret, ItemStack.with(DustedItems.zircon, 80, DustedItems.arsenic, 60));
             size = 2;
