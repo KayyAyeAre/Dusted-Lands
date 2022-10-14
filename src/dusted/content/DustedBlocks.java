@@ -50,7 +50,7 @@ public class DustedBlocks {
     zirconWall, zirconWallLarge, antimonyWall, antimonyWallLarge,
     decaySuppressor,
     //turrets, TODO balancing?
-    abrade, sunder, bisect, scald, coruscate, strike, blight, crush,
+    abrade, sunder, bisect, scald, coruscate, strike, clutter, blight, crush,
     cocaineDuo,
     //distribution
     transferLink, transferTower,
@@ -510,7 +510,7 @@ public class DustedBlocks {
                     DustedItems.zircon, new ShrapnelBulletType() {{
                         hitEffect = Fx.hitBulletSmall;
                         smokeEffect = Fx.shootSmallSmoke;
-                        shootEffect = DustedFx.shootPinkShrapnel;
+                        shootEffect = DustedFx.shootCavnenShrapnel;
                         status = DustedStatusEffects.deteriorating;
                         statusDuration = 8 * 60f;
                         fromColor = DustedPal.decayingYellow;
@@ -769,6 +769,55 @@ public class DustedBlocks {
             consume(new ConsumePowder(DustedPowders.sulfur, 0.2f));
         }};
 
+        clutter = new ItemTurret("clutter") {{
+            requirements(Category.turret, ItemStack.with());
+            size = 3;
+            scaledHealth = 260f;
+            outlineColor = DustedPal.darkerWarmMetal;
+            rotateSpeed = 15f;
+            reload = 50f;
+            recoil = 2f;
+            inaccuracy = 25f;
+            velocityRnd = 0.8f;
+            shootY = 1f;
+            minWarmup = 0.8f;
+
+            shoot.shots = 50;
+
+            drawer = new DrawTurret("decayed-") {{
+                parts.add(
+                        new RegionPart("-wing") {{
+                            mirror = true;
+                            under = true;
+                            moveX = 1f;
+                            moveY = -2f;
+                            moveRot = -20f;
+                            moves.add(new PartMove(PartProgress.recoil, 0f, 0f, -10f));
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("bf301d");
+                        }},
+                        new RegionPart() {{
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("bf301d");
+                            drawRegion = false;
+                        }}
+                );
+            }};
+
+            ammo(
+                    DustedItems.antimony, new BasicBulletType(7f, 14f, "circle-bullet") {{
+                        width = height = 9f;
+                        shrinkX = shrinkY = 0.3f;
+                        lifetime = 55f;
+                        drag = 0.04f;
+                        frontColor = Color.valueOf("f1b093");
+                        backColor = hitColor = Color.valueOf("d36f56");
+                        shootEffect = DustedFx.shootBlastSpray;
+                        status = StatusEffects.blasted;
+                    }}
+            );
+        }};
+
         blight = new PowderTurret("blight") {{
             requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 240, DustedItems.antimony, 160, Items.silicon, 120, DustedItems.platinum, 40));
             size = 4;
@@ -944,7 +993,7 @@ public class DustedBlocks {
                         trailWidth = 3.5f;
                         trailRotation = true;
                         fragBullets = 1;
-                        fragBullet = new StatusFieldBulletType() {{
+                        fragBullet = new CloudBulletType() {{
                             damage = 10f;
                             damageInterval = 15f;
                             status = DustedStatusEffects.blazing;

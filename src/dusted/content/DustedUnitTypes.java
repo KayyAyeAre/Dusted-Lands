@@ -22,7 +22,6 @@ import mindustry.type.weapons.*;
 import static mindustry.Vars.tilesize;
 
 public class DustedUnitTypes {
-    //TODO blazing variants for ground and air units?
     public static UnitType
     carom, recur, saltate, staccato,
     sob, wail,

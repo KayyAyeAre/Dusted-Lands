@@ -8,7 +8,7 @@ import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
 
-public class StatusFieldBulletType extends BulletType {
+public class CloudBulletType extends BulletType {
     public float damageInterval = 1f;
     public float fieldRadius = 40f;
     public float sclTime = 50f;

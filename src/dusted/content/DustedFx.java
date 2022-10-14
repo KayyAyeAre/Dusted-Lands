@@ -262,6 +262,25 @@ public class DustedFx {
         });
     }),
 
+    shootBlastSpray = new Effect(35f, e -> {
+        color(e.color);
+        randLenVectors(e.id, 20, e.finpow() * 60f, e.rotation, 25f, (x, y) -> {
+            randLenVectors(e.id, 4, e.finpow() * 12f, (ix, iy) -> {
+                Fill.circle(e.x + x + ix, e.y + y + iy, e.fout() * 2f);
+            });
+        });
+    }),
+
+    //its just two effects with diferent colors..
+    shootCavnenShrapnel = new Effect(20f, e -> {
+        color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
+        Lines.stroke(e.fout() + 0.5f);
+
+        randLenVectors(e.id, 5, 20f * e.finpow(), e.rotation, 30f, (x, y) -> {
+            Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fin() * 4f + 1f);
+        });
+    }),
+
     shootPinkShrapnel = new Effect(20f, e -> {
         color(Color.white, DustedPal.pinkHeal, e.fin());
         Lines.stroke(e.fout() + 0.5f);
