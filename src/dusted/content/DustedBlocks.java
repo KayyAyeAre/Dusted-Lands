@@ -292,6 +292,7 @@ public class DustedBlocks {
         crisaltSynthesizer = new PowderCrafter("crisalt-synthesizer") {{
             requirements(Category.crafting, ItemStack.with(DustedItems.antimony, 100, Items.silicon, 80, DustedItems.arsenic, 50));
             size = 3;
+            squareSprite = false;
 
             outputItem = new ItemStack(DustedItems.crisalt, 2);
             craftTime = 80f;
@@ -319,6 +320,7 @@ public class DustedBlocks {
         deteriorationChamber = new GenericCrafter("deterioration-chamber") {{
             requirements(Category.crafting, ItemStack.with(DustedItems.antimony, 120, DustedItems.platinum, 60, Items.metaglass, 40, DustedItems.arsenic, 40));
             size = 3;
+            squareSprite = false;
 
             outputItem = new ItemStack(DustedItems.perisle, 1);
             craftTime = 120f;
@@ -497,6 +499,7 @@ public class DustedBlocks {
         abrade = new ItemTurret("abrade") {{
             requirements(Category.turret, ItemStack.with(DustedItems.zircon, 80, DustedItems.arsenic, 60));
             size = 2;
+            squareSprite = false;
             scaledHealth = 240f;
             reload = 12f;
             recoil = 4f;
@@ -529,6 +532,7 @@ public class DustedBlocks {
         scald = new PowderTurret("scald") {{
             requirements(Category.turret, ItemStack.with(DustedItems.zircon, 70, DustedItems.arsenic, 60, DustedItems.antimony, 40));
             size = 2;
+            squareSprite = false;
             scaledHealth = 260f;
             reload = 40f;
             recoil = 3f;
@@ -568,6 +572,7 @@ public class DustedBlocks {
         sunder = new PowderTurret("sunder") {{
             requirements(Category.turret, ItemStack.with(DustedItems.zircon, 80, DustedItems.arsenic, 60, DustedItems.antimony, 50, Items.silicon, 50));
             size = 2;
+            squareSprite = false;
             scaledHealth = 220f;
             reload = 80f;
             range = 135f;
@@ -604,6 +609,7 @@ public class DustedBlocks {
         bisect = new PowerTurret("bisect") {{
             requirements(Category.turret, BuildVisibility.hidden, ItemStack.with());
             size = 2;
+            squareSprite = false;
             scaledHealth = 220f;
             targetAir = false;
             reload = 70f;
@@ -631,6 +637,7 @@ public class DustedBlocks {
         coruscate = new PowderTurret("coruscate") {{
             requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 110, DustedItems.antimony, 80, Items.silicon, 70));
             size = 3;
+            squareSprite = false;
             scaledHealth = 280f;
             reload = 110f;
             recoil = 5f;
@@ -714,6 +721,7 @@ public class DustedBlocks {
         strike = new ItemPowderTurret("strike") {{
             requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 120, DustedItems.antimony, 100, Items.silicon, 70));
             size = 3;
+            squareSprite = false;
             scaledHealth = 240f;
             outlineColor = DustedPal.darkerWarmMetal;
             rotateSpeed = 1f;
@@ -772,6 +780,7 @@ public class DustedBlocks {
         clutter = new ItemTurret("clutter") {{
             requirements(Category.turret, ItemStack.with());
             size = 3;
+            squareSprite = false;
             scaledHealth = 260f;
             outlineColor = DustedPal.darkerWarmMetal;
             rotateSpeed = 15f;
@@ -821,6 +830,7 @@ public class DustedBlocks {
         blight = new PowderTurret("blight") {{
             requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 240, DustedItems.antimony, 160, Items.silicon, 120, DustedItems.platinum, 40));
             size = 4;
+            squareSprite = false;
             reload = 190f;
             scaledHealth = 260f;
             range = 340f;
@@ -935,6 +945,7 @@ public class DustedBlocks {
         crush = new PowderTurret("crush") {{
             requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with());
             size = 4;
+            squareSprite = false;
             scaledHealth = 280f;
             outlineColor = DustedPal.darkerWarmMetal;
             reload = 160f;
