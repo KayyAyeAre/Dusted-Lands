@@ -297,7 +297,7 @@ public class DustedBlocks {
             outputItem = new ItemStack(DustedItems.crisalt, 2);
             craftTime = 80f;
             craftEffect = DustedFx.crisaltSmoke;
-            ambientSound = Sounds.smelter;
+            ambientSound = DustedSounds.synthesisLoop;
             ambientSoundVolume = 0.09f;
 
             drawer = new DrawMulti(
@@ -324,8 +324,8 @@ public class DustedBlocks {
 
             outputItem = new ItemStack(DustedItems.perisle, 1);
             craftTime = 120f;
-            ambientSound = Sounds.smelter;
-            ambientSoundVolume = 0.09f;
+            ambientSound = DustedSounds.decayLoop;
+            ambientSoundVolume = 0.16f;
 
             drawer = new DrawMulti(
                     new DrawRegion("-bottom"),
@@ -577,7 +577,7 @@ public class DustedBlocks {
             reload = 80f;
             range = 135f;
             inaccuracy = 5f;
-            shootSound = Sounds.missile;
+            shootSound = DustedSounds.shootLight;
 
             shoot.shots = 2;
 
@@ -729,7 +729,7 @@ public class DustedBlocks {
             recoilTime = 30f;
             cooldownTime = 40f;
             recoil = 2f;
-            shootSound = Sounds.bang;
+            shootSound = Sounds.dullExplosion;
             shootEffect = DustedFx.shootLaunch;
             shootWarmupSpeed = 0.05f;
             minWarmup = 0.8f;
@@ -778,11 +778,12 @@ public class DustedBlocks {
         }};
 
         clutter = new ItemTurret("clutter") {{
-            requirements(Category.turret, ItemStack.with());
+            requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with());
             size = 3;
             squareSprite = false;
             scaledHealth = 260f;
             outlineColor = DustedPal.darkerWarmMetal;
+            shootSound = DustedSounds.cannonLight;
             rotateSpeed = 15f;
             reload = 50f;
             recoil = 2f;
@@ -835,8 +836,7 @@ public class DustedBlocks {
             scaledHealth = 260f;
             range = 340f;
             shootY = 6f;
-            //TODO maybe change to a more firework-like sound?
-            shootSound = Sounds.artillery;
+            shootSound = DustedSounds.fireworkLaunch;
             outlineColor = DustedPal.darkerWarmMetal;
             drawer = new DrawTurret("decayed-") {{
                 parts.addAll(
@@ -919,7 +919,7 @@ public class DustedBlocks {
                             rocketDelay = 50f;
                             inaccuracy = 180f;
                             shoot.shots = 3;
-                            shootSound = Sounds.missile;
+                            shootSound = DustedSounds.crackle;
 
                             rocketBulletType = new BasicBulletType(3f, 30f) {{
                                 width = 12f;
@@ -949,7 +949,7 @@ public class DustedBlocks {
             scaledHealth = 280f;
             outlineColor = DustedPal.darkerWarmMetal;
             reload = 160f;
-            shootSound = Sounds.artillery;
+            shootSound = DustedSounds.cannonHeavy;
             minWarmup = 0.9f;
             range = 380f;
 
@@ -997,7 +997,7 @@ public class DustedBlocks {
                         frontColor = DustedPal.lightQuartz;
                         backColor = trailColor = DustedPal.darkQuartz;
                         shootEffect = DustedFx.shootCrushQuartz;
-                        hitSound = Sounds.explosion;
+                        hitSound = Sounds.dullExplosion;
                         hitEffect = despawnEffect = DustedFx.hitCrushQuartz;
                         pushEffect = DustedFx.pushQuartz;
                         trailLength = 16;

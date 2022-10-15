@@ -66,7 +66,16 @@ public class DustedLands extends Mod {
 
     @Override
     public void init() {
-        Vars.mods.locateMod("dusted-lands").meta.author += "\n\n[gray]Credits:[]\n[accent]Sh1penfire[], for the deteriorating status effect sprite";
+        Vars.mods.locateMod("dusted-lands").meta.author += """
+    
+    
+    [gray]Credits:[]
+    [accent]Sh1penfire[], for the deteriorating status effect sprite
+    [accent]rubberduck[] on [accent]opengameart.org[] for blight and clutter's shoot sounds
+    [accent]KuraiWolf[] on [accent]opengameart.org[] for sunder's shoot sound
+    [accent]Thimras[] on [accent]opengameart.org[] for crush's shoot sound
+    [accent]kurt[] on [accent]opengameart.org[] for the crisalt synthesizer ambient noise
+    [accent]Gobusto[] on [accent]opengameart.org[] for the deterioration chamber ambient noise""";
     }
 
     @Override
