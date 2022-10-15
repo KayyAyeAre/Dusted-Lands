@@ -778,7 +778,7 @@ public class DustedBlocks {
         }};
 
         clutter = new ItemTurret("clutter") {{
-            requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with());
+            requirements(Category.turret, ItemStack.with(Items.silicon, 160, DustedItems.arsenic, 120, DustedItems.crisalt, 100, Items.metaglass, 60));
             size = 3;
             squareSprite = false;
             scaledHealth = 260f;
@@ -787,10 +787,12 @@ public class DustedBlocks {
             rotateSpeed = 15f;
             reload = 50f;
             recoil = 2f;
+            range = 135f;
             inaccuracy = 25f;
             velocityRnd = 0.8f;
             shootY = 1f;
             minWarmup = 0.8f;
+            targetGround = false;
 
             shoot.shots = 50;
 
@@ -816,6 +818,7 @@ public class DustedBlocks {
 
             ammo(
                     DustedItems.antimony, new BasicBulletType(7f, 14f, "circle-bullet") {{
+                        collidesGround = false;
                         width = height = 9f;
                         shrinkX = shrinkY = 0.3f;
                         lifetime = 55f;
@@ -823,7 +826,34 @@ public class DustedBlocks {
                         frontColor = Color.valueOf("f1b093");
                         backColor = hitColor = Color.valueOf("d36f56");
                         shootEffect = DustedFx.shootBlastSpray;
+                        hitEffect = despawnEffect = DustedFx.hitBlastSpray;
                         status = StatusEffects.blasted;
+                    }},
+                    Items.metaglass, new BasicBulletType(7f, 16f, "circle-bullet") {{
+                        collidesGround = false;
+                        width = height = 10f;
+                        shrinkX = shrinkY = 0.3f;
+                        lifetime = 55f;
+                        drag = 0.04f;
+                        frontColor = Color.white;
+                        backColor = hitColor = Color.valueOf("bccdf4");
+                        shootEffect = DustedFx.shootBlastSpray;
+                        hitEffect = despawnEffect = DustedFx.hitBlastSpray;
+                        status = StatusEffects.burning;
+                        statusDuration = 3f * 60f;
+                        fragBullets = 3;
+                        fragBullet = new BasicBulletType(3f, 4f, "circle-bullet") {{
+                            collidesGround = false;
+                            width = height = 6f;
+                            shrinkX = shrinkY = 0.4f;
+                            lifetime = 20f;
+                            drag = 0.04f;
+                            frontColor = Color.white;
+                            backColor = hitColor = Color.valueOf("bccdf4");
+                            hitEffect = despawnEffect = DustedFx.hitBlastSpray;
+                            status = StatusEffects.burning;
+                            statusDuration = 2f * 60f;
+                        }};
                     }}
             );
         }};

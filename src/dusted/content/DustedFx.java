@@ -332,6 +332,17 @@ public class DustedFx {
         });
     }),
 
+    hitBlastSpray = new Effect(25f, e -> {
+        color(e.color);
+        e.scaled(15f, i -> {
+            Lines.stroke(i.fout() * 2f);
+            Lines.circle(i.x, i.y, i.finpow() * 6f + 1f);
+        });
+        randLenVectors(e.id, 3, e.finpow() * 7f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 2f);
+        });
+    }),
+
     hitCavnen = new Effect(15f, e -> {
         color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
 
