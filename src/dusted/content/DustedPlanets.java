@@ -23,6 +23,7 @@ public class DustedPlanets {
             );
             landCloudColor = Color.valueOf("fa9b5c");
             atmosphereColor = Color.valueOf("fa9b5c");
+            iconColor = Color.valueOf("6d726b");
             atmosphereRadIn = 0.02f;
             atmosphereRadOut = 0.3f;
             startSector = 269;
