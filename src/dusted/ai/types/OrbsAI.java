@@ -6,6 +6,7 @@ import mindustry.*;
 import mindustry.ai.types.*;
 import mindustry.gen.*;
 
+//TODO this ai could just be moved into the ability itself
 public class OrbsAI extends GroundAI {
     @Override
     public void updateUnit() {

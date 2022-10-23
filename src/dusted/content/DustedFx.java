@@ -74,6 +74,16 @@ public class DustedFx {
         });
     }).layer(Layer.effect + 0.021f),
 
+    yellowDeteriorating = new Effect(20f, e -> {
+        color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
+
+        randLenVectors(e.id, 3, e.finpow() * 6f + 2f, (x, y) -> {
+            randLenVectors(e.id, 4, e.finpow() * 2f, e.rotation, 15f, (ix, iy) -> {
+                Fill.circle(e.x + x + ix, e.y + y + iy, e.fout() * 2f);
+            });
+        });
+    }),
+
     mist = new Effect(240f, e -> {
         color(DustedPal.mist, e.fslope() * e.fslope() * 0.2f);
 
@@ -192,6 +202,23 @@ public class DustedFx {
         });
     }),
 
+    shootBlazingSpread = new Effect(35f, e -> {
+        color(DustedPal.blazingRed, DustedPal.darkBlazingRed, e.fin());
+
+        randLenVectors(e.id, 25, e.finpow() * 35f, e.rotation, 60f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 4f);
+        });
+    }),
+
+    hitBlazingSpread = new Effect(14, e -> {
+        color(DustedPal.blazingRed, DustedPal.darkBlazingRed, e.fin());
+        Lines.stroke(e.fout() * 2f);
+
+        randLenVectors(e.id, 3, 1f + e.fin() * 15f, e.rotation, 60f, (x, y) -> {
+            Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fout() * 4f);
+        });
+    }),
+
     shootLaunch = new Effect(40f, e -> {
         e.scaled(20f, i -> {
             color(Pal.lighterOrange, Pal.lightOrange, Pal.gray, i.fin());
@@ -287,6 +314,14 @@ public class DustedFx {
 
         randLenVectors(e.id, 5, 20f * e.finpow(), e.rotation, 30f, (x, y) -> {
             Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fin() * 4f + 1f);
+        });
+    }),
+
+    shootCavnenSmoke = new Effect(50f, e -> {
+        color(DustedPal.decayingYellow, e.foutpowdown() * 0.88f);
+
+        randLenVectors(e.id, 7, 30f * e.finpow(), e.rotation, 40f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.foutpowdown() * 5f);
         });
     }),
 

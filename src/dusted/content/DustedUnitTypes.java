@@ -7,6 +7,7 @@ import dusted.entities.bullet.*;
 import dusted.entities.units.*;
 import dusted.graphics.*;
 import dusted.type.weapons.*;
+import mindustry.*;
 import mindustry.ai.*;
 import mindustry.ai.types.*;
 import mindustry.content.*;
@@ -19,15 +20,13 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.type.weapons.*;
 
-import static mindustry.Vars.tilesize;
-
 public class DustedUnitTypes {
     public static UnitType
     carom, recur, saltate, staccato,
-    sob, wail,
-    annul,
+    sob, wail, snivel,
+    annul, excise, deduct,
     pique, rancor, animus,
-    protei, hynobii,
+    protei, hynobii, sirenid,
     erode, recede, atrophy;
 
     public static void load() {
@@ -57,10 +56,106 @@ public class DustedUnitTypes {
             }});
         }};
 
+        excise = new DustedUnitType("excise") {{
+            constructor = MechUnit::create;
+            speed = 0.7f;
+            health = 320f;
+            hitSize = 9f;
+            armor = 5f;
+
+            weapons.add(new Weapon("dusted-lands-excise-cannon") {{
+                mirror = false;
+                x = 0f;
+                y = -3f;
+                reload = 50f;
+                recoil = 2f;
+                rotate = true;
+                rotateSpeed = 4f;
+                rotationLimit = 50f;
+                shootSound = Sounds.artillery;
+
+                bullet = new ArtilleryBulletType(3.5f, 22f) {{
+                    width = height = 12f;
+                    lifetime = 45f;
+                    frontColor = DustedPal.decayingYellow;
+                    backColor = DustedPal.decayingYellowBack;
+                    hitEffect = despawnEffect = DustedFx.hitCavnen;
+                    status = DustedStatusEffects.deteriorating;
+                    statusDuration = 4f * 60f;
+                }};
+            }});
+        }};
+
+        deduct = new DustedUnitType("deduct") {{
+            constructor = LegsUnit::create;
+            speed = 0.4f;
+            health = 820f;
+            hitSize = 13f;
+            rotateSpeed = 3f;
+            armor = 8f;
+            groundLayer = Layer.legUnit;
+            hovering = true;
+
+            legCount = 4;
+            legLength = 18f;
+            legForwardScl = 0.5f;
+            legBaseOffset = 4f;
+            legStraightness = 0.2f;
+            legLengthScl = 0.7f;
+            legMaxLength = 1.2f;
+
+            weapons.add(new Weapon("dusted-lands-deduct-cannon") {{
+                mirror = false;
+                x = 0;
+                y = -3f;
+                reload = 180f;
+                recoil = 3f;
+                shootSound = DustedSounds.cannonHeavy;
+
+                bullet = new RocketBulletType(4f, 44f, "circle-bullet") {{
+                    width = height = 19f;
+                    shrinkX = shrinkY = 0.5f;
+                    lifetime = 70f;
+                    frontColor = DustedPal.decayingYellow;
+                    backColor = trailColor = DustedPal.decayingYellowBack;
+                    hitEffect = despawnEffect = DustedFx.hitCavnen;
+                    shootEffect = DustedFx.shootCavnenSmoke;
+                    smokeEffect = Fx.none;
+                    status = DustedStatusEffects.deteriorating;
+                    trailWidth = 7f;
+                    trailLength = 18;
+                    statusDuration = 6f * 60f;
+                    rocketReload = 10f;
+                    rocketDelay = 10f;
+                    inaccuracy = 360f;
+
+                    rocketBulletType = new CloudBulletType() {{
+                        speed = 0.7f;
+                        drag = 0.08f;
+                        damage = 15f;
+                        damageInterval = 10f;
+                        status = DustedStatusEffects.deteriorating;
+                        statusDuration = 3f * 60f;
+                        fieldEffect = DustedFx.yellowDeteriorating;
+                        color = DustedPal.decayingYellow.cpy().a(0.5f);
+                        alphaMag = 0f;
+                        alphaScl = 0f;
+                        fieldRadius = 30f;
+                        blobLength = 40f;
+                        blobRadius = 10f;
+                        blobs = 4;
+                        sclTime = 40f;
+                        lifetime = 160f;
+                        keepVelocity = false;
+                    }};
+                }};
+            }});
+        }};
+
         carom = new DustedUnitType("carom") {{
             constructor = UnitEntity::create;
             aiController = BounceAI::new;
-            speed = 4.2f;
+            speed = 3.6f;
             flying = true;
             lowAltitude = true;
             health = 120;
@@ -86,7 +181,7 @@ public class DustedUnitTypes {
                     height = 11f;
                     lifetime = 20f;
                     frontColor = DustedPal.decayingYellow;
-                    backColor = hitColor = DustedPal.decayingYellowBack;
+                    backColor = DustedPal.decayingYellowBack;
                     hitEffect = despawnEffect = DustedFx.hitCavnen;
                     status = DustedStatusEffects.deteriorating;
                     statusDuration = 6f * 60f;
@@ -319,7 +414,7 @@ public class DustedUnitTypes {
 
             accel = 0.1f;
             drag = 0.05f;
-            speed = 5.5f;
+            speed = 3.6f;
             flying = true;
             lowAltitude = true;
             rotateSpeed = 8f;
@@ -351,25 +446,54 @@ public class DustedUnitTypes {
             constructor = UnitEntity::create;
             aiController = FlyingFollowAI::new;
             health = 340f;
-            accel = 0.2f;
-            drag = 0.1f;
-            speed = 2.4f;
+            accel = 0.08f;
+            drag = 0.06f;
+            speed = 3f;
             flying = true;
             armor = 4f;
             hitSize = 8f;
-            rotateSpeed = 6f;
-            engineOffset = 3f;
-            engineSize = 4f;
+            engineSize = 3f;
+            engineOffset = 6f;
             healColor = DustedPal.pinkHeal;
 
+            setEnginesMirror(new UnitEngine(6f, -5f, 2f, 315f));
+
             abilities.add(
-                    new DecayShieldAbility(120f),
-                    new RepairFieldAbility(10f, 8f * 60f, 0f) {{
-                        activeEffect = DustedFx.pinkHealWaveDynamic;
-                        healEffect = DustedFx.pinkHeal;
-                    }},
-                    new AttractorAbility(0.05f, 20f * 8f)
+                    new DecayShieldAbility(60f),
+                    new ShockwaveAbility()
             );
+        }};
+
+        snivel = new DustedUnitType("snivel") {{
+            constructor = UnitEntity::create;
+            defaultCommand = UnitCommand.assistCommand;
+            health = 720f;
+            armor = 2f;
+            hitSize = 17f;
+            speed = 2.6f;
+            accel = 0.1f;
+            drag = 0.07f;
+            engineSize = 0f;
+            payloadCapacity = 2f * 2f * Vars.tilePayload;
+            buildSpeed = 2f;
+            flying = true;
+            isEnemy = false;
+            drawBuildBeam = false;
+
+            setEnginesMirror(
+                    new UnitEngine(39f / 4f, -11f / 4f, 3f, 315f),
+                    new UnitEngine(30f / 4f, -33f / 4f, 3f, 315f)
+            );
+
+            weapons.add(new BuildWeapon("dusted-lands-snivel-build-weapon") {{
+                rotate = true;
+                rotateSpeed = 7f;
+                x = 6f;
+                y = 3f;
+                shootY = 4f;
+            }});
+
+            abilities.add(new DecayShieldAbility(60f));
         }};
 
         pique = new DustedUnitType("pique") {{
@@ -471,7 +595,7 @@ public class DustedUnitTypes {
             legLengthScl = 0.7f;
             legMaxLength = 1.3f;
 
-            weapons.add(new Weapon("") {{
+            weapons.add(new Weapon() {{
                 x = 0f;
                 y = 1f;
                 mirror = false;
@@ -605,13 +729,56 @@ public class DustedUnitTypes {
                     rangeOverride = 120f;
                     frontRad = 3f;
                     backRad = 5f;
-                    color = Color.valueOf("ecae9e");
-                    backColor = hitColor = Color.valueOf("cd5c5c");
+                    color = DustedPal.blazingRed;
+                    backColor = hitColor = DustedPal.darkBlazingRed;
                     beamEffect = DustedFx.flameSpreadColor;
                     damage = 16f;
                     damageInterval = 15f;
                     status = DustedStatusEffects.blazing;
                     statusDuration = 3f * 60f;
+                }};
+            }});
+        }};
+
+        EntityMapping.register("dusted-lands-sirenid", FinUnitEntity::new);
+        sirenid = new FinUnitType("sirenid") {{
+            hovering = true;
+            aiController = LiquidPrefAI::new;
+            rotateSpeed = 2.4f;
+            speed = 1.2f;
+            drag = 0.1f;
+            accel = 0.12f;
+            health = 820f;
+            hitSize = 18f;
+            engineSize = 0f;
+            finScl = 7f;
+
+            fins.add(
+                    new FinPart(7f, 6f, 20f, 30f),
+                    new FinPart(9f, -0.5f, 0f, 30f),
+                    new FinPart(11f, -7f, -10f, 30f)
+            );
+
+            weapons.add(new Weapon() {{
+                mirror = false;
+                x = 0f;
+                y = 6f;
+                reload = 6f;
+                shootCone = 360f;
+                bullet = new BulletType(4f, 37f) {{
+                    hitSize = 35f;
+                    lifetime = 8f;
+                    pierce = true;
+                    pierceBuilding = true;
+                    pierceCap = 4;
+                    shootEffect = DustedFx.shootBlazingSpread;
+                    hitEffect = DustedFx.hitBlazingSpread;
+                    despawnEffect = Fx.none;
+                    shootSound = Sounds.flame;
+                    statusDuration = 60f * 4;
+                    status = DustedStatusEffects.blazing;
+                    keepVelocity = false;
+                    hittable = false;
                 }};
             }});
         }};
@@ -631,7 +798,7 @@ public class DustedUnitTypes {
             mineTier = 1;
             buildSpeed = 0.6f;
             rotateSpeed = 12f;
-            payloadCapacity = 2f * 2f * tilesize * tilesize;
+            payloadCapacity = 2f * 2f * Vars.tilePayload;
 
             weapons.add(new Weapon("dusted-lands-core-decay-weapon") {{
                 x = 3.1f;

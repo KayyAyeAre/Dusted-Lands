@@ -16,6 +16,9 @@ public class DustedPal {
     darkerWarmMetal = Color.valueOf("3a3130"),
     pinkHeal = Color.valueOf("ffd2f8"),
 
+    blazingRed = Color.valueOf("ecae9eecae9e"),
+    darkBlazingRed = Color.valueOf("cd5c5c"),
+
     decayingYellow = Color.valueOf("fff0a1"),
     decayingYellowBack = Color.valueOf("d5ad7f");
 }

@@ -19,7 +19,7 @@ public class RocketBulletType extends BasicBulletType {
     public Sound shootSound = Sounds.none;
 
     {
-        pierce = true;
+        pierce = pierceBuilding = true;
     }
 
     public RocketBulletType(float speed, float damage) {
