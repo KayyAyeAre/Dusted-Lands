@@ -34,6 +34,8 @@ import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
 
+import static mindustry.type.ItemStack.with;
+
 //TODO balancing, campaign stuff
 public class DustedBlocks {
     public static Block
@@ -68,8 +70,9 @@ public class DustedBlocks {
     coreAbate, coreDissent, coreDecadence,
     //units
     //TODO rework this
-    cavnenTerraConstructor, cavnenAerialConstructor,
-    binaryRestructurer, ternaryRestructurer,
+    witheredAssembler, voltaicAssembler, blazingAssembler,
+    largeWitheredAssembler, largeVoltaicAssembler, largeBlazingAssembler,
+    aerialAssemblerModule, binaryAssemblerModule, ternaryAssemblerModule,
     //sandbox
     powderSource, powderVoid;
 
@@ -1048,48 +1051,133 @@ public class DustedBlocks {
         }};
         //endregion
         //region units
-        cavnenTerraConstructor = new UnitFactory("cavnen-terra-constructor") {{
-            requirements(Category.units, ItemStack.with(Items.copper, 80, DustedItems.zircon, 60, Items.titanium, 50));
-            plans = Seq.with(
-                    new UnitPlan(DustedUnitTypes.pique, 60f * 15f, ItemStack.with(Items.silicon, 15, DustedItems.arsenic, 10))
-            );
+        //TODO change costs
+        witheredAssembler = new UnitConstructor("withered-assembler") {{
+            requirements(Category.units, ItemStack.with(Items.silicon, 200, DustedItems.antimony, 80, DustedItems.arsenic, 60));
             size = 3;
-            consumePower(1f);
-        }};
+            areaSize = 7;
+            droneType = DustedUnitTypes.decayedAssemblyDrone;
 
-        cavnenAerialConstructor = new UnitFactory("cavnen-aerial-constructor") {{
-            requirements(Category.units, ItemStack.with(DustedItems.zircon, 60, Items.titanium, 50));
-            plans = Seq.with(
-                    new UnitPlan(DustedUnitTypes.carom, 60f * 10f, ItemStack.with(Items.silicon, 10, Items.titanium, 10))
+            plans.add(
+                    Seq.with(
+                            new UnitConstructorPlan(DustedUnitTypes.annul, 60f * 30f, ItemStack.with(Items.silicon, 40, DustedItems.zircon, 30)),
+                            new UnitConstructorPlan(DustedUnitTypes.excise, 60f * 60f, ItemStack.with(Items.silicon, 100, DustedItems.crisalt, 80, DustedItems.antimony, 60))
+                    ),
+                    Seq.with(
+                            new UnitConstructorPlan(DustedUnitTypes.carom, 60f * 20f, ItemStack.with(Items.silicon, 30, DustedItems.arsenic, 25)),
+                            new UnitConstructorPlan(DustedUnitTypes.recur, 60f * 50f, ItemStack.with(Items.silicon, 80, DustedItems.crisalt, 70, Items.metaglass, 50))
+                    )
             );
-            size = 3;
-            consumePower(1f);
-        }};
-
-        binaryRestructurer = new PowderReconstructor("binary-restructurer") {{
-            requirements(Category.units, ItemStack.with(Items.copper, 120, Items.titanium, 90, DustedItems.zircon, 75, Items.thorium, 50));
-            size = 3;
-            constructTime = 10 * 60f;
 
             consumePower(2f);
-            consumeItems(ItemStack.with(Items.silicon, 50, DustedItems.arsenic, 40));
-
-            upgrades.addAll(
-                    new UnitType[]{DustedUnitTypes.carom, DustedUnitTypes.recur},
-                    new UnitType[]{DustedUnitTypes.pique, DustedUnitTypes.rancor}
-            );
         }};
 
-        ternaryRestructurer = new PowderReconstructor("ternary-restructurer") {{
-            requirements(Category.units, BuildVisibility.hidden, ItemStack.with());
-            size = 5;
+        voltaicAssembler = new UnitConstructor("voltaic-assembler") {{
+            requirements(Category.units, ItemStack.with(Items.silicon, 220, DustedItems.antimony, 100, Items.metaglass, 90, DustedItems.arsenic, 60));
+            size = 3;
+            areaSize = 7;
+            droneType = DustedUnitTypes.decayedAssemblyDrone;
 
-            consumePower(5f);
-            consumeItems(ItemStack.with(Items.silicon, 120, Items.titanium, 100, DustedItems.zircon, 60));
-            upgrades.addAll(
-                    new UnitType[]{DustedUnitTypes.recur, DustedUnitTypes.saltate},
-                    new UnitType[]{DustedUnitTypes.rancor, DustedUnitTypes.animus}
+            plans.add(
+                    Seq.with(
+                            new UnitConstructorPlan(DustedUnitTypes.pique, 60f * 40f, ItemStack.with(Items.silicon, 50, DustedItems.antimony, 30, Items.metaglass, 30)),
+                            new UnitConstructorPlan(DustedUnitTypes.rancor, 60f * 70f, ItemStack.with(Items.silicon, 110, DustedItems.crisalt, 70, DustedItems.arsenic, 50))
+                    ),
+                    Seq.with(
+                            new UnitConstructorPlan(DustedUnitTypes.sob, 60f * 30f, ItemStack.with(Items.silicon, 40, Items.metaglass, 40)),
+                            new UnitConstructorPlan(DustedUnitTypes.wail, 60f * 60f, ItemStack.with(Items.silicon, 90, DustedItems.crisalt, 60, DustedItems.zircon, 40))
+                    )
             );
+
+            consumePower(2f);
+        }};
+
+        blazingAssembler = new UnitConstructor("blazing-assembler") {{
+            requirements(Category.units, ItemStack.with(Items.silicon, 220, DustedItems.antimony, 90, DustedItems.arsenic, 90));
+            size = 3;
+            areaSize = 7;
+            droneType = DustedUnitTypes.decayedAssemblyDrone;
+
+            plans.add(
+                    Seq.with(
+                            new UnitConstructorPlan(DustedUnitTypes.protei, 60f * 50f, ItemStack.with(Items.silicon, 50, DustedItems.antimony, 30)),
+                            new UnitConstructorPlan(DustedUnitTypes.hynobii, 60f * 70f, ItemStack.with(Items.silicon, 100, DustedItems.crisalt, 80, Items.metaglass, 60))
+                    )
+            );
+
+            consumePower(2f);
+        }};
+
+        largeWitheredAssembler = new UnitConstructor("large-withered-assembler") {{
+            requirements(Category.units, ItemStack.with(Items.silicon, 400, DustedItems.platinum, 240, Items.metaglass, 160, DustedItems.crisalt, 120));
+            size = 5;
+            droneType = DustedUnitTypes.decayedAssemblyDrone;
+
+            plans.add(
+                    Seq.with(
+                            new UnitConstructorPlan(DustedUnitTypes.deduct, 60f * 100f, ItemStack.with(Items.silicon, 240, DustedItems.platinum, 120, DustedItems.crisalt, 80, DustedItems.arsenic, 80))
+                    ),
+                    Seq.with(
+                            new UnitConstructorPlan(DustedUnitTypes.saltate, 60 * 80f, ItemStack.with(Items.silicon, 200, DustedItems.platinum, 80, DustedItems.antimony, 140))
+                    )
+            );
+
+            consumeLiquid(Liquids.hydrogen, 0.2f);
+            consumePower(4f);
+        }};
+
+        largeVoltaicAssembler = new UnitConstructor("large-voltaic-assembler") {{
+            requirements(Category.units, ItemStack.with(Items.silicon, 440, DustedItems.platinum, 260, Items.metaglass, 100, DustedItems.antimony, 100));
+            size = 5;
+            droneType = DustedUnitTypes.decayedAssemblyDrone;
+
+            plans.add(
+                    Seq.with(
+                            new UnitConstructorPlan(DustedUnitTypes.animus, 60f * 120f, ItemStack.with(Items.silicon, 260, DustedItems.platinum, 140, DustedItems.crisalt, 120, Items.metaglass, 100))
+                    ),
+                    Seq.with(
+                            new UnitConstructorPlan(DustedUnitTypes.snivel, 60 * 90f, ItemStack.with(Items.silicon, 200, DustedItems.platinum, 120, DustedItems.crisalt, 110))
+                    )
+            );
+
+            consumeLiquid(Liquids.hydrogen, 0.2f);
+            consumePower(4f);
+        }};
+
+        largeBlazingAssembler = new UnitConstructor("large-blazing-assembler") {{
+            requirements(Category.units, ItemStack.with(Items.silicon, 420, DustedItems.platinum, 260, Items.metaglass, 160, DustedItems.crisalt, 130));
+            size = 5;
+            droneType = DustedUnitTypes.decayedAssemblyDrone;
+
+            plans.add(
+                    Seq.with(
+                            new UnitConstructorPlan(DustedUnitTypes.sirenid, 60f * 110f, ItemStack.with(Items.silicon, 260, DustedItems.platinum, 160, DustedItems.antimony, 80, Items.metaglass, 80))
+                    )
+            );
+
+            consumeLiquid(Liquids.hydrogen, 0.2f);
+            consumePower(4f);
+        }};
+
+        aerialAssemblerModule = new UnitConstructorModule("aerial-assembler-module") {{
+            requirements(Category.units, ItemStack.with(Items.silicon, 80, DustedItems.antimony, 60, DustedItems.arsenic, 60));
+            size = 3;
+            tier = 0;
+            ptier = 1;
+            consumePower(0.5f);
+        }};
+
+        binaryAssemblerModule = new UnitConstructorModule("binary-assembler-module") {{
+            requirements(Category.units, ItemStack.with(Items.silicon, 220, DustedItems.crisalt, 160, DustedItems.antimony, 120, Items.metaglass, 60));
+            size = 3;
+            consumePower(0.5f);
+        }};
+
+        ternaryAssemblerModule = new UnitConstructorModule("ternary-assembler-module") {{
+            requirements(Category.units, ItemStack.with(Items.silicon, 440, DustedItems.platinum, 260, DustedItems.crisalt, 250, DustedItems.antimony, 200, Items.metaglass, 200, DustedItems.perisle, 40));
+            size = 5;
+            tier = 2;
+            consumePower(2f);
         }};
         //endregion
         //region cores

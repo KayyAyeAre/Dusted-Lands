@@ -19,6 +19,7 @@ import mindustry.gen.*;
 import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.type.weapons.*;
+import mindustry.world.meta.*;
 
 public class DustedUnitTypes {
     public static UnitType
@@ -27,6 +28,7 @@ public class DustedUnitTypes {
     annul, excise, deduct,
     pique, rancor, animus,
     protei, hynobii, sirenid,
+    decayedAssemblyDrone,
     erode, recede, atrophy;
 
     public static void load() {
@@ -781,6 +783,29 @@ public class DustedUnitTypes {
                     hittable = false;
                 }};
             }});
+        }};
+
+        decayedAssemblyDrone = new DustedUnitType("decayed-assembly-drone") {{
+            constructor = BuildingTetherPayloadUnit::create;
+            controller = u -> new AssemblerAI();
+            flying = true;
+            drag = 0.08f;
+            accel = 0.1f;
+            speed = 1.6f;
+            health = 80;
+            engineSize = 2f;
+            engineOffset = 6f;
+            payloadCapacity = 0f;
+            targetable = false;
+            isEnemy = false;
+            hidden = true;
+            useUnitCap = false;
+            logicControllable = false;
+            playerControllable = false;
+            allowedInPayloads = false;
+            createWreck = false;
+            envEnabled = Env.any;
+            envDisabled = Env.none;
         }};
 
         erode = new DustedUnitType("erode") {{
