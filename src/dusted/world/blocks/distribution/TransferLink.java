@@ -181,6 +181,7 @@ public class TransferLink extends Block {
 
     public class TransferLinkBuild extends Building {
         public IntSeq links = new IntSeq();
+        public IntSeq inlinks = new IntSeq();
         public IntSeq pending = new IntSeq();
         public int cur;
         public float transferCounter;
@@ -196,6 +197,13 @@ public class TransferLink extends Block {
             time = (time + (arrowSpeed * delta())) % arrowSpacing;
 
             validate();
+
+            links.each(i -> {
+                if (Vars.world.build(i) instanceof TransferLinkBuild link) link.inlinks.add(pos());
+            });
+            inlinks.each(i -> {
+                if (!linkValid(this, Vars.world.build(i))) inlinks.removeValue(i);
+            });
 
             if (!links.isEmpty()) {
                 updateTransfer();
@@ -253,7 +261,7 @@ public class TransferLink extends Block {
 
         @Override
         public boolean acceptItem(Building source, Item item) {
-            return hasItems && team == source.team && items.total() < itemCapacity;
+            return hasItems && team == source.team && (inlinks.isEmpty() || inlinks.contains(source.pos())) && items.total() < itemCapacity;
         }
 
         @Override
