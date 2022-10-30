@@ -325,6 +325,14 @@ public class DustedFx {
         });
     }),
 
+    shootCavnenSmokeLarge = new Effect(70f, e -> {
+        color(DustedPal.decayingYellow, e.foutpowdown() * 0.9f);
+
+        randLenVectors(e.id, 10, 48f * e.finpow(), e.rotation, 45f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.foutpowdown() * 7f);
+        });
+    }),
+
     splitShot = new Effect(40f, e -> {
         color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
 

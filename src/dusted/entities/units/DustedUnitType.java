@@ -10,6 +10,8 @@ import mindustry.type.*;
 import mindustry.world.meta.*;
 
 public class DustedUnitType extends UnitType {
+    public boolean genCustomIcon = true;
+
     public DustedUnitType(String name) {
         super(name);
 
@@ -23,6 +25,7 @@ public class DustedUnitType extends UnitType {
     @Override
     public void createIcons(MultiPacker packer) {
         super.createIcons(packer);
+        if (!genCustomIcon) return;
         PixmapRegion base = new PixmapRegion(packer.get(name).crop());
 
         //TODO broken

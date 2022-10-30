@@ -15,6 +15,13 @@ public class UnitConstructorModule extends UnitAssemblerModule {
 
     public UnitConstructorModule(String name) {
         super(name);
+        hasLiquids = true;
+    }
+
+    @Override
+    public void setBars() {
+        super.setBars();
+        removeBar("liquid");
     }
 
     @Override

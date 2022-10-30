@@ -25,7 +25,7 @@ public class DustedUnitTypes {
     public static UnitType
     carom, recur, saltate, staccato,
     sob, wail, snivel,
-    annul, excise, deduct,
+    annul, excise, deduct, diminish,
     pique, rancor, animus,
     protei, hynobii, sirenid,
     decayedAssemblyDrone,
@@ -149,6 +149,98 @@ public class DustedUnitTypes {
                         sclTime = 40f;
                         lifetime = 160f;
                         keepVelocity = false;
+                    }};
+                }};
+            }});
+        }};
+
+        diminish = new DustedUnitType("diminish") {{
+            constructor = LegsUnit::create;
+            speed = 0.36f;
+            health = 7800f;
+            hitSize = 24f;
+            rotateSpeed = 1.5f;
+            armor = 10f;
+            groundLayer = Layer.legUnit;
+            hovering = true;
+            genCustomIcon = false;
+
+            legCount = 6;
+            legLength = 35f;
+            legForwardScl = 0.9f;
+            legBaseOffset = 15f;
+            legStraightness = 0.7f;
+            legLengthScl = 0.6f;
+            legMaxLength = 1.2f;
+
+            parts.add(new RegionPart("-blade") {{
+                moveRot = -5f;
+                moveX = -1f;
+                moves.add(new PartMove(PartProgress.reload, 2f, -1f, -10f));
+                progress = PartProgress.warmup;
+                under = true;
+                mirror = true;
+
+                children.add(new RegionPart("-side") {{
+                    moveX = 1f;
+                    moveY = -2f;
+                    progress = PartProgress.warmup;
+                    under = true;
+                    mirror = true;
+                    moves.add(new PartMove(PartProgress.reload, 1f, -1f, 0f));
+                }});
+            }});
+
+            weapons.add(new Weapon() {{
+                mirror = false;
+                x = 0f;
+                y = 3f;
+                cooldownTime = 140f;
+                reload = 200f;
+                shootSound = DustedSounds.cannonHeavy;
+
+                bullet = new BasicBulletType(4f, 44f) {{
+                    width = 28f;
+                    height = 36f;
+                    lifetime = 40f;
+                    frontColor = DustedPal.decayingYellow;
+                    backColor = trailColor = DustedPal.decayingYellowBack;
+                    hitEffect = despawnEffect = DustedFx.hitCavnen;
+                    trailWidth = 6f;
+                    trailLength = 12;
+                    shootEffect = DustedFx.shootCavnenSmokeLarge;
+                    smokeEffect = Fx.none;
+                    status = DustedStatusEffects.deteriorating;
+                    statusDuration = 8f * 60f;
+                    hitSound = Sounds.dullExplosion;
+                    fragRandomSpread = 0f;
+                    fragSpread = 20f;
+                    fragBullets = 5;
+                    fragVelocityMin = 1f;
+                    fragBullet = new BasicBulletType(4f, 18f) {{
+                        width = 22f;
+                        height = 30f;
+                        lifetime = 30f;
+                        frontColor = DustedPal.decayingYellow;
+                        backColor = trailColor = DustedPal.decayingYellowBack;
+                        hitEffect = despawnEffect = DustedFx.hitCavnen;
+                        hitSound = Sounds.dullExplosion;
+                        trailWidth = 4f;
+                        trailLength = 10;
+                        status = DustedStatusEffects.deteriorating;
+                        fragBullets = 1;
+                        fragBullet = new CloudBulletType() {{
+                            damage = 10f;
+                            damageInterval = 15f;
+                            status = DustedStatusEffects.deteriorating;
+                            statusDuration = 4f * 60f;
+                            fieldEffect = DustedFx.yellowDeteriorating;
+                            color = DustedPal.decayingYellow.cpy().a(0.5f);
+                            alphaMag = 0f;
+                            alphaScl = 0f;
+                            sclTime = 60f;
+                            lifetime = 240f;
+                        }};
                     }};
                 }};
             }});
