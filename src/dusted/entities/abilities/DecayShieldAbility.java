@@ -44,17 +44,6 @@ public class DecayShieldAbility extends Ability {
 
     @Override
     public void draw(Unit unit) {
-        Draw.z(Layer.shields + 2.5f);
-        Draw.color(unit.team.color);
-
-        if (Vars.renderer.animateShields) {
-            Fill.poly(unit.x, unit.y, 24, radius, Time.time / 10f);
-        } else {
-            Lines.stroke(1.5f);
-            Draw.alpha(0.09f);
-            Fill.poly(unit.x, unit.y, 24, radius, Time.time / 10f);
-            Draw.alpha(1f);
-            Lines.poly(unit.x, unit.y, 24, radius, Time.time / 10f);
-        }
+        if (shield != null) shield.draw();
     }
 }

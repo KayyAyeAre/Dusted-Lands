@@ -48,9 +48,15 @@ public class ShieldedCoreBlock extends CoreBlock {
             super.created();
 
             Core.app.post(() -> {
-                shield = new DecayShield(this, radius);
+                shield = new DecayShield(this);
                 DustedLands.decay.shields.add(shield);
             });
+        }
+
+        @Override
+        public void updateTile() {
+            super.updateTile();
+            if (shield != null) shield.radius = radius * Interp.pow2.apply(1f - Mathf.maxZero(thrusterTime));
         }
 
         @Override
@@ -64,20 +70,7 @@ public class ShieldedCoreBlock extends CoreBlock {
             super.draw();
 
             if (!Vars.renderer.isCutscene()) {
-                Draw.z(Layer.shields + 2.5f);
-                Draw.color(team.color);
-
-                float fout = Interp.pow2.apply(Math.min(1f - thrusterTime, 1f));
-
-                if (Vars.renderer.animateShields) {
-                    Fill.poly(x, y, 24, radius * fout, Time.time / 10f);
-                } else {
-                    Lines.stroke(1.5f);
-                    Draw.alpha(0.09f);
-                    Fill.poly(x, y, 24, radius * fout, Time.time / 10f);
-                    Draw.alpha(1f);
-                    Lines.poly(x, y, 24, radius * fout, Time.time / 10f);
-                }
+                if (shield != null) shield.draw();
             }
         }
     }

@@ -42,7 +42,7 @@ public class DustedFx {
         e.lifetime = shield.radius * 0.8f;
 
         Draw.z(Layer.shields + 2.5f);
-        Draw.color(shield.owner.team().color);
+        Draw.color(shield.team().color);
 
         if (Vars.renderer.animateShields) {
             Fill.poly(e.x, e.y, 24, shield.radius * e.foutpow(), Time.time / 10f);
@@ -186,7 +186,7 @@ public class DustedFx {
         });
     }),
 
-    caromSparks = new Effect(20f, e -> {
+    sliceSparks = new Effect(20f, e -> {
         color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
         Lines.stroke(1.5f);
         randLenVectors(e.id, 2, e.finpow() * 14f, e.rotation + 180f, 10f, (x, y) -> {

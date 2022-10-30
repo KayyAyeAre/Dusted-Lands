@@ -2,6 +2,7 @@ package dusted.game;
 
 import arc.*;
 import arc.func.*;
+import arc.graphics.g2d.*;
 import arc.math.*;
 import arc.math.geom.*;
 import arc.struct.*;
@@ -14,6 +15,7 @@ import mindustry.entities.*;
 import mindustry.game.*;
 import mindustry.game.EventType.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.world.*;
 
@@ -65,10 +67,10 @@ public class Decay implements ApplicationListener {
     }
 
     public <T extends Teamc & Sized> boolean isShielded(T entity) {
-        return shields.contains(s -> entity.team() == s.owner.team() && entity.dst(s.owner) < s.radius + entity.hitSize() / 2f);
+        return shields.contains(s -> entity.team() == s.team() && entity.within(s, s.radius + entity.hitSize() / 2f));
     }
 
-    public static class DecayShield {
+    public static class DecayShield implements Position {
         public float radius;
         public Teamc owner;
 
@@ -79,6 +81,35 @@ public class Decay implements ApplicationListener {
         public DecayShield(Teamc owner, float radius) {
             this.owner = owner;
             this.radius = radius;
+        }
+
+        public Team team() {
+            return owner.team();
+        }
+
+        @Override
+        public float getX() {
+            return owner.getX();
+        }
+
+        @Override
+        public float getY() {
+            return owner.getY();
+        }
+
+        public void draw() {
+            Draw.z(Layer.shields + 2.5f);
+            Draw.color(team().color);
+
+            if (Vars.renderer.animateShields) {
+                Fill.poly(getX(), getY(), 24, radius, Time.time / 10f);
+            } else {
+                Lines.stroke(1.5f);
+                Draw.alpha(0.09f);
+                Fill.poly(getX(), getY(), 24, radius, Time.time / 10f);
+                Draw.alpha(1f);
+                Lines.poly(getX(), getY(), 24, radius, Time.time / 10f);
+            }
         }
     }
 }

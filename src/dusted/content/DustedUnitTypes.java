@@ -160,6 +160,7 @@ public class DustedUnitTypes {
             speed = 3.6f;
             flying = true;
             lowAltitude = true;
+            circleTarget = true;
             health = 120;
             accel = 0.04f;
             drag = 0.03f;
@@ -188,66 +189,64 @@ public class DustedUnitTypes {
                     status = DustedStatusEffects.deteriorating;
                     statusDuration = 6f * 60f;
                 }};
+            }});
 
-                abilities.add(new MoveLightningAbility(0f, 0, 1f, 0f, 0.4f, 1.2f, Color.white) {{
-                    shootEffect = Fx.none;
-                    shootSound = Sounds.none;
-                    bullet = new BulletType(0f, 12f) {{
-                        instantDisappear = true;
-                        splashDamage = 10f;
-                        splashDamageRadius = 3f;
-                        hittable = reflectable = absorbable = setDefaults = despawnHit = false;
-                        despawnEffect = Fx.none;
-                        hitEffect = DustedFx.caromSparks;
-                        //TODO sound
-                        hitSound = Sounds.missile;
-                        hitSoundVolume = 0.7f;
-                    }};
-                }});
+            abilities.add(new MoveLightningAbility(0f, 0, 1f, 0f, 0.4f, 1.2f, Color.white) {{
+                shootEffect = Fx.none;
+                shootSound = Sounds.none;
+                bullet = new BulletType(0f, 7f) {{
+                    instantDisappear = true;
+                    hittable = reflectable = absorbable = setDefaults = despawnHit = collidesAir = false;
+                    despawnEffect = Fx.none;
+                    hitEffect = DustedFx.sliceSparks;
+                    //TODO sound
+                    hitSound = Sounds.missile;
+                    hitSoundVolume = 0.7f;
+                }};
             }});
         }};
 
         recur = new DustedUnitType("recur") {{
             constructor = UnitEntity::create;
-            aiController = BounceAI::new;
-            health = 320f;
+            health = 300f;
             armor = 2f;
-            speed = 2.6f;
-            accel = 0.16f;
+            speed = 3f;
+            accel = 0.1f;
+            drag = 0.06f;
             flying = true;
+            circleTarget = true;
             hitSize = 8f;
-            range = 180f;
             engineOffset = 8f;
             engineSize = 3f;
 
             weapons.add(new Weapon() {{
-                x = 0f;
-                y = 6.2f;
                 mirror = false;
-                reload = 50f;
-                shootSound = Sounds.laser;
-
-                bullet = new LaserBulletType() {{
-                    damage = 30f;
-                    length = 50f;
-                    sideWidth = 0.8f;
-                    sideLength = 52f;
-                    colors = new Color[]{DustedPal.decayingYellowBack, DustedPal.decayingYellow, Color.white};
+                x = 0f;
+                y = 4f;
+                reload = 15f;
+                shoot = new ShootSpread(3, 10f);
+                shootSound = Sounds.missile;
+                bullet = new BasicBulletType(3.4f, 9f) {{
+                    width = 8f;
+                    height = 9f;
+                    lifetime = 20f;
+                    frontColor = DustedPal.decayingYellow;
+                    backColor = trailColor = DustedPal.decayingYellowBack;
+                    trailWidth = 2f;
+                    trailLength = 5;
+                    hitEffect = despawnEffect = DustedFx.hitCavnen;
+                    status = DustedStatusEffects.deteriorating;
+                    statusDuration = 6f * 60f;
                 }};
             }});
 
-            abilities.add(new BounceAbility() {{
-                bounceDamage = 14f;
-                bounceDistance = 180f;
-                bounces = 2;
-                bounceCooldown = 70f;
-            }});
+            abilities.add(new MoveEnhanceAbility(0.8f, 1.4f));
         }};
 
         saltate = new DustedUnitType("saltate") {{
             constructor = UnitEntity::create;
             aiController = BounceAI::new;
-            health = 680f;
+            health = 660f;
             speed = 2f;
             accel = 0.08f;
             drag = 0.03f;
@@ -256,50 +255,68 @@ public class DustedUnitTypes {
             armor = 4f;
             hitSize = 10f;
             range = 180f;
-            engineOffset = 8f;
-            engineSize = 3f;
+            engineSize = 0f;
 
-            weapons.add(new Weapon("dusted-lands-decay-mount") {{
-                reload = 70f;
-                x = 6f;
-                y = -2f;
-                rotate = true;
-                shootSound = Sounds.missile;
+            setEnginesMirror(
+                    new UnitEngine(11.25f, -7.5f, 3f, 315f),
+                    new UnitEngine(8.75f, -12.5f, 3f, 315f)
+            );
 
-                bullet = new BasicBulletType(3.5f, 12f) {{
-                    width = height = 14f;
-                    splashDamageRadius = 18f;
-                    splashDamage = 14f;
-                    lifetime = 40f;
+            BasicBulletType b = new BasicBulletType(3.6f, 12f, "circle-bullet") {{
+                width = height = 12f;
+                shrinkX = shrinkY = 0.3f;
+                lifetime = 40f;
+                frontColor = DustedPal.decayingYellow;
+                backColor = DustedPal.decayingYellowBack;
+                hitEffect = despawnEffect = DustedFx.hitCavnen;
+                status = DustedStatusEffects.deteriorating;
+                statusDuration = 8f * 60f;
+                hitSound = despawnSound = Sounds.explosion;
+                fragBullets = 3;
+                fragRandomSpread = 0f;
+                fragSpread = 20f;
+                fragVelocityMin = 1f;
+                fragBullet = new BasicBulletType(4f, 8f) {{
+                    width = 6f;
+                    height = 10f;
+                    lifetime = 30f;
                     frontColor = DustedPal.decayingYellow;
-                    backColor = DustedPal.decayingYellowBack;
-                    shootEffect = Fx.shootHealYellow;
+                    backColor = trailColor = DustedPal.decayingYellowBack;
                     hitEffect = despawnEffect = DustedFx.hitCavnen;
-
-                    fragBullets = 5;
-                    fragBullet = new MissileBulletType(4f, 10f, "circle-bullet") {{
-                        width = height = 8f;
-                        homingPower = 0.1f;
-                        weaveMag = 3f;
-                        weaveScale = 4f;
-                        lifetime = 30f;
-                        splashDamageRadius = 16f;
-                        splashDamage = 12f;
-                        hitEffect = despawnEffect = DustedFx.hitCavnen;
-                        frontColor = DustedPal.decayingYellow;
-                        backColor = DustedPal.decayingYellowBack;
-                        trailColor = DustedPal.decayingYellow;
-                        trailLength = 6;
-                        trailWidth = 3f;
-                    }};
+                    status = DustedStatusEffects.deteriorating;
+                    trailWidth = 2f;
+                    trailLength = 7;
+                    statusDuration = 3f * 60f;
                 }};
-            }});
+            }};
+
+            weapons.add(
+                    new Weapon("dusted-lands-saltate-weapon") {{
+                        mirror = false;
+                        x = 0f;
+                        y = -4f;
+                        reload = 50f;
+                        shoot.shots = 4;
+                        shoot.shotDelay = 5f;
+                        shootSound = Sounds.missile;
+                        bullet = b;
+                    }},
+                    new Weapon("dusted-lands-saltate-weapon") {{
+                        alternate = false;
+                        x = 7f;
+                        y = -1f;
+                        reload = 50f / 2f;
+                        shoot.shots = 4;
+                        shoot.shotDelay = 5f;
+                        shootSound = Sounds.missile;
+                        bullet = b;
+                    }}
+            );
 
             abilities.add(new BounceAbility() {{
-                bounceDamage = 10f;
+                bounceDamage = 40f;
                 bounceDistance = 180f;
-                bounces = 4;
-                bounceCooldown = 110f;
+                bounceCooldown = 120f;
             }});
         }};
 

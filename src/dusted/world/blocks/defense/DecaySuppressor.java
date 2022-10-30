@@ -77,23 +77,7 @@ public class DecaySuppressor extends Block {
             Draw.rect(topRegion, x, y);
             Draw.reset();
 
-            drawSuppressor();
-        }
-
-        public void drawSuppressor() {
-            //TODO move this into the shield class instead?
-            Draw.z(Layer.shields + 2.5f);
-            Draw.color(team.color);
-
-            if (Vars.renderer.animateShields) {
-                Fill.poly(x, y, 24, realRadius(), Time.time / 10f);
-            } else {
-                Lines.stroke(1.5f);
-                Draw.alpha(0.09f);
-                Fill.poly(x, y, 24, realRadius(), Time.time / 10f);
-                Draw.alpha(1f);
-                Lines.poly(x, y, 24, realRadius(), Time.time / 10f);
-            }
+            if (shield != null) shield.draw();
         }
 
         @Override
