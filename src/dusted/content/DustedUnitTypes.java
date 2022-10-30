@@ -1,6 +1,7 @@
 package dusted.content;
 
 import arc.graphics.*;
+import dusted.*;
 import dusted.ai.types.*;
 import dusted.entities.abilities.*;
 import dusted.entities.bullet.*;
@@ -261,6 +262,10 @@ public class DustedUnitTypes {
             trailColor = DustedPal.decayingYellow;
             trailScl = 0.6f;
 
+            //sort of like a suicide unit
+            DustedLands.decay.ignoreShield.add(this);
+            DustedLands.decay.decayMultipliers.put(this, 0.3f);
+
             weapons.add(new Weapon("dusted-lands-carom-weapon") {{
                 x = 3f;
                 y = -2f;
@@ -310,6 +315,9 @@ public class DustedUnitTypes {
             hitSize = 8f;
             engineOffset = 8f;
             engineSize = 3f;
+
+            DustedLands.decay.ignoreShield.add(this);
+            DustedLands.decay.decayMultipliers.put(this, 0.3f);
 
             weapons.add(new Weapon() {{
                 mirror = false;

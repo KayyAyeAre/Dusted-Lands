@@ -2,6 +2,7 @@ package dusted.content;
 
 import arc.graphics.*;
 import arc.struct.*;
+import dusted.*;
 import dusted.entities.bullet.*;
 import dusted.graphics.*;
 import dusted.type.*;
@@ -324,6 +325,7 @@ public class DustedBlocks {
             requirements(Category.crafting, ItemStack.with(DustedItems.antimony, 120, DustedItems.platinum, 60, Items.metaglass, 40, DustedItems.arsenic, 40));
             size = 3;
             squareSprite = false;
+            DustedLands.decay.decayMultipliers.put(this, 0.3f);
 
             outputItem = new ItemStack(DustedItems.perisle, 1);
             craftTime = 120f;
