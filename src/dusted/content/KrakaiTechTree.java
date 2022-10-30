@@ -35,6 +35,9 @@ public class KrakaiTechTree {
                 node(siliconForge, Seq.with(new OnSector(magmaticPassage)), () -> {});
                 node(quartzExtractor, Seq.with(new OnSector(magmaticPassage), new Research(siliconForge)), () -> {
                     node(metaglassFurnace, Seq.with(tmpNever), () -> {
+                        node(crisaltSynthesizer, () -> {
+                            node(deteriorationChamber);
+                        });
                         node(rockwoolExtruder);
                     });
                 });
@@ -56,7 +59,10 @@ public class KrakaiTechTree {
                 node(scald, Seq.with(new OnSector(taintedValley)), () -> {
                     node(coruscate, Seq.with(tmpNever), () -> {
                         node(strike);
-                        node(blight);
+                        node(clutter);
+                        node(blight, () -> {
+                            node(crush);
+                        });
                     });
                 });
                 node(sunder, Seq.with(new OnSector(magmaticPassage)), () -> {});
@@ -66,10 +72,62 @@ public class KrakaiTechTree {
                 node(coreDecadence);
             });
 
+            node(witheredAssembler, Seq.with(tmpNever), () -> {
+                node(DustedUnitTypes.annul);
+
+                node(aerialAssemblerModule, () -> {
+                    node(DustedUnitTypes.carom);
+                });
+
+                node(voltaicAssembler, () -> {
+                    node(DustedUnitTypes.pique);
+                    node(DustedUnitTypes.sob, Seq.with(new Research(aerialAssemblerModule)), () -> {});
+                });
+
+                node(blazingAssembler, () -> {
+                    node(DustedUnitTypes.protei);
+                });
+
+                node(binaryAssemblerModule, Seq.with(new Research(aerialAssemblerModule)), () -> {
+                    node(DustedUnitTypes.excise);
+                    node(DustedUnitTypes.recur);
+                    node(DustedUnitTypes.rancor);
+                    node(DustedUnitTypes.wail);
+                    node(DustedUnitTypes.hynobii);
+
+                    node(largeWitheredAssembler, () -> {
+                        node(DustedUnitTypes.deduct, () -> {
+                            node(DustedUnitTypes.diminish);
+                        });
+                        node(DustedUnitTypes.saltate, () -> {
+                            node(DustedUnitTypes.staccato);
+                        });
+
+                        node(largeVoltaicAssembler, () -> {
+                            node(DustedUnitTypes.animus, () -> {
+                                //node(DustedUnitTypes.enmity);
+                            });
+                            node(DustedUnitTypes.snivel, () -> {
+                                //node(DustedUnitTypes.lament);
+                            });
+                        });
+
+                        node(largeBlazingAssembler, () -> {
+                            node(DustedUnitTypes.sirenid, () -> {
+                                //node(DustedUnitTypes.pleurodel);
+                            });
+                        });
+
+                        node(ternaryAssemblerModule);
+                    });
+                });
+            });
+
             nodeProduce(DustedItems.zircon, () -> {
                 nodeProduce(DustedItems.arsenic, () -> {
                     nodeProduce(DustedItems.antimony, () -> {
                         nodeProduce(DustedItems.platinum, () -> {
+                            nodeProduce(DustedItems.perisle, () -> {});
                             nodeProduce(DustedItems.telonate, () -> {});
                         });
 
@@ -80,6 +138,7 @@ public class KrakaiTechTree {
 
                             nodeProduce(Items.metaglass, () -> {
                                 nodeProduce(Liquids.slag, () -> {});
+                                nodeProduce(DustedItems.crisalt, () -> {});
                                 nodeProduce(DustedItems.rockwool, () -> {});
                             });
                         });

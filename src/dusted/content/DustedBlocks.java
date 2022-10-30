@@ -864,7 +864,7 @@ public class DustedBlocks {
         }};
 
         blight = new PowderTurret("blight") {{
-            requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 240, DustedItems.antimony, 160, Items.silicon, 120, DustedItems.platinum, 40));
+            requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 440, DustedItems.antimony, 160, Items.silicon, 120, DustedItems.platinum, 40));
             size = 4;
             squareSprite = false;
             reload = 190f;
@@ -978,7 +978,7 @@ public class DustedBlocks {
         }};
 
         crush = new PowderTurret("crush") {{
-            requirements(Category.turret, BuildVisibility.sandboxOnly, ItemStack.with());
+            requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 460, DustedItems.crisalt, 280, Items.metaglass, 120, Items.silicon, 120, DustedItems.platinum, 60));
             size = 4;
             squareSprite = false;
             scaledHealth = 280f;
