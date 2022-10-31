@@ -52,7 +52,7 @@ public class DustedBlocks {
     //defense
     zirconWall, zirconWallLarge, antimonyWall, antimonyWallLarge,
     decaySuppressor,
-    //turrets, TODO balancing?
+    //turrets
     abrade, sunder, bisect, scald, coruscate, strike, clutter, blight, crush,
     cocaineDuo,
     //distribution
@@ -61,7 +61,7 @@ public class DustedBlocks {
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
     //power
-    magmaticGenerator, slagCombustor,
+    magmaticGenerator,
     //crafters
     quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, crisaltSynthesizer, deteriorationChamber,
     //production

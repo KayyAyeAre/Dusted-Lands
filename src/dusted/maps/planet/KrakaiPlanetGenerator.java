@@ -71,14 +71,15 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
     }
 
     Block getBlock(Vec3 position) {
-        float height = Mathf.clamp(genHeight(position) * 1.1f);
+        float height = Mathf.clamp(genHeight(position) * 0.9f);
 
         Block[] arr = terrain[Mathf.clamp(Mathf.round(((position.y + 1f) / 2f) * (terrain.length - 1)), 0, terrain.length - 1)];
         int index = Mathf.clamp((int) (height * terrain[0].length), 0, terrain[0].length - 1);
         Block result = decay(position) < 0.7f || arr[index] == DustedBlocks.volstone ? arr[index] : decayedTerrain[index];
 
         //lower slag in decayed biomes
-        if (((decay(position) < 0.7f && height < 0.27f) || height < 0.6f) && Simplex.noise3d(seed, 12, 0.3, 0.9f, position.x + 100f, position.y + 100f, position.z + 100f) + Math.abs(position.y / 3.5f) < 0.52f) result = Blocks.slag;
+        float slagHeight = rawHeight(position);
+        if (((decay(position) < 0.7f && slagHeight < 0.27f) || slagHeight < 0.6f) && Simplex.noise3d(seed, 12, 0.3, 0.9f, position.x + 100f, position.y + 100f, position.z + 100f) + Math.abs(position.y / 3.5f) < 0.52f) result = Blocks.slag;
 
         return result;
     }
