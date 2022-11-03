@@ -137,6 +137,14 @@ public class DustedFx {
         }
     }),
 
+    regeneration = new Effect(70f, e -> {
+        color(DustedPal.pinkHeal);
+
+        randLenVectors(e.id, 4, 4f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fslope() * e.fslope() * 2f);
+        });
+    }),
+
     bounce = new Effect(40f, 120f, e -> {
         if (!(e.data instanceof Float distance)) return;
         float tx = e.x + Angles.trnsx(e.rotation + 180f, distance / 2) + Angles.trnsx(e.rotation, e.finpow() * distance);

@@ -31,11 +31,8 @@ import mindustry.world.blocks.defense.*;
 import mindustry.world.blocks.defense.turrets.*;
 import mindustry.world.blocks.environment.*;
 import mindustry.world.blocks.production.*;
-import mindustry.world.blocks.units.*;
 import mindustry.world.draw.*;
 import mindustry.world.meta.*;
-
-import static mindustry.type.ItemStack.with;
 
 //TODO balancing, campaign stuff
 public class DustedBlocks {
@@ -51,7 +48,7 @@ public class DustedBlocks {
     volstoneBoulder, volSprout, weepingShrub,
     //defense
     zirconWall, zirconWallLarge, antimonyWall, antimonyWallLarge,
-    decaySuppressor,
+    decaySuppressor, regenerationTower,
     //turrets
     abrade, sunder, bisect, scald, coruscate, strike, clutter, blight, crush,
     cocaineDuo,
@@ -61,7 +58,7 @@ public class DustedBlocks {
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
     //power
-    magmaticGenerator,
+    magmaticGenerator, crystalConcentrator,
     //crafters
     quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, crisaltSynthesizer, deteriorationChamber,
     //production
@@ -468,6 +465,36 @@ public class DustedBlocks {
 
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.slag, 1.25f), new DrawDefault());
         }};
+
+        //i dont have any ideas ok?
+        crystalConcentrator = new TransferPowerPowderConsumeGenerator("crystal-concentrator") {{
+            requirements(Category.power, ItemStack.with(DustedItems.antimony, 60, Items.silicon, 40, Items.metaglass, 40));
+            size = 3;
+            powerProduction = 5f;
+            ambientSound = Sounds.smelter;
+            ambientSoundVolume = 0.08f;
+
+            consume(new ConsumePowder(DustedPowders.quartzDust, 0.05f));
+            consumeLiquid(Liquids.slag, 10f / 60f);
+
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawCircles() {{
+                        color = DustedPal.lightQuartz.cpy().a(0.4f);
+                        radius = 8f;
+                        amount = 2;
+                        timeScl = 120f;
+                    }},
+                    new DrawParticles() {{
+                        color = DustedPal.darkQuartz;
+                        particleSize = 2f;
+                        particleRad = 9f;
+                        fadeMargin = 0f;
+                        blending = Blending.additive;
+                    }},
+                    new DrawDefault()
+            );
+        }};
         //endregion
         //region defense
         zirconWall = new Wall("zircon-wall") {{
@@ -497,6 +524,24 @@ public class DustedBlocks {
            size = 3;
            consumePower(1f);
            researchCost = ItemStack.with(DustedItems.zircon, 30);
+        }};
+
+        //TODO boost item
+        regenerationTower = new RepairTower("regeneration-tower") {{
+            requirements(Category.effect, ItemStack.with(Items.metaglass, 70, DustedItems.antimony, 60, DustedItems.arsenic, 40));
+            size = 3;
+            consumePower(1.5f);
+
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawCircles() {{
+                        color = DustedPal.pinkHeal.cpy().a(0.4f);
+                        radius = 10f;
+                        amount = 2;
+                        timeScl = 100f;
+                    }},
+                    new DrawDefault()
+            );
         }};
         //endregion
         //region turrets

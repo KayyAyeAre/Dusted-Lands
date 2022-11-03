@@ -34,7 +34,7 @@ public interface TransferPowerc extends BuildAccessor {
         Draw.blend(Blending.additive);
         Draw.z(Layer.blockOver);
         Lines.stroke(10f * (1f - progress));
-        Draw.color(Pal.powerLight, 0.5f);
+        Draw.color(Pal.powerLight, 0.5f * build().warmup());
 
         Lines.circle(build().x, build().y, progress * radius());
 
