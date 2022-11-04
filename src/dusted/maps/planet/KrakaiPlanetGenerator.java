@@ -30,9 +30,8 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
     Block[] decayedTerrain = {DustedBlocks.cavnenSilk, DustedBlocks.cavnenSilk, DustedBlocks.cavnenSilk, DustedBlocks.cavnenDusting, DustedBlocks.cavnenSediment, DustedBlocks.riftRock, DustedBlocks.decayedRock, DustedBlocks.decayedRock, DustedBlocks.fallenStone, DustedBlocks.fallenMantle};
 
-    @Override
-    public Schematic getDefaultLoadout() {
-        return DustedLoadouts.basicAbate;
+    {
+        defaultLoadout = DustedLoadouts.basicAbate;
     }
 
     @Override

@@ -50,7 +50,7 @@ public class DustedBlocks {
     zirconWall, zirconWallLarge, antimonyWall, antimonyWallLarge,
     decaySuppressor, regenerationTower,
     //turrets
-    abrade, sunder, bisect, scald, coruscate, strike, clutter, blight, crush,
+    abrade, sunder, scald, coruscate, strike, clutter, blight, crush,
     cocaineDuo,
     //distribution
     transferLink, transferTower,
@@ -653,35 +653,6 @@ public class DustedBlocks {
             );
 
             researchCost = ItemStack.with(DustedItems.zircon, 100, DustedItems.arsenic, 50, DustedItems.antimony, 50, Items.silicon, 50);
-        }};
-
-        //TODO redo this entirely maybe
-        bisect = new PowerTurret("bisect") {{
-            requirements(Category.turret, BuildVisibility.hidden, ItemStack.with());
-            size = 2;
-            squareSprite = false;
-            scaledHealth = 220f;
-            targetAir = false;
-            reload = 70f;
-            recoil = 1f;
-            range = 100f;
-            shootSound = Sounds.laser;
-
-            outlineColor = DustedPal.darkerWarmMetal;
-            drawer = new DrawTurret("decayed-");
-
-            shootType = new SplittingLaserBulletType(90f) {{
-                hitSize = 8f;
-                lifetime = 40f;
-                drawSize = 100f;
-                shootEffect = DustedFx.splitShot;
-                collidesAir = false;
-                length = 100f;
-                ammoMultiplier = 1f;
-            }};
-
-            consumePower(2f);
-            coolant = consumeCoolant(0.1f);
         }};
 
         coruscate = new PowderTurret("coruscate") {{
