@@ -45,6 +45,6 @@ public class DustedPlanets {
 
         //i dont fucking know
         Planets.serpulo.hiddenItems.addAll(DustedItems.krakaiItems).removeAll(Items.serpuloItems);
-        Planets.erekir.hiddenItems.addAll(DustedItems.krakaiItems).removeAll(Items.erekirOnlyItems);
+        Planets.erekir.hiddenItems.addAll(DustedItems.krakaiItems).removeAll(Items.erekirItems);
     }
 }
