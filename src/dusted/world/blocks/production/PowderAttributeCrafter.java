@@ -1,10 +1,8 @@
 package dusted.world.blocks.production;
 
-import arc.*;
 import arc.util.*;
 import arc.util.io.*;
 import dusted.type.*;
-import dusted.world.blocks.powder.PowderBlock.*;
 import dusted.world.interfaces.*;
 import dusted.world.meta.*;
 import dusted.world.modules.*;
@@ -15,12 +13,13 @@ import mindustry.ui.*;
 import mindustry.world.blocks.production.*;
 import mindustry.world.meta.*;
 
-public class PowderCrafter extends GenericCrafter implements PowderBlockc {
+public class PowderAttributeCrafter extends AttributeCrafter implements PowderBlockc {
     public boolean[] powderFilter = {};
     public float powderCapacity = 20f;
-    public @Nullable PowderStack outputPowder;
+    public @Nullable
+    PowderStack outputPowder;
 
-    public PowderCrafter(String name) {
+    public PowderAttributeCrafter(String name) {
         super(name);
     }
 
@@ -38,7 +37,7 @@ public class PowderCrafter extends GenericCrafter implements PowderBlockc {
     public void setBars() {
         super.setBars();
         if (outputPowder != null) addBar("powders", build -> {
-            PowderCrafterBuild entity = (PowderCrafterBuild) build;
+            PowderAttributeCrafterBuild entity = (PowderAttributeCrafterBuild) build;
             return new Bar(() -> outputPowder.powder.localizedName, () -> outputPowder.powder.color, () -> entity.powders.get(outputPowder.powder) / powderCapacity);
         });
     }
@@ -59,7 +58,7 @@ public class PowderCrafter extends GenericCrafter implements PowderBlockc {
         return powderCapacity;
     }
 
-    public class PowderCrafterBuild extends GenericCrafterBuild implements PowderBuildc {
+    public class PowderAttributeCrafterBuild extends AttributeCrafterBuild implements PowderBuildc {
         public PowderModule powders = new PowderModule();
 
         @Override

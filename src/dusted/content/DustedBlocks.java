@@ -1,6 +1,7 @@
 package dusted.content;
 
 import arc.graphics.*;
+import arc.math.*;
 import arc.struct.*;
 import dusted.*;
 import dusted.entities.bullet.*;
@@ -39,8 +40,9 @@ public class DustedBlocks {
     public static Block
     //environment
     oreZircon, oreArsenic, oreAntimony, orchar, sulfur, volcanoZone,
-    fallenStone, fallenMantle, decayedRock, riftRock, cavnenSediment, cavnenDusting, cavnenSilk,
+    fallenStone, fallenMantle, warpedStone, decayedRock, riftRock, cavnenSediment, cavnenDusting, cavnenSilk,
     volstone, latite, scoria, stradrock, scorchedStradrock,
+    basaltFumarole, volstoneFumarole, scoriaFumarole, latiteFumarole,
     fallenWall, decayedWall, cavnenWall, volstoneWall, scoriaWall, latiteWall, stradrockWall,
     //decor
     scoriaBoulder, latiteBoulder, stradrockBoulder,
@@ -58,16 +60,16 @@ public class DustedBlocks {
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
     //power
-    magmaticGenerator, crystalConcentrator,
+    magmaticGenerator, riftDischarger, crystalConcentrator,
     //crafters
     quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, crisaltSynthesizer, deteriorationChamber,
     //production
     pressureDrill, ignitionDrill,
     pneumaticFunnel, rotaryFunnel,
+    sulfurSiphon, hydrogenSiphon,
     //cores
     coreAbate, coreDissent, coreDecadence,
     //units
-    //TODO rework this
     witheredAssembler, voltaicAssembler, blazingAssembler,
     largeWitheredAssembler, largeVoltaicAssembler, largeBlazingAssembler,
     aerialAssemblerModule, binaryAssemblerModule, ternaryAssemblerModule,
@@ -114,7 +116,8 @@ public class DustedBlocks {
             speedMultiplier = 0.1f;
             variants = 0;
             cacheLayer = DustedShaders.silkLayer;
-            attributes.set(DustedAttribute.decay, 0.5f);
+            attributes.set(DustedAttribute.decay, 1f);
+            attributes.set(DustedAttribute.decayEnergy, 1f);
             albedo = 0.7f;
         }};
 
@@ -123,7 +126,8 @@ public class DustedBlocks {
         }};
 
         riftRock = new RiftFloor("rift-rock") {{
-            attributes.set(DustedAttribute.decay, 0.25f);
+            attributes.set(DustedAttribute.decay, 1.5f);
+            attributes.set(DustedAttribute.decayEnergy, 1f);
             blendGroup = decayedRock;
         }};
 
@@ -135,6 +139,13 @@ public class DustedBlocks {
             attributes.set(DustedAttribute.decay, 0.25f);
         }};
 
+        warpedStone = new RiftFloor("warped-stone") {{
+            attributes.set(DustedAttribute.decay, 1f);
+            attributes.set(DustedAttribute.decayEnergy, 1f);
+            riftColor = Color.valueOf("c2ffd1");
+            blendGroup = fallenStone;
+        }};
+
         volstone = new Floor("volstone");
 
         scoria = new Floor("scoria");
@@ -144,6 +155,30 @@ public class DustedBlocks {
         stradrock = new Floor("stradrock");
 
         scorchedStradrock = new Floor("scorched-stradrock");
+
+        basaltFumarole = new Fumarole("basalt-fumarole") {{
+            variants = 2;
+            blendGroup = Blocks.basalt;
+            attributes.set(DustedAttribute.volcanicGas, 1f);
+        }};
+
+        volstoneFumarole = new Fumarole("volstone-fumarole") {{
+            variants = 2;
+            blendGroup = volstone;
+            attributes.set(DustedAttribute.volcanicGas, 1f);
+        }};
+
+        scoriaFumarole = new Fumarole("scoria-fumarole") {{
+            variants = 2;
+            blendGroup = scoria;
+            attributes.set(DustedAttribute.volcanicGas, 1f);
+        }};
+
+        latiteFumarole = new Fumarole("latite-fumarole") {{
+            variants = 2;
+            blendGroup = latite;
+            attributes.set(DustedAttribute.volcanicGas, 1f);
+        }};
 
         cavnenWall = new StaticWall("cavnen-wall") {{
             cavnenSediment.asFloor().wall = cavnenDusting.asFloor().wall = cavnenSilk.asFloor().wall = this;
@@ -449,6 +484,77 @@ public class DustedBlocks {
             extractEffect = DustedFx.funnelExtract;
             squareSprite = false;
         }};
+
+        sulfurSiphon = new PowderAttributeCrafter("sulfur-siphon") {{
+            requirements(Category.production, ItemStack.with(DustedItems.rockwool, 80, DustedItems.arsenic, 60, Items.silicon, 40, DustedItems.crisalt, 40));
+            size = 3;
+            squareSprite = true;
+            attribute = DustedAttribute.volcanicGas;
+            baseEfficiency = 0f;
+            minEfficiency = 0.01f;
+            boostScale = 1f / 9f;
+            craftTime = 60f;
+            ambientSound = Sounds.machine;
+            ambientSoundVolume = 0.09f;
+            outputPowder = new PowderStack(DustedPowders.sulfur, 0.1f);
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawCircles() {{
+                        color = Color.valueOf("f7e89c").a(0.4f);
+                        radius = 8f;
+                        amount = 4;
+                        timeScl = 240f;
+                    }},
+                    new DrawDefault(),
+                    new DrawParticles() {{
+                        color = Color.valueOf("f7e89c");
+                        particleRad = 8f;
+                        particles = 20;
+                        fadeMargin = 0f;
+                        particleInterp = particleSizeInterp = Interp.pow3Out;
+                        particleLife = 50f;
+                        reverse = true;
+                    }},
+                    new DrawRegion("-top")
+            );
+            consumePower(0.5f);
+        }};
+
+        hydrogenSiphon = new AttributeCrafter("hydrogen-siphon") {{
+            requirements(Category.production, ItemStack.with(DustedItems.rockwool, 80, DustedItems.antimony, 60, Items.metaglass, 40, DustedItems.crisalt, 40));
+            size = 3;
+            squareSprite = true;
+            attribute = DustedAttribute.volcanicGas;
+            baseEfficiency = 0f;
+            minEfficiency = 0.01f;
+            boostScale = 1f / 9f;
+            craftTime = 60f;
+            ambientSound = Sounds.machine;
+            ambientSoundVolume = 0.09f;
+            outputLiquid = new LiquidStack(Liquids.hydrogen, 0.2f);
+            liquidCapacity = 30f;
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawCircles() {{
+                        color = Color.valueOf("9eabf7").a(0.4f);
+                        radius = 8f;
+                        amount = 4;
+                        timeScl = 240f;
+                    }},
+                    new DrawDefault(),
+                    new DrawParticles() {{
+                        color = Color.valueOf("9eabf7");
+                        particleRad = 8f;
+                        particles = 20;
+                        fadeMargin = 0f;
+                        particleInterp = particleSizeInterp = Interp.pow3Out;
+                        particleLife = 50f;
+                        reverse = true;
+                    }},
+                    new DrawRegion("-top")
+            );
+            consumePower(0.5f);
+        }};
         //endregion
         //region power
         magmaticGenerator = new FilterTileGenerator("magmatic-generator") {{
@@ -464,6 +570,35 @@ public class DustedBlocks {
             researchCost = ItemStack.with(DustedItems.zircon, 10);
 
             drawer = new DrawMulti(new DrawRegion("-bottom"), new DrawLiquidTile(Liquids.slag, 1.25f), new DrawDefault());
+        }};
+
+        riftDischarger = new FilterTileGenerator("rift-discharger") {{
+            requirements(Category.power, ItemStack.with(DustedItems.zircon, 70));
+            size = 3;
+            floating = true;
+            ambientSound = Sounds.hum;
+            filter = f -> f.attributes.get(DustedAttribute.decayEnergy);
+            generateEffect = DustedFx.riftDischarge;
+            effectChance = 0.01f;
+            powerProduction = 160f / 9f / 60f;
+
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawCircles() {{
+                        color = DustedPal.decayingYellow.cpy().a(0.4f);
+                        radius = 8f;
+                        amount = 4;
+                        timeScl = 80f;
+                    }},
+                    new DrawParticles() {{
+                        color = DustedPal.decayingYellow;
+                        particleSize = 2f;
+                        particleRad = 9f;
+                        fadeMargin = 0f;
+                        blending = Blending.additive;
+                    }},
+                    new DrawDefault()
+            );
         }};
 
         //i dont have any ideas ok?

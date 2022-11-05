@@ -44,7 +44,14 @@ public class KrakaiTechTree {
             });
 
             node(magmaticGenerator, () -> {
-                node(decaySuppressor);
+                node(decaySuppressor, () -> {
+                    node(regenerationTower, Seq.with(tmpNever), () -> {});
+                });
+                node(riftDischarger, Seq.with(tmpNever), () -> {});
+                node(crystalConcentrator, Seq.with(tmpNever), () -> {});
+                node(sulfurSiphon, Seq.with(tmpNever), () -> {
+                    node(hydrogenSiphon);
+                });
             });
 
             node(abrade, () -> {

@@ -1,10 +1,12 @@
 package dusted.world.blocks.environment;
 
 import arc.*;
+import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.util.*;
 import arc.util.noise.*;
 import dusted.content.*;
+import dusted.graphics.*;
 import mindustry.content.*;
 import mindustry.world.*;
 import mindustry.world.blocks.environment.*;
@@ -12,6 +14,7 @@ import mindustry.world.blocks.environment.*;
 //frostscape
 public class RiftFloor extends Floor {
     public TextureRegion[] riftRegions, riftGlowRegions;
+    public Color riftColor = DustedPal.decayingYellow;
 
     public RiftFloor(String name) {
         super(name);
@@ -42,7 +45,7 @@ public class RiftFloor extends Floor {
                 Simplex.noise2d(0, 9, 0.2f, 0.6f, tile.tile.x + (otime * 1.1f) * 0.3f, tile.tile.y + (otime * 1.1f) * 0.1f) * 180f;
 
         if ((tile.data += Time.delta) >= 180f + offset) {
-            if (tile.tile.block() == Blocks.air) DustedFx.riftGlow.at(tile.tile.worldx(), tile.tile.worldy(), 0f, tile.tile);
+            if (tile.tile.block() == Blocks.air) DustedFx.riftGlow.at(tile.tile.worldx(), tile.tile.worldy(), 0f, riftColor, tile.tile);
             tile.data = offset;
         }
     }

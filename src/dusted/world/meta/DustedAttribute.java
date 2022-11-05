@@ -11,6 +11,10 @@ public class DustedAttribute {
     public static final Attribute rock = Attribute.add("rock");
     //determines how much damage decay will do
     public static final Attribute decay = Attribute.add("decay");
+    //used for powergen
+    public static final Attribute decayEnergy = Attribute.add("decay-energy");
+    //used for volcanic gas siphons
+    public static final Attribute volcanicGas = Attribute.add("volcanic-gas");
 
     static {
         Events.run(ContentInitEvent.class, () -> {

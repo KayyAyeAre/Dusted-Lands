@@ -77,6 +77,11 @@ public class FilterTileGenerator extends PowerGenerator {
         public float eff;
 
         @Override
+        public float warmup() {
+            return Mathf.clamp(productionEfficiency);
+        }
+
+        @Override
         public void updateTile() {
             super.updateTile();
 

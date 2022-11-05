@@ -55,11 +55,19 @@ public class DustedFx {
         }
     }),
 
+    volcanicGas = new Effect(110f, e -> {
+        color(DustedPal.volcanicGas, DustedPal.volcanicGas2, e.fin());
+        alpha(e.fslope() * 0.8f);
+        randLenVectors(e.id, 3, e.fin() * 7f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.finpow() * 2f);
+        });
+    }),
+
     riftGlow = new Effect(180f, e -> {
         if (!(e.data instanceof Tile tile) || !(tile.floor() instanceof RiftFloor floor)) return;
         int variant = Mathf.randomSeed(tile.pos(), 0, Math.max(0, floor.variants - 1));
 
-        Draw.color(DustedPal.decayingYellow, e.fslope() * e.fslope());
+        Draw.color(e.color, e.fslope() * e.fslope());
         Draw.rect(floor.riftRegions[variant], tile.worldx(), tile.worldy());
         Draw.rect(floor.riftGlowRegions[variant], tile.worldx(), tile.worldy());
     }).layer(Layer.floor + 0.01f),
@@ -184,6 +192,30 @@ public class DustedFx {
 
         randLenVectors(e.id, 4, e.fin() * 14f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, e.finpow() * 5f);
+        });
+    }),
+
+    riftDischarge = new Effect(25f, e -> {
+        color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
+        Lines.stroke(e.fout() * 3f);
+        Lines.circle(e.x, e.y, e.finpow() * 7f);
+
+        Lines.stroke(e.fout() * 3f);
+
+        //this kinda sucks
+        randLenVectors(e.id, 4, 9f, (x1, y1) -> {
+            Lines.line(e.x, e.y, e.x + x1, e.y + y1);
+            Fill.circle(e.x + x1, e.y + y1, Lines.getStroke() / 2f);
+
+            randLenVectors(e.id, 1, 9f, Mathf.angle(x1, y1), 30f, (x2, y2) -> {
+                Lines.line(e.x + x1, e.y + y1, e.x + x1 + x2, e.y + y1 + y2);
+                Fill.circle(e.x + x1 + x2, e.y + y1 + y2, Lines.getStroke() / 2f);
+
+                randLenVectors(e.id, 1, 9f, Mathf.angle(x2, y2), 30f, (x3, y3) -> {
+                    Lines.line(e.x + x1 + x2, e.y + y1 + y2, e.x + x1 + x2 + x3, e.y + y1 + y2 + y3);
+                    Fill.circle(e.x + x1 + x2 + x3, e.y + y1 + y2 + y3, Lines.getStroke() / 2f);
+                });
+            });
         });
     }),
 

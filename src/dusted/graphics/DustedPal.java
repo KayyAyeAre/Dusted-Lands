@@ -12,6 +12,8 @@ public class DustedPal {
     decay = Color.valueOf("6d726b"),
     darkerDecay = Color.valueOf("545b50"),
     mist = Color.valueOf("9fb1a2"),
+    volcanicGas = Color.valueOf("564435"),
+    volcanicGas2 = Color.valueOf("402e25"),
 
     darkerWarmMetal = Color.valueOf("3a3130"),
     pinkHeal = Color.valueOf("ffd2f8"),
