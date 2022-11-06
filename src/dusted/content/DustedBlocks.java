@@ -39,7 +39,7 @@ import mindustry.world.meta.*;
 public class DustedBlocks {
     public static Block
     //environment
-    oreZircon, oreArsenic, oreAntimony, orchar, sulfur, volcanoZone,
+    oreZircon, oreArsenic, oreAntimony, orePlatinum, orchar, sulfur, niter, volcanoZone,
     fallenStone, fallenMantle, warpedStone, decayedRock, riftRock, cavnenSediment, cavnenDusting, cavnenSilk,
     volstone, latite, scoria, stradrock, scorchedStradrock,
     basaltFumarole, volstoneFumarole, scoriaFumarole, latiteFumarole,
@@ -49,7 +49,8 @@ public class DustedBlocks {
     fallenBoulder, decayedBoulder, cavnenBoulder,
     volstoneBoulder, volSprout, weepingShrub,
     //defense
-    zirconWall, zirconWallLarge, antimonyWall, antimonyWallLarge,
+    zirconWall, antimonyWall, crisaltWall, perisleWall,
+    zirconWallLarge, antimonyWallLarge, crisaltWallLarge, perisleWallLarge,
     decaySuppressor, regenerationTower,
     //turrets
     abrade, sunder, scald, coruscate, strike, clutter, blight, crush,
@@ -62,7 +63,7 @@ public class DustedBlocks {
     //power
     magmaticGenerator, riftDischarger, crystalConcentrator,
     //crafters
-    quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, crisaltSynthesizer, deteriorationChamber,
+    quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, crisaltSynthesizer, gunpowderMill, deteriorationChamber,
     //production
     pressureDrill, ignitionDrill,
     pneumaticFunnel, rotaryFunnel,
@@ -86,6 +87,8 @@ public class DustedBlocks {
 
         oreAntimony = new OreBlock(DustedItems.antimony);
 
+        orePlatinum = new OreBlock(DustedItems.platinum);
+
         //TODO maybe dont use this for every single powder
         orchar = new PowderFloor("orchar-deposit") {{
             powderDrop = DustedPowders.orchar;
@@ -94,6 +97,11 @@ public class DustedBlocks {
 
         sulfur = new PowderFloor("sulfur-deposit") {{
             powderDrop = DustedPowders.sulfur;
+            attributes.set(Attribute.water, -0.5f);
+        }};
+
+        niter = new PowderFloor("niter-deposit") {{
+            powderDrop = DustedPowders.niter;
             attributes.set(Attribute.water, -0.5f);
         }};
 
@@ -352,7 +360,35 @@ public class DustedBlocks {
             consumeLiquid(Liquids.slag, 0.2f);
         }};
 
-        //TODO maybe output some sort of decayed powder like that cavnen dust i removed? also make a block that can actively heal this/reduce the amount of decay it takes
+        gunpowderMill = new PowderCrafter("gunpowder-mill") {{
+            requirements(Category.crafting, ItemStack.with());
+            size = 3;
+            squareSprite = false;
+            outputPowder = new PowderStack(DustedPowders.gunpowder, 0.2f);
+            craftTime = 120f;
+
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawParticles() {{
+                        color = Color.valueOf("6f6460");
+                        particleSize = 4f;
+                        particleRad = 9f;
+                        particles = 35;
+                        rotateScl = 0.5f;
+                        fadeMargin = 0f;
+                        reverse = true;
+                        blending = Blending.additive;
+                    }},
+                    new DrawRegion("-rotator", 2f, true),
+                    new DrawDefault()
+            );
+
+            consume(new ConsumePowder(DustedPowders.orchar, 0.1f));
+            consume(new ConsumePowder(DustedPowders.sulfur, 0.2f));
+            consume(new ConsumePowder(DustedPowders.niter, 0.2f));
+            consumePower(2f);
+        }};
+
         deteriorationChamber = new GenericCrafter("deterioration-chamber") {{
             requirements(Category.crafting, ItemStack.with(DustedItems.antimony, 120, DustedItems.platinum, 60, Items.metaglass, 40, DustedItems.arsenic, 40));
             size = 3;
@@ -651,6 +687,28 @@ public class DustedBlocks {
         antimonyWallLarge = new Wall("antimony-wall-large") {{
             requirements(Category.defense, ItemStack.mult(antimonyWall.requirements, 4));
             scaledHealth = 440;
+            size = 2;
+        }};
+
+        crisaltWall = new Wall("crisalt-wall") {{
+            requirements(Category.defense, ItemStack.with(DustedItems.crisalt, 6));
+            health = 960;
+        }};
+
+        crisaltWallLarge = new Wall("crisalt-wall-large") {{
+            requirements(Category.defense, ItemStack.mult(crisaltWall.requirements, 4));
+            scaledHealth = 960;
+            size = 2;
+        }};
+
+        perisleWall = new Wall("perisle-wall") {{
+            requirements(Category.defense, ItemStack.with(DustedItems.platinum, 6, DustedItems.perisle, 6));
+            health = 1040;
+        }};
+
+        perisleWallLarge = new Wall("perisle-wall-large") {{
+            requirements(Category.defense, ItemStack.mult(perisleWall.requirements, 4));
+            scaledHealth = 1040;
             size = 2;
         }};
 

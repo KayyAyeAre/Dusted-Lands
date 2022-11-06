@@ -38,7 +38,9 @@ public class KrakaiTechTree {
                         node(crisaltSynthesizer, () -> {
                             node(deteriorationChamber);
                         });
-                        node(rockwoolExtruder);
+                        node(rockwoolExtruder, () -> {
+                            node(gunpowderMill);
+                        });
                     });
                 });
             });
@@ -60,6 +62,14 @@ public class KrakaiTechTree {
 
                     node(antimonyWall, () -> {
                         node(antimonyWallLarge);
+
+                        node(crisaltWall, Seq.with(tmpNever), () -> {
+                            node(crisaltWallLarge);
+
+                            node(perisleWall, () -> {
+                                node(perisleWallLarge);
+                            });
+                        });
                     });
                 });
 
@@ -154,6 +164,9 @@ public class KrakaiTechTree {
                     nodeProduce(DustedPowders.orchar, () -> {
                         nodeProduce(DustedPowders.quartzDust, () -> {});
                         nodeProduce(DustedPowders.sulfur, () -> {});
+                        nodeProduce(DustedPowders.niter, () -> {
+                            nodeProduce(DustedPowders.gunpowder, () -> {});
+                        });
                     });
                 });
             });

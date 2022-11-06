@@ -38,7 +38,7 @@ public class DustedItems {
         }};
 
         platinum = new Item("platinum", Color.valueOf("c0c7ff")) {{
-            hardness = 5;
+            hardness = 7;
             healthScaling = 0.2f;
         }};
 

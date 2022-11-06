@@ -4,8 +4,8 @@ import arc.graphics.*;
 import dusted.type.*;
 
 public class DustedPowders {
-    //TODO i need more powders
-    public static Powder quartzDust, orchar, sulfur, cocaine;
+    //TODO 1 more powder
+    public static Powder quartzDust, orchar, sulfur, niter, gunpowder, cocaine;
 
     public static void load() {
         //TODO maybe rename this to silica
@@ -21,6 +21,15 @@ public class DustedPowders {
         sulfur = new Powder("sulfur", Color.valueOf("f7e89c")) {{
             flammability = 0.4f;
             explosiveness = 0.6f;
+        }};
+
+        niter = new Powder("niter", Color.valueOf("d5d1c2")) {{
+            flammability = 0.5f;
+        }};
+
+        gunpowder = new Powder("gunpowder", Color.valueOf("6f6460")) {{
+            flammability = 0.3f;
+            explosiveness = 1f;
         }};
 
         cocaine = new Powder("cocaine", Color.valueOf("e6e6e6")) {{
