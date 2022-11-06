@@ -66,6 +66,7 @@ public class DustedLands extends Mod {
 
     @Override
     public void init() {
+        DustedEmojis.load();
         Vars.mods.locateMod("dusted-lands").meta.author += """
     
     
