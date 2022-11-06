@@ -361,7 +361,7 @@ public class DustedBlocks {
         }};
 
         gunpowderMill = new PowderCrafter("gunpowder-mill") {{
-            requirements(Category.crafting, ItemStack.with());
+            requirements(Category.crafting, ItemStack.with(DustedItems.antimony, 120, Items.metaglass, 100, DustedItems.crisalt, 60, DustedItems.arsenic, 60));
             size = 3;
             squareSprite = false;
             outputPowder = new PowderStack(DustedPowders.gunpowder, 0.2f);
