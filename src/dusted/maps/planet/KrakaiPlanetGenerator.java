@@ -28,7 +28,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             {DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.stradrock, Blocks.darksand, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite}
     };
 
-    Block[] decayedTerrain = {DustedBlocks.cavnenSilk, DustedBlocks.cavnenSilk, DustedBlocks.cavnenSilk, DustedBlocks.cavnenDusting, DustedBlocks.cavnenSediment, DustedBlocks.riftRock, DustedBlocks.decayedRock, DustedBlocks.decayedRock, DustedBlocks.fallenStone, DustedBlocks.fallenMantle};
+    Block[] decayedTerrain = {DustedBlocks.cavnenSilk, DustedBlocks.cavnenSilk, DustedBlocks.cavnenDusting, DustedBlocks.cavnenSediment, DustedBlocks.riftRock, DustedBlocks.decayedRock, DustedBlocks.decayedRock, DustedBlocks.warpedStone, DustedBlocks.fallenStone, DustedBlocks.fallenMantle};
 
     {
         defaultLoadout = DustedLoadouts.basicAbate;
@@ -92,7 +92,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             tile.floor = Blocks.hotrock;
         }
 
-        if (Ridged.noise3d(seed, position.x, position.y, position.z, 2, 14) > 0.24) {
+        if (Ridged.noise3d(seed + 6, position.x, position.y, position.z, 2, 14) > 0.34) {
             tile.block = Blocks.air;
         }
     }
@@ -203,6 +203,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
 
         cells(4);
         distort(10f, 12f);
+        median(2);
 
         inverseFloodFill(tiles.getn(spawn.x, spawn.y));
 
@@ -214,11 +215,11 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         //ore
         pass((x, y) -> {
             if (!floor.asFloor().isDeep()) {
-                if (noise(x / 3f + 150f, y + 500f, 4, 0.7f, 20f, 1f) > 0.7f) {
+                if (noise(x / 3f + 150f, y + 500f, 4, 0.7f, 20f, 1f) > 0.74f) {
                     ore = DustedBlocks.oreZircon;
                 }
 
-                if (noise(x - 300f, y - x + 100f, 4, 0.8f, 20f, 1f) > 0.72f) {
+                if (noise(x - 300f, y - x + 100f, 4, 0.8f, 20f, 1f) > 0.74f) {
                     ore = DustedBlocks.oreArsenic;
                 }
 
@@ -229,7 +230,6 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
         });
 
         trimDark();
-        median(2);
 
         int tlen = tiles.width * tiles.height;
         int total = 0, slag = 0;
@@ -253,7 +253,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             }
 
             if(floor == Blocks.hotrock) {
-                if (Math.abs(0.5f - noise(x - 20, y, 7, 0.8, 85)) > 0.04) {
+                if (Math.abs(0.5f - noise(x - 20, y, 7, 0.8, 85)) > 0.014) {
                     floor = Blocks.basalt;
                 } else {
                     ore = Blocks.air;
@@ -270,7 +270,8 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
                 }
             }
 
-            if (floor == DustedBlocks.riftRock && Math.abs(0.5f - noise(x + 50, y + 20, 7, 0.8, 70)) > 0.03) floor = DustedBlocks.decayedRock;
+            if (floor == DustedBlocks.riftRock && Math.abs(0.5f - noise(x + 50, y + 20, 7, 0.8, 70)) > 0.02) floor = DustedBlocks.decayedRock;
+            if (floor == DustedBlocks.warpedStone && Math.abs(0.5f - noise(x + 50, y + 20, 7, 0.8, 70)) > 0.02) floor = DustedBlocks.fallenStone;
 
             //decoration
             boolean decorate = true;
