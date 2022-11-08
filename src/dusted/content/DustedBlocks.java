@@ -60,6 +60,8 @@ public class DustedBlocks {
     //powder distribution
     chute, powderRouter, powderJunction, bridgeChute,
     denseChute, armoredChute,
+    //liquids
+    refractoryPump, liquidLink,
     //power
     magmaticGenerator, riftDischarger, crystalConcentrator,
     //crafters
@@ -78,6 +80,9 @@ public class DustedBlocks {
     powderSource, powderVoid;
 
     public static void load() {
+        //is this a good idea?
+        Blocks.conduit.envDisabled |= DustedEnv.volcanic;
+
         //region environment
         volcanoZone = new VolcanoZone("volcano-zone");
 
@@ -419,6 +424,7 @@ public class DustedBlocks {
             researchCost = ItemStack.with(DustedItems.zircon, 5);
         }};
 
+        //TODO is this necessary?
         transferTower = new TransferLink("transfer-tower") {{
             requirements(Category.distribution, ItemStack.with(DustedItems.zircon, 10, DustedItems.arsenic, 10, Items.silicon, 5));
             squareSprite = false;
@@ -590,6 +596,20 @@ public class DustedBlocks {
                     new DrawRegion("-top")
             );
             consumePower(0.5f);
+        }};
+        //endregion
+        //region liquids
+        refractoryPump = new Pump("refractory-pump") {{
+            requirements(Category.liquid, ItemStack.with(Items.metaglass, 60, DustedItems.antimony, 40, DustedItems.arsenic, 30));
+            pumpAmount = 20f / 60f / 4f;
+            liquidCapacity = 60f;
+            size = 2;
+            consumePower(1f);
+        }};
+
+        liquidLink = new LiquidTransferLink("liquid-link") {{
+            requirements(Category.liquid, ItemStack.with(Items.metaglass, 2,DustedItems.zircon, 1));
+            squareSprite = false;
         }};
         //endregion
         //region power

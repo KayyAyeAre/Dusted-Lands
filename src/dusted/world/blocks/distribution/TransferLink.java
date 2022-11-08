@@ -27,6 +27,7 @@ public class TransferLink extends Block {
     public float linkRange = 60f;
     public int maxLinks = 5;
     public float arrowSpacing = 10f, arrowSpeed = 0.5f;
+    public float arrowAlpha = 0.8f, arrowAlphaScl = 10f, arrowAlphaMag = 0.2f;
     public TextureRegion laserRegion, laserEndRegion, arrowRegion;
 
     public TransferLink(String name) {
@@ -107,9 +108,9 @@ public class TransferLink extends Block {
     @Override
     public void load() {
         super.load();
-        arrowRegion = Core.atlas.find("dusted-lands-link-arrow");
-        laserRegion = Core.atlas.find("dusted-lands-link-laser");
-        laserEndRegion = Core.atlas.find("dusted-lands-link-laser-end");
+        arrowRegion = Core.atlas.find(name + "-arrow", "dusted-lands-link-arrow");
+        laserRegion = Core.atlas.find(name + "-laser", "dusted-lands-link-laser");
+        laserEndRegion = Core.atlas.find(name + "-laser-end", "dusted-lands-link-laser-end");
     }
 
     @Override
@@ -137,7 +138,7 @@ public class TransferLink extends Block {
     }
 
     public boolean linkValid(Building entity, Building other, boolean checkMaxLinks) {
-        return (((TransferLinkBuild) entity).links.size < maxLinks || !checkMaxLinks) && other instanceof TransferLinkBuild && other.team == entity.team && overlaps(entity.tile, other.tile);
+        return (((TransferLinkBuild) entity).links.size < maxLinks || !checkMaxLinks) && other instanceof TransferLinkBuild && other.team == entity.team && overlaps(entity.tile, other.tile) && entity.block.hasItems == other.block.hasItems;
     }
 
     public void drawLink(float x1, float y1, float x2, float y2, float size1, float size2, float progress) {
@@ -162,7 +163,7 @@ public class TransferLink extends Block {
 
         for (int a = 0; a < arrows; a++) {
             float aprogress = a * arrowSpacing + progress;
-            Draw.alpha(Mathf.slope(aprogress / dst));
+            Draw.alpha((arrowAlpha + Mathf.absin(arrowAlphaScl, arrowAlphaMag)) * Mathf.slope(aprogress / dst) * Renderer.laserOpacity);
             Draw.rect(arrowRegion,
                     dx1 + Angles.trnsx(arot, Vars.tilesize / 2f + aprogress),
                     dy1 + Angles.trnsy(arot, Vars.tilesize / 2f + aprogress),
@@ -185,7 +186,7 @@ public class TransferLink extends Block {
         public IntSeq pending = new IntSeq();
         public int cur;
         public float transferCounter;
-        public float time;
+        public float time, timeSpeed, moveTime;
 
         @Override
         public void pickedUp() {
@@ -194,7 +195,11 @@ public class TransferLink extends Block {
 
         @Override
         public void updateTile() {
-            time = (time + (arrowSpeed * delta())) % arrowSpacing;
+            moveTime = Mathf.maxZero(moveTime - Time.delta);
+
+            timeSpeed = Mathf.approachDelta(timeSpeed, moveTime > 0f ? arrowSpeed : 0f, 1f / 60f);
+
+            time = (time + (timeSpeed * delta())) % arrowSpacing;
 
             validate();
 
@@ -208,7 +213,7 @@ public class TransferLink extends Block {
             if (!links.isEmpty()) {
                 updateTransfer();
             } else if (timer(timerDump, dumpTime)) {
-                dump();
+                doDump();
             }
         }
 
@@ -220,6 +225,7 @@ public class TransferLink extends Block {
                 Item item = items.take();
                 if (item != null && other != null && other.acceptItem(this, item)) {
                     other.handleItem(this, item);
+                    moveTime = 30f;
                 } else if (item != null) {
                     items.add(item, 1);
                     items.undoFlow(item);
@@ -228,6 +234,10 @@ public class TransferLink extends Block {
                 incrementCurrent();
                 transferCounter -= transferTime;
             }
+        }
+
+        public void doDump() {
+            dumpAccumulate();
         }
 
         public void validate() {
@@ -262,6 +272,13 @@ public class TransferLink extends Block {
         @Override
         public boolean acceptItem(Building source, Item item) {
             return hasItems && team == source.team && (inlinks.isEmpty() || inlinks.contains(source.pos())) && items.total() < itemCapacity;
+        }
+
+
+
+        @Override
+        public boolean acceptLiquid(Building source, Liquid liquid) {
+            return hasLiquids && team == source.team && (inlinks.isEmpty() || inlinks.contains(source.pos())) && (liquids.current() == liquid || liquids.currentAmount() < 0.2f);
         }
 
         @Override
