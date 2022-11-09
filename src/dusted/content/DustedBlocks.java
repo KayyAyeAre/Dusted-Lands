@@ -278,7 +278,7 @@ public class DustedBlocks {
             outputPowder = new PowderStack(DustedPowders.quartzDust, 0.1f);
             craftTime = 120f;
             consumePower(1f);
-            consumeItem(Items.sand, 1);
+            consumeItem(Items.sand, 2);
 
             researchCost = ItemStack.with(DustedItems.zircon, 100, DustedItems.arsenic, 50, DustedItems.antimony, 50);
         }};
@@ -315,7 +315,7 @@ public class DustedBlocks {
             ambientSoundVolume = 0.09f;
 
             consumePower(1f);
-            consume(new ConsumePowder(DustedPowders.quartzDust, 0.05f));
+            consume(new ConsumePowder(DustedPowders.quartzDust, 0.2f));
             consumeItem(DustedItems.antimony, 2);
         }};
 
@@ -530,7 +530,7 @@ public class DustedBlocks {
         sulfurSiphon = new PowderAttributeCrafter("sulfur-siphon") {{
             requirements(Category.production, ItemStack.with(DustedItems.rockwool, 80, DustedItems.arsenic, 60, Items.silicon, 40, DustedItems.crisalt, 40));
             size = 3;
-            squareSprite = true;
+            squareSprite = false;
             attribute = DustedAttribute.volcanicGas;
             baseEfficiency = 0f;
             minEfficiency = 0.01f;
@@ -565,7 +565,7 @@ public class DustedBlocks {
         hydrogenSiphon = new AttributeCrafter("hydrogen-siphon") {{
             requirements(Category.production, ItemStack.with(DustedItems.rockwool, 80, DustedItems.antimony, 60, Items.metaglass, 40, DustedItems.crisalt, 40));
             size = 3;
-            squareSprite = true;
+            squareSprite = false;
             attribute = DustedAttribute.volcanicGas;
             baseEfficiency = 0f;
             minEfficiency = 0.01f;
@@ -604,6 +604,7 @@ public class DustedBlocks {
             pumpAmount = 20f / 60f / 4f;
             liquidCapacity = 60f;
             size = 2;
+            squareSprite = false;
             consumePower(1f);
         }};
 
@@ -617,10 +618,11 @@ public class DustedBlocks {
             requirements(Category.power, ItemStack.with(DustedItems.zircon, 50));
             size = 2;
             floating = true;
+            squareSprite = false;
             ambientSound = Sounds.hum;
             filter = f -> f.liquidDrop == Liquids.slag ? f.liquidMultiplier : 0f;
             generateEffect = Fx.incinerateSlag;
-            outputLiquid = new LiquidStack(Liquids.slag, 5f / 60f);
+            outputLiquid = new LiquidStack(Liquids.slag, 5f / 4f / 60f);
             liquidCapacity = 20f;
             powerProduction = 0.5f;
             researchCost = ItemStack.with(DustedItems.zircon, 10);
@@ -664,6 +666,7 @@ public class DustedBlocks {
             powerProduction = 5f;
             ambientSound = Sounds.smelter;
             ambientSoundVolume = 0.08f;
+            squareSprite = false;
 
             consume(new ConsumePowder(DustedPowders.quartzDust, 0.05f));
             consumeLiquid(Liquids.slag, 10f / 60f);

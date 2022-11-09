@@ -101,6 +101,12 @@ public class FilterTileGenerator extends PowerGenerator {
         }
 
         @Override
+        public void drawSelect() {
+            super.drawSelect();
+            Drawf.dashCircle(x, y, radius, Pal.accent);
+        }
+
+        @Override
         public void drawLight() {
             Drawf.light(x, y, (40f + Mathf.absin(10f, 5f)) * Math.min(productionEfficiency, 2f) * size, Color.scarlet, 0.4f);
         }

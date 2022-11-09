@@ -41,6 +41,13 @@ public class DecaySuppressor extends Block {
         topRegion = Core.atlas.find(name + "-top");
     }
 
+    @Override
+    public void drawPlace(int x, int y, int rotation, boolean valid) {
+        super.drawPlace(x, y, rotation, valid);
+
+        Drawf.dashCircle(x * Vars.tilesize, y * Vars.tilesize, radius, Pal.accent);
+    }
+
     public class SuppressorBuild extends Building {
         public float heat;
         public DecayShield shield;
@@ -78,6 +85,12 @@ public class DecaySuppressor extends Block {
             Draw.reset();
 
             if (shield != null) shield.draw();
+        }
+
+        @Override
+        public void drawSelect() {
+            super.drawSelect();
+            Drawf.dashCircle(x, y, radius, Pal.accent);
         }
 
         @Override

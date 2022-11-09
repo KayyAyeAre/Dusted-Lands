@@ -51,6 +51,12 @@ public class TransferPowerConsumeGenerator extends ConsumeGenerator {
         }
 
         @Override
+        public void drawSelect() {
+            super.drawSelect();
+            Drawf.dashCircle(x, y, radius, Pal.accent);
+        }
+
+        @Override
         public void draw() {
             super.draw();
             drawTransfer();
