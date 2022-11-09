@@ -45,6 +45,12 @@ public class FilterTileGenerator extends PowerGenerator {
     }
 
     @Override
+    public void setBars() {
+        super.setBars();
+        addBar("power-status", PowerNode.makePowerBalance());
+    }
+
+    @Override
     public void setStats() {
         super.setStats();
 
