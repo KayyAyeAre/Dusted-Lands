@@ -65,6 +65,7 @@ public class DustedUnitTypes {
             health = 320f;
             hitSize = 9f;
             armor = 5f;
+            targetAir = false;
 
             weapons.add(new Weapon("dusted-lands-excise-cannon") {{
                 mirror = false;
@@ -526,6 +527,7 @@ public class DustedUnitTypes {
             }});
         }};
 
+        //TODO modify rts AI to stay near other commanded units?
         sob = new DustedUnitType("sob") {{
             constructor = UnitEntity::create;
             aiController = ShieldAI::new;
@@ -533,7 +535,7 @@ public class DustedUnitTypes {
 
             accel = 0.1f;
             drag = 0.05f;
-            speed = 3.6f;
+            speed = 5f;
             flying = true;
             lowAltitude = true;
             rotateSpeed = 8f;

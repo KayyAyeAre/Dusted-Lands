@@ -314,7 +314,7 @@ public class DustedBlocks {
             ambientSound = Sounds.smelter;
             ambientSoundVolume = 0.09f;
 
-            consumePower(1f);
+            consumePower(2.5f);
             consume(new ConsumePowder(DustedPowders.quartzDust, 0.2f));
             consumeItem(DustedItems.antimony, 2);
         }};
@@ -661,9 +661,9 @@ public class DustedBlocks {
 
         //i dont have any ideas ok?
         crystalConcentrator = new TransferPowerPowderConsumeGenerator("crystal-concentrator") {{
-            requirements(Category.power, ItemStack.with(DustedItems.antimony, 60, Items.silicon, 40, Items.metaglass, 40));
+            requirements(Category.power, ItemStack.with(DustedItems.antimony, 100, Items.metaglass, 80, Items.silicon, 50));
             size = 3;
-            powerProduction = 11f;
+            powerProduction = 8f;
             ambientSound = Sounds.smelter;
             ambientSoundVolume = 0.08f;
             squareSprite = false;
@@ -744,7 +744,7 @@ public class DustedBlocks {
 
         //TODO boost item
         regenerationTower = new RepairTower("regeneration-tower") {{
-            requirements(Category.effect, ItemStack.with(Items.metaglass, 70, DustedItems.antimony, 60, DustedItems.arsenic, 40));
+            requirements(Category.effect, ItemStack.with(Items.metaglass, 100, Items.silicon, 80, DustedItems.antimony, 80, DustedItems.arsenic, 40));
             size = 3;
             consumePower(1.5f);
 

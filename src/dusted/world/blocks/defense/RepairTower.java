@@ -21,7 +21,7 @@ import static mindustry.Vars.indexer;
 
 public class RepairTower extends Block {
     public float range = 15f * 8f;
-    public float healPercent = 50f / 60f;
+    public float healPercent = 20f / 60f;
     public Color baseColor = DustedPal.pinkHeal;
     public Effect repairEffect = DustedFx.regeneration;
     public float repairEffectChance = 0.05f;
