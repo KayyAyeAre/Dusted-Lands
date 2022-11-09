@@ -3,7 +3,7 @@ package dusted.content;
 import mindustry.type.*;
 
 public class DustedSectorPresets {
-    public static SectorPreset outbreak, taintedValley, magmaticPassage;
+    public static SectorPreset outbreak, taintedValley, magmaticPassage, igneousCrossing;
 
     public static void load() {
         outbreak = new SectorPreset("outbreak", DustedPlanets.krakai, 269) {{
@@ -20,6 +20,11 @@ public class DustedSectorPresets {
         magmaticPassage = new SectorPreset("magmatic-passage", DustedPlanets.krakai, 95) {{
             captureWave = 10;
             difficulty = 3;
+        }};
+
+        igneousCrossing = new SectorPreset("igneous-crossing", DustedPlanets.krakai, 242) {{
+            captureWave = 15;
+            difficulty = 4;
         }};
     }
 }
