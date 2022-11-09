@@ -663,7 +663,7 @@ public class DustedBlocks {
         crystalConcentrator = new TransferPowerPowderConsumeGenerator("crystal-concentrator") {{
             requirements(Category.power, ItemStack.with(DustedItems.antimony, 60, Items.silicon, 40, Items.metaglass, 40));
             size = 3;
-            powerProduction = 5f;
+            powerProduction = 11f;
             ambientSound = Sounds.smelter;
             ambientSoundVolume = 0.08f;
             squareSprite = false;
