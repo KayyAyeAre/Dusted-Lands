@@ -39,8 +39,14 @@ public class DustedEmojis {
         );
         cont.removeAll(u -> u instanceof ConstructBlock || u == Blocks.air || u.minfo.mod == mod);
 
-        for (UnlockableContent ignored : cont) {
-            id--;
+        for (String key : map.keys()) {
+            id = Math.min(Integer.parseInt(key), id);
+        }
+
+        for (UnlockableContent content : cont) {
+            if (!content2id.containsKey(content.name)) {
+                id--;
+            }
         }
 
         //actually start loading the emojis
@@ -62,35 +68,33 @@ public class DustedEmojis {
                 Vars.content.units(),
                 Vars.content.statusEffects()
         ).removeAll(u -> u.minfo.mod != mod).each(c -> {
-            if (c.minfo.mod == mod) {
-                TextureRegion region = c.uiIcon;
-                id--;
+            TextureRegion region = c.uiIcon;
+            id--;
 
-                Reflect.<ObjectIntMap<String>>get(Fonts.class, "unicodeIcons").put(c.name, id);
-                Reflect.<ObjectMap<String, String>>get(Fonts.class, "stringIcons").put(c.name, ((char) id) + "");
+            Reflect.<ObjectIntMap<String>>get(Fonts.class, "unicodeIcons").put(c.name, id);
+            Reflect.<ObjectMap<String, String>>get(Fonts.class, "stringIcons").put(c.name, ((char) id) + "");
 
-                int size = (int) (Fonts.def.getData().lineHeight / Fonts.def.getData().scaleY);
+            int size = (int) (Fonts.def.getData().lineHeight / Fonts.def.getData().scaleY);
 
-                Vec2 out = Scaling.fit.apply(region.width, region.height, size, size);
+            Vec2 out = Scaling.fit.apply(region.width, region.height, size, size);
 
-                Glyph glyph = new Glyph();
-                glyph.id = id;
-                glyph.srcX = 0;
-                glyph.srcY = 0;
-                glyph.width = (int) out.x;
-                glyph.height = (int) out.y;
-                glyph.u = region.u;
-                glyph.v = region.v2;
-                glyph.u2 = region.u2;
-                glyph.v2 = region.v;
-                glyph.xoffset = 0;
-                glyph.yoffset = -size;
-                glyph.xadvance = size;
-                glyph.kerning = null;
-                glyph.fixedWidth = true;
-                glyph.page = region.texture == pure ? purePage : gennedPage;
-                fonts.each(f -> f.getData().setGlyph(id, glyph));
-            }
+            Glyph glyph = new Glyph();
+            glyph.id = id;
+            glyph.srcX = 0;
+            glyph.srcY = 0;
+            glyph.width = (int) out.x;
+            glyph.height = (int) out.y;
+            glyph.u = region.u;
+            glyph.v = region.v2;
+            glyph.u2 = region.u2;
+            glyph.v2 = region.v;
+            glyph.xoffset = 0;
+            glyph.yoffset = -size;
+            glyph.xadvance = size;
+            glyph.kerning = null;
+            glyph.fixedWidth = true;
+            glyph.page = region.texture == pure ? purePage : gennedPage;
+            fonts.each(f -> f.getData().setGlyph(id, glyph));
         });
     }
 }
