@@ -255,7 +255,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
             }
 
             if(floor == Blocks.hotrock) {
-                if (Math.abs(0.5f - noise(x - 20, y, 7, 0.8, 85)) > 0.014) {
+                if (Math.abs(0.5f - noise(x - 20, y, 7, 0.8, 95)) > 0.012) {
                     floor = Blocks.basalt;
                 } else {
                     ore = Blocks.air;
