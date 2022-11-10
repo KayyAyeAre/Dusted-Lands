@@ -513,6 +513,7 @@ public class DustedBlocks {
         pneumaticFunnel = new Funnel("pneumatic-funnel") {{
             requirements(Category.production, ItemStack.with(DustedItems.zircon, 10));
             powderCapacity = 20f;
+            funnelAmount = 0.05f;
             squareSprite = false;
         }};
 
@@ -521,7 +522,6 @@ public class DustedBlocks {
             size = 2;
             hasPower = true;
             powderCapacity = 40f;
-            funnelAmount = 1f;
             consumePower(0.2f);
             extractEffect = DustedFx.funnelExtract;
             squareSprite = false;
@@ -872,7 +872,7 @@ public class DustedBlocks {
         }};
 
         coruscate = new PowderTurret("coruscate") {{
-            requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 110, DustedItems.antimony, 80, Items.silicon, 70));
+            requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 220, DustedItems.antimony, 180, Items.silicon, 150, Items.metaglass, 100));
             size = 3;
             squareSprite = false;
             scaledHealth = 280f;
@@ -922,6 +922,7 @@ public class DustedBlocks {
                         width = height = 18f;
                         splashDamage = 35f;
                         splashDamageRadius = 22f;
+                        ammoPerShot = 3;
                         lifetime = 70f;
                         frontColor = DustedPal.lightQuartz;
                         backColor = hitColor = trailColor = DustedPal.darkQuartz;
@@ -956,7 +957,7 @@ public class DustedBlocks {
         }};
 
         strike = new ItemPowderTurret("strike") {{
-            requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 120, DustedItems.antimony, 100, Items.silicon, 70));
+            requirements(Category.turret, ItemStack.with(DustedItems.arsenic, 210, DustedItems.antimony, 190, Items.silicon, 160, Items.metaglass, 150));
             size = 3;
             squareSprite = false;
             scaledHealth = 240f;
@@ -1015,7 +1016,7 @@ public class DustedBlocks {
         }};
 
         clutter = new ItemTurret("clutter") {{
-            requirements(Category.turret, ItemStack.with(Items.silicon, 160, DustedItems.arsenic, 120, DustedItems.crisalt, 100, Items.metaglass, 60));
+            requirements(Category.turret, ItemStack.with(Items.silicon, 240, DustedItems.arsenic, 220, DustedItems.crisalt, 100, Items.metaglass, 80));
             size = 3;
             squareSprite = false;
             scaledHealth = 260f;
