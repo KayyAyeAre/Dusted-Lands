@@ -19,6 +19,8 @@ import static mindustry.Vars.*;
 public class KrakaiPlanetGenerator extends PlanetGenerator {
     float scl = 6f;
 
+    Seq<Block> basaltBlocks = Seq.with(Blocks.slag, Blocks.hotrock, Blocks.magmarock);
+
     Block[][] terrain = {
             {DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.stradrock, DustedBlocks.scoria, DustedBlocks.scoria, Blocks.darksand, Blocks.basalt, DustedBlocks.latite, DustedBlocks.latite, DustedBlocks.latite},
             {DustedBlocks.latite, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.scoria, DustedBlocks.volstone, Blocks.darksand, Blocks.basalt, DustedBlocks.volstone, DustedBlocks.latite, DustedBlocks.latite},
@@ -86,7 +88,7 @@ public class KrakaiPlanetGenerator extends PlanetGenerator {
     @Override
     protected void genTile(Vec3 position, TileGen tile) {
         tile.floor = getBlock(position);
-        tile.block = tile.floor == Blocks.slag ? Blocks.duneWall : tile.floor.asFloor().wall;
+        tile.block = basaltBlocks.contains(tile.floor) ? Blocks.duneWall : tile.floor.asFloor().wall;
 
         if (tile.floor == Blocks.slag && Ridged.noise3d(seed, position.x, position.y, position.z, 4, 17) > 0.68) {
             tile.floor = Blocks.hotrock;
