@@ -634,7 +634,7 @@ public class DustedUnitTypes {
                 inaccuracy = 10f;
                 shootSound = Sounds.missile;
 
-                bullet = new BasicBulletType(3.6f, 8f, "circle-bullet") {{
+                bullet = new BasicBulletType(3.6f, 6f, "circle-bullet") {{
                     width = height = 10f;
                     shrinkX = shrinkY = 0.4f;
                     drag = 0.04f;
@@ -647,15 +647,18 @@ public class DustedUnitTypes {
                 }};
             }});
 
-            abilities.add(new RevolvingOrbAbility() {{
-                damage = 22f;
-                orbs = 2;
-                radius = 20f;
-                rotationSpeed = 10f;
-                orbRadius = 5f;
-                orbLifetime = 320f;
-                orbCooldown = 200f;
-            }});
+            abilities.add(
+                    new RevolvingOrbAbility() {{
+                        damage = 22f;
+                        orbs = 2;
+                        radius = 20f;
+                        rotationSpeed = 10f;
+                        orbRadius = 5f;
+                        orbLifetime = 320f;
+                        orbCooldown = 200f;
+                    }},
+                    new DecayShieldAbility(80f)
+            );
         }};
 
         rancor = new DustedUnitType("rancor") {{
@@ -686,15 +689,18 @@ public class DustedUnitTypes {
                 }};
             }});
 
-            abilities.add(new RevolvingOrbAbility() {{
-                damage = 30f;
-                orbs = 3;
-                radius = 28f;
-                rotationSpeed = 12f;
-                orbRadius = 7f;
-                orbLifetime = 400f;
-                orbCooldown = 320f;
-            }});
+            abilities.add(
+                    new RevolvingOrbAbility() {{
+                        damage = 30f;
+                        orbs = 3;
+                        radius = 28f;
+                        rotationSpeed = 12f;
+                        orbRadius = 7f;
+                        orbLifetime = 400f;
+                        orbCooldown = 320f;
+                    }},
+                    new DecayShieldAbility(80f)
+            );
         }};
 
         animus = new DustedUnitType("animus") {{

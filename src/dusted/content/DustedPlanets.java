@@ -36,6 +36,9 @@ public class DustedPlanets {
             ruleSetter = r -> {
                 r.attributes.set(Attribute.heat, 1.2f);
                 r.attributes.set(DustedAttribute.decay, 0.5f);
+                r.coreDestroyClear = true;
+                r.showSpawns = true;
+                //TODO wave team
             };
 
             hiddenItems.addAll(Vars.content.items()).removeAll(DustedItems.krakaiItems);
