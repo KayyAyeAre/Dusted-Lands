@@ -75,6 +75,7 @@ public class ShieldAI extends FlyingAI {
             y /= nearby.size;
 
             moveTo(targetPos.set(x, y), 15f, 10f);
+            unit.lookAt(targetPos);
         } else {
             checkPos = false;
             targetPos.set(unit);

@@ -48,7 +48,10 @@ public class Decay implements ApplicationListener {
 
             Vars.indexer.allBuildings(Vars.world.width() * 4f, Vars.world.height() * 4f, Math.max(Vars.world.width() * 8f, Vars.world.height() * 8f), b -> {
                 //sure the cores already have shields but they still get decayed while launching for some reason
-                if (!(b instanceof ShieldedCoreBuild) && !isShielded(b) && b.health > b.maxHealth * calculateDamage(b.block)) {
+                if (!(b instanceof ShieldedCoreBuild) && !isShielded(b) &&
+                        //only damage blocks if they are inside of the map area
+                        (!Vars.state.rules.limitMapArea || Rect.contains(Vars.state.rules.limitX, Vars.state.rules.limitY, Vars.state.rules.limitWidth, Vars.state.rules.limitHeight, b.tileX(), b.tileY()))
+                        && b.health > b.maxHealth * calculateDamage(b.block)) {
                     float dmg = (decayDamage + b.block.sumAttribute(DustedAttribute.decay, b.tileX(), b.tileY())) * decayMultipliers.get(b.block, 1f) * Time.delta;
                     if (dmg <= 0) return;
 

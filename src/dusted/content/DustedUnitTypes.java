@@ -914,6 +914,7 @@ public class DustedUnitTypes {
             constructor = BuildingTetherPayloadUnit::create;
             controller = u -> new AssemblerAI();
             decay.ignoreShield.add(this);
+            decay.decayMultipliers.put(this, 0f);
             flying = true;
             drag = 0.08f;
             accel = 0.1f;
@@ -958,11 +959,10 @@ public class DustedUnitTypes {
                 reload = 40f;
                 shootSound = Sounds.lasershoot;
 
-                bullet = new BasicBulletType(3f, 10f) {{
+                bullet = new BasicBulletType(3f, 0f) {{
                     width = 8f;
                     height = 12f;
                     lifetime = 40f;
-                    buildingDamageMultiplier = 0.01f;
                     trailWidth = 2f;
                     trailLength = 16;
                     healPercent = 5f;
