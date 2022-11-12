@@ -1,15 +1,16 @@
 package dusted.entities.abilities;
 
-import arc.graphics.g2d.*;
+import arc.*;
 import arc.util.*;
 import dusted.*;
+import dusted.ai.*;
 import dusted.content.*;
 import dusted.game.Decay.*;
-import mindustry.*;
 import mindustry.entities.abilities.*;
 import mindustry.gen.*;
-import mindustry.graphics.*;
 import mindustry.type.*;
+
+import static dusted.DustedLands.decay;
 
 public class DecayShieldAbility extends Ability {
     public float radius;
@@ -25,6 +26,14 @@ public class DecayShieldAbility extends Ability {
     public void init(UnitType type) {
         super.init(type);
         type.clipSize = Math.max(type.clipSize, radius * 2f);
+
+        //obviously doesnt need to be shielded by other units
+        decay.ignoreShield.add(type);
+
+        //has to be run on the next frame because abilities are initialized before commands
+        Core.app.post(() -> {
+            type.commands = Structs.add(type.commands, DustedUnitCommands.shieldCommand);
+        });
     }
 
     @Override

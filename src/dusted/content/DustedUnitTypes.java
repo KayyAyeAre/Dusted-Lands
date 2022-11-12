@@ -1,7 +1,7 @@
 package dusted.content;
 
 import arc.graphics.*;
-import dusted.*;
+import dusted.ai.*;
 import dusted.ai.types.*;
 import dusted.entities.abilities.*;
 import dusted.entities.bullet.*;
@@ -21,6 +21,8 @@ import mindustry.graphics.*;
 import mindustry.type.*;
 import mindustry.type.weapons.*;
 import mindustry.world.meta.*;
+
+import static dusted.DustedLands.*;
 
 public class DustedUnitTypes {
     public static UnitType
@@ -264,8 +266,8 @@ public class DustedUnitTypes {
             trailScl = 0.6f;
 
             //sort of like a suicide unit
-            DustedLands.decay.ignoreShield.add(this);
-            DustedLands.decay.decayMultipliers.put(this, 0.3f);
+            decay.ignoreShield.add(this);
+            decay.decayMultipliers.put(this, 0.3f);
 
             weapons.add(new Weapon("dusted-lands-carom-weapon") {{
                 x = 3f;
@@ -317,8 +319,8 @@ public class DustedUnitTypes {
             engineOffset = 8f;
             engineSize = 3f;
 
-            DustedLands.decay.ignoreShield.add(this);
-            DustedLands.decay.decayMultipliers.put(this, 0.3f);
+            decay.ignoreShield.add(this);
+            decay.decayMultipliers.put(this, 0.3f);
 
             weapons.add(new Weapon() {{
                 mirror = false;
@@ -527,11 +529,10 @@ public class DustedUnitTypes {
             }});
         }};
 
-        //TODO modify rts AI to stay near other commanded units?
         sob = new DustedUnitType("sob") {{
             constructor = UnitEntity::create;
             aiController = ShieldAI::new;
-            defaultCommand = UnitCommand.repairCommand;
+            defaultCommand = DustedUnitCommands.shieldCommand;
 
             accel = 0.1f;
             drag = 0.05f;
@@ -619,7 +620,7 @@ public class DustedUnitTypes {
 
         pique = new DustedUnitType("pique") {{
             constructor = MechUnit::create;
-            aiController = OrbsAI::new;
+            aiController = ShieldAI::new;
             speed = 0.8f;
             hitSize = 7f;
             health = 140f;
@@ -663,7 +664,7 @@ public class DustedUnitTypes {
 
         rancor = new DustedUnitType("rancor") {{
             constructor = MechUnit::create;
-            aiController = OrbsAI::new;
+            aiController = ShieldAI::new;
             speed = 0.7f;
             hitSize = 10f;
             health = 300f;
@@ -712,7 +713,6 @@ public class DustedUnitTypes {
             groundLayer = Layer.legUnit - 1f;
             hovering = true;
             constructor = LegsUnit::create;
-            aiController = OrbsAI::new;
 
             legCount = 4;
             legLength = 18f;
@@ -913,6 +913,7 @@ public class DustedUnitTypes {
         decayedAssemblyDrone = new DustedUnitType("decayed-assembly-drone") {{
             constructor = BuildingTetherPayloadUnit::create;
             controller = u -> new AssemblerAI();
+            decay.ignoreShield.add(this);
             flying = true;
             drag = 0.08f;
             accel = 0.1f;

@@ -8,6 +8,7 @@ import arc.math.*;
 import arc.util.*;
 import dusted.content.*;
 import dusted.graphics.*;
+import mindustry.*;
 import mindustry.entities.*;
 import mindustry.entities.abilities.*;
 import mindustry.gen.*;
@@ -55,6 +56,11 @@ public class RevolvingOrbAbility extends Ability {
             lifetime -= Time.delta;
         }
         if (cooldown > 0) cooldown -= Time.delta;
+
+        //ai controlling
+        if (unit.isAI() && Groups.bullet.intersect(unit.x - (radius * 2), unit.y - (radius * 2), radius * 4, radius * 4).contains(b -> b.team.isEnemy(Vars.player.unit().team))) {
+            summon();
+        }
     }
 
     public void summon() {
