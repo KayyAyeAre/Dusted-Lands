@@ -13,7 +13,6 @@ public class DustedDesktopInput implements CustomInput {
             Structs.each(a -> {
                 if (Core.scene.hasKeyboard()) return;
                 if (Core.input.keyTap(KeyCode.b) && a instanceof BounceAbility bounceAbility) bounceAbility.bounce(Vars.player.unit());
-                if (Core.input.keyTap(KeyCode.q) && a instanceof QuakeAbility quakeAbility) quakeAbility.quake();
                 if (Core.input.keyTap(KeyCode.r) && a instanceof RevolvingOrbAbility orbsAbility) orbsAbility.summon();
             }, Vars.player.unit().abilities);
         }

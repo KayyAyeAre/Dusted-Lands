@@ -146,7 +146,7 @@ public class UnitConstructor extends UnitAssembler {
         public void handleItem(Building source, Item item) {
             super.handleItem(source, item);
             Tmp.v1.set(source instanceof UnitConstructorModuleBuild umod && modules.contains(umod) ? umod : this);
-            Fx.itemTransfer.at(Tmp.v1.x, Tmp.v1.y, 0f, item.color, getUnitSpawn());
+            Fx.itemTransfer.at(Tmp.v1.x, Tmp.v1.y, 0f, item.color, getUnitSpawn().cpy());
         }
 
         @Override
