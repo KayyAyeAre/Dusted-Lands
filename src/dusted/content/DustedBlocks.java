@@ -767,7 +767,7 @@ public class DustedBlocks {
             size = 2;
             squareSprite = false;
             scaledHealth = 240f;
-            reload = 12f;
+            reload = 15f;
             recoil = 4f;
             range = 75f;
             shootSound = Sounds.pew;
@@ -785,7 +785,7 @@ public class DustedBlocks {
                         fromColor = DustedPal.decayingYellow;
                         toColor = DustedPal.decayingYellowBack;
                         length = 75f;
-                        damage = 12f;
+                        damage = 8f;
                         width = 16f;
                         serrations = 0;
                     }}
