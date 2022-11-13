@@ -38,22 +38,22 @@ public class UnitConstructorModule extends UnitAssemblerModule {
 
         @Override
         public void handleItem(Building source, Item item) {
-            link.handleItem(this, item);
+            if (link != null) link.handleItem(this, item);
         }
 
         @Override
         public void handleLiquid(Building source, Liquid liquid, float amount) {
-            link.handleLiquid(this, liquid, amount);
+            if (link != null) link.handleLiquid(this, liquid, amount);
         }
 
         @Override
         public boolean acceptItem(Building source, Item item) {
-            return link.acceptItem(source, item);
+            return link != null && link.acceptItem(source, item);
         }
 
         @Override
         public boolean acceptLiquid(Building source, Liquid liquid) {
-            return link.acceptLiquid(source, liquid);
+            return link != null && link.acceptLiquid(source, liquid);
         }
     }
 }
