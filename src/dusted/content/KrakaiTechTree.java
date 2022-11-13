@@ -34,11 +34,11 @@ public class KrakaiTechTree {
 
                 node(siliconForge, Seq.with(new OnSector(magmaticPassage)), () -> {});
                 node(quartzExtractor, Seq.with(new OnSector(magmaticPassage), new Research(siliconForge)), () -> {
-                    node(metaglassFurnace, Seq.with(tmpNever), () -> {
-                        node(crisaltSynthesizer, () -> {
+                    node(metaglassFurnace, Seq.with(new OnSector(igneousCrossing)), () -> {
+                        node(crisaltSynthesizer, Seq.with(tmpNever), () -> {
                             node(deteriorationChamber);
                         });
-                        node(rockwoolExtruder, () -> {
+                        node(rockwoolExtruder, Seq.with(tmpNever), () -> {
                             node(gunpowderMill);
                         });
                     });
@@ -47,15 +47,15 @@ public class KrakaiTechTree {
 
             node(magmaticGenerator, () -> {
                 node(decaySuppressor, () -> {
-                    node(regenerationTower, Seq.with(tmpNever), () -> {});
+                    node(regenerationTower, Seq.with(new OnSector(igneousCrossing)), () -> {});
                 });
 
-                node(liquidLink, Seq.with(tmpNever), () -> {
+                node(liquidLink, Seq.with(new OnSector(igneousCrossing)), () -> {
                     node(refractoryPump);
                 });
 
                 node(riftDischarger, Seq.with(tmpNever), () -> {});
-                node(crystalConcentrator, Seq.with(tmpNever), () -> {});
+                node(crystalConcentrator, Seq.with(new OnSector(igneousCrossing), new Research(metaglassFurnace)), () -> {});
                 node(sulfurSiphon, Seq.with(tmpNever), () -> {
                     node(hydrogenSiphon);
                 });
@@ -79,9 +79,9 @@ public class KrakaiTechTree {
                 });
 
                 node(scald, Seq.with(new OnSector(taintedValley)), () -> {
-                    node(coruscate, Seq.with(tmpNever), () -> {
-                        node(strike);
-                        node(clutter);
+                    node(coruscate, Seq.with(new OnSector(igneousCrossing)), () -> {
+                        node(strike, Seq.with(tmpNever), () -> {});
+                        node(clutter, Seq.with(tmpNever), () -> {});
                         node(blight, () -> {
                             node(crush);
                         });
@@ -178,7 +178,9 @@ public class KrakaiTechTree {
 
             node(outbreak, () -> {
                 node(taintedValley, Seq.with(new SectorComplete(outbreak)), () -> {
-                    node(magmaticPassage, Seq.with(new SectorComplete(taintedValley)), () -> {});
+                    node(magmaticPassage, Seq.with(new SectorComplete(taintedValley)), () -> {
+                        node(igneousCrossing, Seq.with(new SectorComplete(magmaticPassage), new Research(quartzExtractor)), () -> {});
+                    });
                 });
             });
         });

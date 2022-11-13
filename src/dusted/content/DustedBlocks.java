@@ -317,6 +317,7 @@ public class DustedBlocks {
             consumePower(2.5f);
             consume(new ConsumePowder(DustedPowders.quartzDust, 0.2f));
             consumeItem(DustedItems.antimony, 2);
+            researchCostMultiplier = 0.4f;
         }};
 
         rockwoolExtruder = new DrawerWallCrafter("rockwool-extruder") {{
@@ -688,6 +689,8 @@ public class DustedBlocks {
                     }},
                     new DrawDefault()
             );
+
+            researchCostMultiplier = 0.6f;
         }};
         //endregion
         //region defense
@@ -953,6 +956,7 @@ public class DustedBlocks {
             );
 
             coolant = consumeCoolant(0.1f);
+            researchCostMultiplier = 0.6f;
         }};
 
         strike = new ItemPowderTurret("strike") {{
