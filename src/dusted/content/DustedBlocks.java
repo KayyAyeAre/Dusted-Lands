@@ -864,7 +864,6 @@ public class DustedBlocks {
                         smokeEffect = Fx.shootSmokeSquare;
                         status = DustedStatusEffects.blazing;
                         statusDuration = 6 * 60f;
-                        hitSound = Sounds.bang;
                     }}
             );
 

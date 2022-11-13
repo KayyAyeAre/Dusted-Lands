@@ -52,7 +52,7 @@ public class DustedUnitTypes {
                 shootSound = Sounds.bang;
 
                 bullet = new InstantBulletType() {{
-                    damage = 17f;
+                    damage = 19f;
                     distance = 100f;
                     shootEffect = DustedFx.shootLaunch;
                     status = StatusEffects.blasted;
