@@ -67,12 +67,15 @@ public class DustedEmojis {
                 Vars.content.liquids(),
                 Vars.content.units(),
                 Vars.content.statusEffects()
-        ).removeAll(u -> u.minfo.mod != mod).each(c -> {
-            TextureRegion region = c.uiIcon;
+        ).removeAll(u -> u.minfo.mod != mod)
+                .map(c -> new GenData(c.uiIcon.texture == pure, c.name, c.uiIcon))
+                .add(new GenData(true, "reliquiae", Core.atlas.find("dusted-lands-team-reliquiae")))
+                .each(data -> {
+            TextureRegion region = data.glyphRegion;
             id--;
 
-            Reflect.<ObjectIntMap<String>>get(Fonts.class, "unicodeIcons").put(c.name, id);
-            Reflect.<ObjectMap<String, String>>get(Fonts.class, "stringIcons").put(c.name, ((char) id) + "");
+            Reflect.<ObjectIntMap<String>>get(Fonts.class, "unicodeIcons").put(data.name, id);
+            Reflect.<ObjectMap<String, String>>get(Fonts.class, "stringIcons").put(data.name, ((char) id) + "");
 
             int size = (int) (Fonts.def.getData().lineHeight / Fonts.def.getData().scaleY);
 
@@ -96,5 +99,19 @@ public class DustedEmojis {
             glyph.page = region.texture == pure ? purePage : gennedPage;
             fonts.each(f -> f.getData().setGlyph(id, glyph));
         });
+
+        DustedTeams.reliquiae.emoji = Reflect.<ObjectMap<String, String>>get(Fonts.class, "stringIcons").get(DustedTeams.reliquiae.name, "");
+    }
+
+    public static class GenData {
+        public boolean pure;
+        public String name;
+        public TextureRegion glyphRegion;
+
+        public GenData(boolean pure, String name, TextureRegion glyphRegion) {
+            this.pure = pure;
+            this.name = name;
+            this.glyphRegion = glyphRegion;
+        }
     }
 }

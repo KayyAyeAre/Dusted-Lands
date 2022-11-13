@@ -82,6 +82,7 @@ public class DustedLands extends Mod {
     @Override
     public void loadContent() {
         DustedStatusEffects.load();
+        DustedTeams.load();
         DustedItems.load();
         DustedPowders.load();
         DustedUnitTypes.load();
