@@ -81,9 +81,4 @@ public class RevolvingOrbAbility extends Ability {
         }
         Draw.reset();
     }
-
-    @Override
-    public String localized() {
-        return Core.bundle.get("ability.revolving-orb");
-    }
 }

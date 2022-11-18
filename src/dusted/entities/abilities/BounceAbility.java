@@ -71,9 +71,4 @@ public class BounceAbility extends Ability {
 
         steps = bounces;
     }
-
-    @Override
-    public String localized() {
-        return Core.bundle.get("ability.bounce");
-    }
 }

@@ -31,7 +31,7 @@ public class DustedUnitTypes {
     annul, excise, deduct, diminish,
     pique, rancor, animus,
     protei, hynobii, sirenid,
-    decayedAssemblyDrone,
+    decayedAssemblyDrone, recedeDrone,
     erode, recede, atrophy;
 
     public static void load() {
@@ -935,6 +935,26 @@ public class DustedUnitTypes {
             envDisabled = Env.none;
         }};
 
+        recedeDrone = new DustedUnitType("recede-drone") {{
+            constructor = UnitEntity::create;
+            controller = u -> new DroneAI();
+            flying = true;
+            drag = 0.06f;
+            accel = 0.1f;
+            speed = 4f;
+            health = 110;
+            targetable = false;
+            isEnemy = false;
+            hidden = true;
+            useUnitCap = false;
+            logicControllable = false;
+            playerControllable = false;
+            allowedInPayloads = false;
+            createWreck = false;
+            envEnabled = Env.any;
+            envDisabled = Env.none;
+        }};
+
         erode = new DustedUnitType("erode") {{
             constructor = PayloadUnit::create;
             coreUnitDock = true;
@@ -953,10 +973,11 @@ public class DustedUnitTypes {
             payloadCapacity = 2f * 2f * Vars.tilePayload;
 
             weapons.add(new Weapon("dusted-lands-core-decay-weapon") {{
-                x = 3.1f;
-                y = 2f;
+                x = 12f / 4f;
+                y = 5f / 4f;
                 top = false;
                 reload = 40f;
+                recoil = 1f;
                 shootSound = Sounds.lasershoot;
 
                 bullet = new BasicBulletType(3f, 0f) {{
@@ -994,21 +1015,10 @@ public class DustedUnitTypes {
             hitSize = 8f;
             lowAltitude = true;
 
-            weapons.add(new RepairBeamWeapon("dusted-lands-recede-repair-weapon") {{
-                x = 0f;
-                y = -2f;
-                shootY = 2.5f;
-                beamWidth = 0.6f;
-                laserColor = DustedPal.decayingYellow;
-                mirror = false;
-                repairSpeed = 0.7f;
-
-                bullet = new BulletType() {{
-                    maxRange = 120f;
-                }};
-            }});
-
-            abilities.add(new DecayShieldAbility(60f));
+            abilities.add(
+                    new DecayShieldAbility(60f)
+                    //new DroneUnitAbility(recedeDrone, 60f, 0f, 0f)
+            );
         }};
 
         atrophy = new UnitType("atrophy") {{
