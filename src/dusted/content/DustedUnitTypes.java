@@ -959,7 +959,7 @@ public class DustedUnitTypes {
             constructor = PayloadUnit::create;
             coreUnitDock = true;
             isEnemy = false;
-            aiController = BuilderAI::new;
+            controller = u -> new BuilderAI(true, 500f);
             flying = true;
             itemCapacity = 30;
             alwaysUnlocked = true;
@@ -999,7 +999,7 @@ public class DustedUnitTypes {
 
         recede = new DustedUnitType("recede") {{
             constructor = UnitEntity::create;
-            aiController = BuilderAI::new;
+            controller = u -> new BuilderAI(true, 500f);
             flying = true;
             mineSpeed = 7f;
             mineTier = 1;

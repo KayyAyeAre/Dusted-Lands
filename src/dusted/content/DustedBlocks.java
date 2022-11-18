@@ -1298,7 +1298,7 @@ public class DustedBlocks {
 
             plans.add(
                     Seq.with(
-                            new UnitConstructorPlan(DustedUnitTypes.annul, 60f * 30f, ItemStack.with(Items.silicon, 40, DustedItems.zircon, 30)),
+                            new UnitConstructorPlan(DustedUnitTypes.annul, 60f * 20f, ItemStack.with(Items.silicon, 40, DustedItems.zircon, 30)),
                             new UnitConstructorPlan(DustedUnitTypes.excise, 60f * 60f, ItemStack.with(Items.silicon, 100, DustedItems.crisalt, 80, DustedItems.antimony, 60))
                     ),
                     Seq.with(
@@ -1311,18 +1311,18 @@ public class DustedBlocks {
         }};
 
         voltaicAssembler = new UnitConstructor("voltaic-assembler") {{
-            requirements(Category.units, ItemStack.with(Items.silicon, 220, DustedItems.antimony, 100, Items.metaglass, 90, DustedItems.arsenic, 60));
+            requirements(Category.units, ItemStack.with(Items.silicon, 220, DustedItems.antimony, 100, DustedItems.arsenic, 60));
             size = 3;
             areaSize = 7;
             droneType = DustedUnitTypes.decayedAssemblyDrone;
 
             plans.add(
                     Seq.with(
-                            new UnitConstructorPlan(DustedUnitTypes.pique, 60f * 40f, ItemStack.with(Items.silicon, 50, DustedItems.antimony, 30, Items.metaglass, 30)),
+                            new UnitConstructorPlan(DustedUnitTypes.pique, 60f * 30f, ItemStack.with(Items.silicon, 50, DustedItems.antimony, 30)),
                             new UnitConstructorPlan(DustedUnitTypes.rancor, 60f * 70f, ItemStack.with(Items.silicon, 110, DustedItems.crisalt, 70, DustedItems.arsenic, 50))
                     ),
                     Seq.with(
-                            new UnitConstructorPlan(DustedUnitTypes.sob, 60f * 30f, ItemStack.with(Items.silicon, 40, Items.metaglass, 40)),
+                            new UnitConstructorPlan(DustedUnitTypes.sob, 60f * 20f, ItemStack.with(Items.silicon, 40, Items.metaglass, 40)),
                             new UnitConstructorPlan(DustedUnitTypes.wail, 60f * 60f, ItemStack.with(Items.silicon, 90, DustedItems.crisalt, 60, DustedItems.zircon, 40))
                     )
             );
