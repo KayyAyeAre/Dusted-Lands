@@ -43,10 +43,10 @@ public class TransferLink extends Block {
         priority = TargetPriority.transport;
         unloadable = false;
 
-        config(LinkData.class, (entity, value) -> {
+        config(Point2.class, (entity, value) -> {
             TransferLinkBuild build = (TransferLinkBuild) entity;
-            build.links.add(value.pos);
-            build.pending.add(value.pos);
+            build.links.add(value.pack());
+            build.pending.add(value.pack());
         });
 
         config(Integer.class, (entity, value) -> {
@@ -100,7 +100,7 @@ public class TransferLink extends Block {
             BuildPlan cur = plans.get(i);
             BuildPlan next = plans.get(i + 1);
             if (overlaps(cur.tile(), next.tile())) {
-                cur.config = new LinkData(Point2.pack(next.x, next.y));
+                cur.config = new Point2(next.x, next.y);
             }
         }
     }
@@ -168,15 +168,6 @@ public class TransferLink extends Block {
                     dx1 + Angles.trnsx(arot, Vars.tilesize / 2f + aprogress),
                     dy1 + Angles.trnsy(arot, Vars.tilesize / 2f + aprogress),
                     arot);
-        }
-    }
-
-    //like normal int, but tells the block that the config shouldnt be invalidated
-    public static class LinkData {
-        public int pos;
-
-        public LinkData(int pos) {
-            this.pos = pos;
         }
     }
 
