@@ -47,12 +47,12 @@ public class DustedUnitTypes {
                 mirror = false;
                 x = 0f;
                 y = -3f;
-                reload = 45f;
+                reload = 30f;
                 recoil = 3f;
                 shootSound = Sounds.bang;
 
                 bullet = new InstantBulletType() {{
-                    damage = 19f;
+                    damage = 21f;
                     distance = 100f;
                     shootEffect = DustedFx.shootLaunch;
                     status = StatusEffects.blasted;
@@ -73,14 +73,14 @@ public class DustedUnitTypes {
                 mirror = false;
                 x = 0f;
                 y = -3f;
-                reload = 50f;
+                reload = 45f;
                 recoil = 2f;
                 rotate = true;
                 rotateSpeed = 4f;
                 rotationLimit = 50f;
                 shootSound = Sounds.artillery;
 
-                bullet = new ArtilleryBulletType(3.5f, 22f) {{
+                bullet = new ArtilleryBulletType(3.5f, 33f) {{
                     width = height = 12f;
                     lifetime = 45f;
                     frontColor = DustedPal.decayingYellow;
@@ -118,7 +118,7 @@ public class DustedUnitTypes {
                 recoil = 3f;
                 shootSound = DustedSounds.cannonHeavy;
 
-                bullet = new RocketBulletType(4f, 44f, "circle-bullet") {{
+                bullet = new RocketBulletType(4f, 66f, "circle-bullet") {{
                     width = height = 19f;
                     shrinkX = shrinkY = 0.5f;
                     lifetime = 70f;
@@ -138,7 +138,7 @@ public class DustedUnitTypes {
                     rocketBulletType = new CloudBulletType() {{
                         speed = 0.7f;
                         drag = 0.08f;
-                        damage = 15f;
+                        damage = 20f;
                         damageInterval = 10f;
                         status = DustedStatusEffects.deteriorating;
                         statusDuration = 3f * 60f;
@@ -203,7 +203,7 @@ public class DustedUnitTypes {
                 reload = 200f;
                 shootSound = DustedSounds.cannonHeavy;
 
-                bullet = new BasicBulletType(4f, 44f) {{
+                bullet = new BasicBulletType(4f, 70f) {{
                     width = 28f;
                     height = 36f;
                     lifetime = 40f;
@@ -279,7 +279,7 @@ public class DustedUnitTypes {
                 shoot.shots = 3;
                 shoot.shotDelay = 5f;
 
-                bullet = new BasicBulletType(4f, 8f) {{
+                bullet = new BasicBulletType(4f, 12f) {{
                     width = 6f;
                     height = 11f;
                     lifetime = 20f;
@@ -329,7 +329,7 @@ public class DustedUnitTypes {
                 reload = 15f;
                 shoot = new ShootSpread(3, 10f);
                 shootSound = Sounds.missile;
-                bullet = new BasicBulletType(3.4f, 9f) {{
+                bullet = new BasicBulletType(3.4f, 12f) {{
                     width = 8f;
                     height = 9f;
                     lifetime = 20f;
@@ -804,7 +804,9 @@ public class DustedUnitTypes {
                         shootSound = Sounds.tractorbeam;
                         x = 0f;
                         bullet = new ContinuousFlameBulletType() {{
-                            damage = 3f;
+                            damage = 14f / 4f;
+                            buildingDamageMultiplier = 4f;
+                            damageInterval = 20f;
                             length = 24f;
                             width = 4f;
                             pierceCap = 2;
@@ -859,8 +861,9 @@ public class DustedUnitTypes {
                     color = DustedPal.blazingRed;
                     backColor = hitColor = DustedPal.darkBlazingRed;
                     beamEffect = DustedFx.flameSpreadColor;
-                    damage = 16f;
+                    damage = 16f / 4f;
                     damageInterval = 15f;
+                    buildingDamageMultiplier = 4f;
                     status = DustedStatusEffects.blazing;
                     statusDuration = 3f * 60f;
                 }};
@@ -892,6 +895,7 @@ public class DustedUnitTypes {
                 y = 6f;
                 reload = 6f;
                 shootCone = 360f;
+                //TODO replace this
                 bullet = new BulletType(4f, 37f) {{
                     hitSize = 35f;
                     lifetime = 8f;

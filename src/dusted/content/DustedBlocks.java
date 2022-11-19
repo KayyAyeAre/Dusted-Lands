@@ -822,6 +822,7 @@ public class DustedBlocks {
                         shrinkX = shrinkY = 0.4f;
                         splashDamageRadius = 20f;
                         splashDamage = 24f;
+                        ammoMultiplier = 0.2f;
                         status = DustedStatusEffects.blazing;
                         statusDuration = 4f * 60f;
                         frontColor = DustedPal.lightOrchar;
@@ -858,6 +859,7 @@ public class DustedBlocks {
                         lifetime = 30f;
                         width = 18f;
                         height = 22f;
+                        ammoMultiplier = 0.2f;
                         frontColor = DustedPal.lightOrchar;
                         backColor = hitColor = trailColor = DustedPal.darkOrchar;
                         trailLength = 14;
@@ -924,7 +926,7 @@ public class DustedBlocks {
                         width = height = 18f;
                         splashDamage = 35f;
                         splashDamageRadius = 22f;
-                        ammoPerShot = 3;
+                        ammoMultiplier = 0.1f;
                         lifetime = 70f;
                         frontColor = DustedPal.lightQuartz;
                         backColor = hitColor = trailColor = DustedPal.darkQuartz;
@@ -1005,7 +1007,6 @@ public class DustedBlocks {
             }};
 
             ammo(
-                    //TODO this is probably unbalanced
                     DustedItems.antimony, new InstantBulletType() {{
                         damage = 18f;
                         splashDamage = 10f;
@@ -1174,7 +1175,7 @@ public class DustedBlocks {
                             drag = 0.02f;
                             width = height = 18f;
                             shrinkX = shrinkY = 0.25f;
-                            ammoMultiplier = 1f;
+                            ammoMultiplier = 0.1f;
                             pierce = true;
                             frontColor = DustedPal.lightQuartz;
                             backColor = trailColor = hitColor = DustedPal.darkQuartz;

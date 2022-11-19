@@ -31,6 +31,12 @@ public class CloudBulletType extends BulletType {
     }
 
     @Override
+    public float estimateDPS() {
+        //TODO inaccurate?
+        return damage * lifetime / damageInterval;
+    }
+
+    @Override
     public void draw(Bullet b) {
         float ptime = sclTime / lifetime;
         float progress = sclInterp.apply(Mathf.clamp(b.fslope() * ((1f - ptime) * (1f / ptime))));
