@@ -152,7 +152,7 @@ public class Chute extends PowderBlock implements Autotiler {
             Draw.z(z - 0.001f);
 
             clumps.each(c -> {
-                Draw.color(Tmp.c1.set(powders.current().color).mul(c.randColor), smoothPowder);
+                Draw.color(Tmp.c1.set(powders.current().clumpColor).mul(c.randColor), smoothPowder);
                 float offsetX = Mathf.lerp(
                         Angles.trnsx(c.srcRot + 180f, hitSize() / 2f) + Angles.trnsx(c.srcRot, c.progress * hitSize(), c.offset),
                         Angles.trnsx(rotdeg() + 180f, hitSize() / 2f) + Angles.trnsx(rotdeg(), c.progress * hitSize(), c.offset),
@@ -182,7 +182,7 @@ public class Chute extends PowderBlock implements Autotiler {
             super.handlePowder(source, powder, amount);
 
             if (moveClump && !(source instanceof ChuteBuild) && Mathf.chanceDelta((powders.currentAmount() / powderCapacity) * 0.3f)) {
-                clumps.add(Pools.obtain(ClumpData.class, ClumpData::new).set(Mathf.random(0.5f, 1.5f), 0f, Mathf.random(-2f, 2f), source.angleTo(this), Mathf.random(1.1f, 1.3f)));
+                clumps.add(Pools.obtain(ClumpData.class, ClumpData::new).set(Mathf.random(0.5f, 1.5f), 0f, Mathf.random(-2f, 2f), source.angleTo(this), Mathf.random(1f, 1.1f)));
             }
         }
 
