@@ -65,7 +65,7 @@ public class DustedBlocks {
     //power
     magmaticGenerator, riftDischarger, crystalConcentrator,
     //crafters
-    quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, crisaltSynthesizer, gunpowderMill, deteriorationChamber,
+    quartzExtractor, metaglassFurnace, siliconForge, rockwoolExtruder, crisaltSynthesizer, gunpowderMill, deteriorationChamber, telonateAccelerator,
     //production
     pressureDrill, ignitionDrill,
     pneumaticFunnel, rotaryFunnel,
@@ -413,9 +413,48 @@ public class DustedBlocks {
             );
 
             consume(new ConsumeDecay());
-            consumePower(1.5f);
+            consumePower(2f);
             consumeItem(DustedItems.platinum, 2);
             consumeLiquid(Liquids.hydrogen, 0.1f);
+        }};
+
+        telonateAccelerator = new BoosterCrafter("telonate-accelerator") {{
+            requirements(Category.crafting, ItemStack.with());
+            size = 4;
+            squareSprite = false;
+            outputItem = new ItemStack(DustedItems.telonate, 2);
+            craftTime = 180f;
+            craftEffect = DustedFx.acceleratorPulse;
+            ambientSound = Sounds.smelter;
+            ambientSoundVolume = 0.15f;
+            itemCapacity = 20;
+
+            drawer = new DrawMulti(
+                    new DrawRegion("-bottom"),
+                    new DrawParticles() {{
+                        color = Color.valueOf("9b60ff");
+                        particleSize = 3f;
+                        particleRad = 12f;
+                        particleLife = 30f;
+                        particles = 40;
+                        rotateScl = 0.1f;
+                        fadeMargin = 0f;
+                        reverse = true;
+                        blending = Blending.additive;
+                    }},
+                    new DrawDefault(),
+                    new DrawGlowRegion() {{
+                        alpha = 0.8f;
+                        color = Color.valueOf("6841de");
+                        glowIntensity = 0.2f;
+                        glowScale = 11f;
+                    }}
+            );
+
+            consumeItem(DustedItems.platinum, 6);
+            consume(new ConsumePowder(DustedPowders.niter, 0.2f));
+            consume(new ConsumePowder(DustedPowders.quartzDust, 0.3f));
+            consumePower(3f);
         }};
         //endregion
         //region distribution

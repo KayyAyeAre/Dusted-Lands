@@ -195,6 +195,17 @@ public class DustedFx {
         });
     }),
 
+    acceleratorPulse = new Effect(35f, e -> {
+        color(DustedPal.lightTelonate, DustedPal.darkTelonate, e.fin());
+        Lines.stroke(e.fout() * 4f);
+        Lines.circle(e.x, e.y, e.finpow() * 20f);
+
+        Lines.stroke(e.fout() * 1.5f);
+        randLenVectors(e.id, 6, e.finpow() * 18f, (x, y) -> {
+            Lines.circle(e.x + x, e.y + y, e.finpow() * 2f);
+        });
+    }),
+
     riftDischarge = new Effect(25f, e -> {
         color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
         Lines.stroke(e.fout() * 3f);

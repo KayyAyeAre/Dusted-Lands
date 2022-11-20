@@ -8,6 +8,8 @@ public class DustedPal {
     lightQuartz = Color.valueOf("ffe8ee"),
     darkOrchar = Color.valueOf("ec4c4c"),
     lightOrchar = Color.valueOf("ffb09c"),
+    darkTelonate = Color.valueOf("654bb4"),
+    lightTelonate = Color.valueOf("c3b1f9"),
     lightCrisalt = Color.valueOf("f6ffbd"),
     decay = Color.valueOf("6d726b"),
     darkerDecay = Color.valueOf("545b50"),
