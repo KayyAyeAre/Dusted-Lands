@@ -53,7 +53,7 @@ public class DustedBlocks {
     zirconWallLarge, antimonyWallLarge, crisaltWallLarge, perisleWallLarge,
     decaySuppressor, regenerationTower,
     //turrets
-    abrade, sunder, scald, coruscate, strike, clutter, blight, crush,
+    abrade, sunder, scald, coruscate, strike, clutter, wane, perplex, blight, crush,
     cocaineDuo,
     //distribution
     transferLink, transferTower,
@@ -1135,6 +1135,81 @@ public class DustedBlocks {
                             status = StatusEffects.burning;
                             statusDuration = 2f * 60f;
                         }};
+                    }}
+            );
+        }};
+
+        wane = new PowderTurret("wane") {{
+            requirements(Category.turret, ItemStack.with(Items.silicon, 260, DustedItems.antimony, 180, DustedItems.crisalt, 100, Items.metaglass, 80));
+            size = 3;
+            squareSprite = false;
+            scaledHealth = 240f;
+            reload = 35f;
+            range = 200f;
+            shootSound = Sounds.cannon;
+            shootY = 9f;
+            minWarmup = 0.9f;
+            heatColor = Color.clear;
+
+            outlineColor = DustedPal.darkerWarmMetal;
+            drawer = new DrawTurret("decayed-") {{
+                parts.addAll(
+                        new RegionPart("-blade1") {{
+                            mirror = true;
+                            under = true;
+                            moveX = 0.5f;
+                            moveY = -1f;
+                            moveRot = -10f;
+                            progress = PartProgress.reload;
+                            moves.add(new PartMove(PartProgress.warmup, 0.5f, -0.5f, -5f));
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("0b8229");
+                        }},
+                        new RegionPart("-blade2") {{
+                            mirror = true;
+                            under = true;
+                            moveX = 1f;
+                            moveY = -1f;
+                            moveRot = -10f;
+                            progress = PartProgress.reload;
+                            moves.add(new PartMove(PartProgress.warmup, 0f, -0.5f, -5f));
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("0b8229");
+                        }},
+                        new RegionPart("-blade3") {{
+                            mirror = true;
+                            under = true;
+                            moveX = 1f;
+                            moveY = -1f;
+                            moveRot = -15f;
+                            progress = PartProgress.reload;
+                            moves.add(new PartMove(PartProgress.warmup, 0f, -0.5f, -5f));
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("0b8229");
+                        }},
+                        new RegionPart("-side") {{
+                            mirror = true;
+                            under = true;
+                            moveX = moveY = -1.5f;
+                            progress = PartProgress.reload;
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("0b8229");
+                        }},
+                        new RegionPart() {{
+                            drawRegion = false;
+                            heatProgress = PartProgress.warmup;
+                            heatColor = Color.valueOf("0b8229");
+                        }}
+                );
+            }};
+
+            ammo(
+                    DustedPowders.sulfur, new RayBulletType() {{
+                        damage = 9f;
+                        lifetime = 40f;
+                        color = hitColor = DustedPal.lightSulfur;
+                        lightColor = DustedPal.darkSulfur;
+                        shootEffect = DustedFx.shootRay;
                     }}
             );
         }};

@@ -368,6 +368,16 @@ public class DustedFx {
         });
     }),
 
+    shootRay = new Effect(35f, e -> {
+        color(e.color);
+        Lines.stroke(e.fout() * 3f);
+        Lines.arc(e.x, e.y, e.finpow() * 9f, 1f / 6f, e.rotation - 30f);
+
+        randLenVectors(e.id, 9, e.finpow() * 64f, e.rotation, 30f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 2f);
+        });
+    }),
+
     shootCavnenSmoke = new Effect(50f, e -> {
         color(DustedPal.decayingYellow, e.foutpowdown() * 0.88f);
 
@@ -381,14 +391,6 @@ public class DustedFx {
 
         randLenVectors(e.id, 10, 48f * e.finpow(), e.rotation, 45f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, e.foutpowdown() * 7f);
-        });
-    }),
-
-    splitShot = new Effect(40f, e -> {
-        color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
-
-        randLenVectors(e.id, 7, 18f * e.fin(), e.rotation, 40f, (x, y) -> {
-            Lines.lineAngle(e.x + x, e.y + y, Mathf.angle(x, y), e.fslope() * 4f + 2f);
         });
     }),
 
@@ -457,6 +459,17 @@ public class DustedFx {
 
         randLenVectors(e.id, 5, 1f + e.finpow() * 6f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, 0.5f + e.fout());
+        });
+    }),
+
+    pointHit = new Effect(15f, e -> {
+        color(e.color);
+        stroke(e.fout() * 4f);
+        Lines.circle(e.x, e.y, e.finpow() * 15f);
+        Lines.square(e.x, e.y,  e.finpow() * 15f, 45f);
+
+        randLenVectors(e.id, 6, e.finpow() * 13f, (x, y) -> {
+            Fill.circle(e.x + x, e.y + y, e.fout() * 6f);
         });
     }),
 

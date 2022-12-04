@@ -81,9 +81,11 @@ public class KrakaiTechTree {
                 node(scald, Seq.with(new OnSector(taintedValley)), () -> {
                     node(coruscate, Seq.with(new OnSector(igneousCrossing)), () -> {
                         node(strike, Seq.with(tmpNever), () -> {});
-                        node(clutter, Seq.with(tmpNever), () -> {});
-                        node(blight, () -> {
-                            node(crush);
+                        node(clutter, Seq.with(tmpNever), () -> {
+                            node(wane);
+                            node(blight, () -> {
+                                node(crush);
+                            });
                         });
                     });
                 });
