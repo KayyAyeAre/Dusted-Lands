@@ -1,5 +1,6 @@
 package dusted.world.blocks.defense.turrets;
 
+import arc.util.io.*;
 import dusted.world.interfaces.*;
 import dusted.world.modules.*;
 import mindustry.*;
@@ -43,6 +44,18 @@ public class ItemPowderTurret extends ItemTurret implements PowderBlockc {
         @Override
         public PowderModule powderModule() {
             return powders;
+        }
+
+        @Override
+        public void write(Writes write) {
+            super.write(write);
+            powders.write(write);
+        }
+
+        @Override
+        public void read(Reads read, byte revision) {
+            super.read(read, revision);
+            powders.read(read);
         }
     }
 }

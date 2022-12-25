@@ -52,7 +52,7 @@ public class DustedBlocks {
     zirconWall, antimonyWall, crisaltWall, perisleWall,
     zirconWallLarge, antimonyWallLarge, crisaltWallLarge, perisleWallLarge,
     decaySuppressor, regenerationTower,
-    //turrets
+    //turrets, TODO perplex
     abrade, sunder, scald, coruscate, strike, clutter, wane, perplex, blight, crush,
     cocaineDuo,
     //distribution
@@ -1160,7 +1160,7 @@ public class DustedBlocks {
                             moveX = 0.5f;
                             moveY = -1f;
                             moveRot = -10f;
-                            progress = PartProgress.reload;
+                            progress = PartProgress.recoil;
                             moves.add(new PartMove(PartProgress.warmup, 0.5f, -0.5f, -5f));
                             heatProgress = PartProgress.warmup;
                             heatColor = Color.valueOf("0b8229");
@@ -1171,7 +1171,7 @@ public class DustedBlocks {
                             moveX = 1f;
                             moveY = -1f;
                             moveRot = -10f;
-                            progress = PartProgress.reload;
+                            progress = PartProgress.recoil;
                             moves.add(new PartMove(PartProgress.warmup, 0f, -0.5f, -5f));
                             heatProgress = PartProgress.warmup;
                             heatColor = Color.valueOf("0b8229");
@@ -1182,7 +1182,7 @@ public class DustedBlocks {
                             moveX = 1f;
                             moveY = -1f;
                             moveRot = -15f;
-                            progress = PartProgress.reload;
+                            progress = PartProgress.recoil;
                             moves.add(new PartMove(PartProgress.warmup, 0f, -0.5f, -5f));
                             heatProgress = PartProgress.warmup;
                             heatColor = Color.valueOf("0b8229");
@@ -1191,7 +1191,7 @@ public class DustedBlocks {
                             mirror = true;
                             under = true;
                             moveX = moveY = -1.5f;
-                            progress = PartProgress.reload;
+                            progress = PartProgress.recoil;
                             heatProgress = PartProgress.warmup;
                             heatColor = Color.valueOf("0b8229");
                         }},

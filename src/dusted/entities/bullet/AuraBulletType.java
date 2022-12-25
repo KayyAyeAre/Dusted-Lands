@@ -4,33 +4,30 @@ import arc.graphics.*;
 import arc.graphics.g2d.*;
 import arc.math.*;
 import dusted.content.*;
-import mindustry.*;
-import mindustry.content.*;
 import mindustry.entities.*;
 import mindustry.entities.bullet.*;
 import mindustry.gen.*;
+import mindustry.graphics.*;
 
 public class AuraBulletType extends BasicBulletType {
-    public float auraDamage = 2f;
+    public float auraDamage = 12f;
+    public float auraDamageInterval = 10f;
     public float auraRadius = 60f;
-    public Effect auraEffect = Fx.none;
+    public float auraStroke = 3f;
+    public float lightLayer = Layer.bullet - 0.03f;
     public Color auraColor;
-    public float auraEffectChance = 0.2f;
+
+    public AuraBulletType(float speed, float damage) {
+        super(speed, damage);
+    }
 
     @Override
     public void update(Bullet b) {
         super.update(b);
 
-        Units.nearbyEnemies(b.team, b.x, b.y, auraRadius, u -> {
-            if (!u.hittable()) return;
-            u.damageContinuous(auraDamage);
-            if (Mathf.chance(auraEffectChance)) auraEffect.at(u);
-        });
-
-        Vars.indexer.eachBlock(null, b.x, b.y, auraRadius, build -> build.team != b.team, build -> {
-            build.damageContinuous(auraDamage);
-            if (Mathf.chance(auraEffectChance)) auraEffect.at(build);
-        });
+        if (b.timer(0, auraDamageInterval)) {
+            Damage.damage(b.team, b.x, b.y, auraRadius, auraDamage, false, collidesAir, collidesGround, false, b);
+        }
     }
 
     @Override
@@ -40,8 +37,12 @@ public class AuraBulletType extends BasicBulletType {
         float drawRadius = Interp.pow2.apply(Math.min(b.time, 30f) / 30f) * auraRadius;
 
         Draw.color(auraColor);
-        Lines.dashCircle(b.x, b.y, drawRadius);
-        Draw.color();
+        Lines.stroke(auraStroke);
+        Lines.circle(b.x, b.y, drawRadius);
+        Draw.z(lightLayer);
+        Draw.blend(Blending.additive);
+        Fill.light(b.x, b.y, Lines.circleVertices(drawRadius), drawRadius, Color.clear, auraColor);
+        Draw.blend();
     }
 
     @Override
