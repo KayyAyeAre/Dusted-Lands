@@ -395,7 +395,7 @@ public class DustedFx {
     }),
 
     orbSummon = new Effect(40f, e -> {
-        color(DustedPal.decayingYellow, DustedPal.decayingYellowBack, e.fin());
+        color(DustedPal.pinkHeal);
         randLenVectors(e.id, 12, e.finpow() * 12f, e.rotation, 360f, (x, y) -> {
             Fill.circle(e.x + x, e.y + y, e.foutpow() * 2f);
         });

@@ -270,10 +270,12 @@ public class DustedUnitTypes {
             decay.decayMultipliers.put(this, 0.3f);
 
             weapons.add(new Weapon("dusted-lands-carom-weapon") {{
-                x = 3f;
-                y = -2f;
+                x = 1f;
+                y = 3f;
                 alternate = false;
                 reload = 35f;
+                recoilTime = 10f;
+                layerOffset = -0.01f;
                 shootSound = Sounds.missile;
 
                 shoot.shots = 3;
@@ -539,7 +541,7 @@ public class DustedUnitTypes {
             speed = 5f;
             flying = true;
             lowAltitude = true;
-            rotateSpeed = 8f;
+            rotateSpeed = 6f;
             engineSize = 3.5f;
             engineOffset = 3f;
             healColor = DustedPal.pinkHeal;
@@ -625,13 +627,14 @@ public class DustedUnitTypes {
             hitSize = 7f;
             health = 140f;
 
-            weapons.add(new Weapon("dusted-lands-decay-gun") {{
-                y = -1f;
-                x = 2.5f;
+            weapons.add(new Weapon("dusted-lands-pique-weapon") {{
+                y = 3.5f;
+                x = 3f;
                 reload = 50f;
                 shoot = new ShootPattern() {{
                     shots = 3;
                 }};
+                layerOffset = -0.01f;
                 inaccuracy = 10f;
                 shootSound = Sounds.missile;
 
