@@ -1,3 +1,5 @@
+just a little notice here i guess - i probably won't be working on this mod for a looong while
+
 ![](https://github.com/KayyAyeAre/Dusted-Lands/blob/main/assets/banner.png) 
 # Dusted Lands
 A small mod which adds powders to the game, along with a ton of turrets, units, and other content.
